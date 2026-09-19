@@ -28,6 +28,7 @@
   /* Layout */
   --shell: 1180px;
   --gutter: 20px;
+  --anchor-offset: 6rem; /* fixed nav (~78px) plus breathing room */
   --radius: 26px;
   --radius-lg: 34px;
 
@@ -204,6 +205,9 @@ button {
 .section {
   position: relative;
   padding-block: clamp(5rem, 11vw, 9.5rem);
+  /* Anchor targets land clear of the fixed nav (D19); scripts/goldens.mjs
+     reads this value so section captures are offset by the same amount. */
+  scroll-margin-top: var(--anchor-offset);
 }
 
 .section--tight {
@@ -563,6 +567,52 @@ button {
 
 .hero__lead {
   margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+/* Hero entrance (D17). CSS keyframes on load, no JS: the headline rises out
+   of a clipped wrapper, then the lead and the button follow. Whole sequence
+   under 900ms. The mask opens once the headline is in, so the text-shadow
+   is not cut off afterwards. */
+.hero__mask {
+  /* The clip lives only in the keyframe, so a frozen or reduced-motion page
+     is unclipped and the shadow is never cut. */
+  animation: hero-unmask 0.7s step-end both;
+}
+
+.hero__rise {
+  animation: hero-rise 0.7s var(--ease) both;
+}
+
+.hero__lead.hero__rise {
+  --rise-y: 24px;
+  animation-duration: 0.6s;
+  animation-delay: 0.2s;
+}
+
+.hero__cta.hero__rise {
+  --rise-y: 18px;
+  animation-duration: 0.55s;
+  animation-delay: 0.32s;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--rise-y, 105%), 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hero-unmask {
+  from {
+    clip-path: inset(-0.4em -1em 0);
+  }
+  to {
+    clip-path: none;
+  }
 }
 
 .hero__scroll {
@@ -985,6 +1035,18 @@ button {
   height: 52%;
 }
 
+/* The Facebook mark sits flush to the bottom edge of its tile, right of
+   centre; the glyph carries its own placement, so the svg fills the tile. */
+.social--facebook svg {
+  width: 100%;
+  height: 100%;
+}
+
+.social--instagram svg {
+  width: 74%;
+  height: 74%;
+}
+
 .social:hover {
   transform: translateY(-6px) scale(1.06);
   box-shadow: 0 24px 40px -18px rgba(0, 0, 0, 0.95);
@@ -1347,8 +1409,22 @@ button {
     height: 1.2em;
   }
 
+  /* Comp 9 spaces the tiles about a tile apart: 24px at 1280, 77px at 1920 */
   .socials {
-    gap: clamp(1.5rem, 2vw, 3rem);
+    gap: clamp(1.5rem, 8.3vw - 82px, 5rem);
+  }
+
+  .principle {
+    padding: calc(2.1 * var(--u));
+  }
+
+  /* A product page is a document, not a poster: its contents keep the
+     1280-and-below size while the home page scales (NEXT-006 D3). */
+  .detail {
+    --u: 1rem;
+    --fs-lead: clamp(1.05rem, 1.55vw, 1.4rem);
+    --fs-body: clamp(1rem, 1.15vw, 1.125rem);
+    font-size: var(--fs-body);
   }
 
   .social {
@@ -1524,6 +1600,14 @@ button {
     opacity: 1;
     transform: none;
     filter: none;
+  }
+
+  .hero__mask,
+  .hero__rise {
+    animation: none;
+    clip-path: none;
+    opacity: 1;
+    transform: none;
   }
 
   .statement {

@@ -1,21 +1,25 @@
 import Link from "next/link";
 import { ArrowRight } from "./icons";
-import { reveal } from "./reveal";
 
 export default function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
+      {/* The hero arrives on a CSS-only load animation, not the reveal
+          observer: it is in view at load, so the observer would fire in the
+          same frame as first paint and the text would simply appear (D17). */}
       <div className="shell hero__inner">
-        <h1 id="hero-title" {...reveal(90, "display hero__title")}>
-          Neat apps with a human touch
-        </h1>
+        <div className="hero__mask">
+          <h1 id="hero-title" className="display hero__title hero__rise">
+            Neat apps with a human touch
+          </h1>
+        </div>
 
-        <p {...reveal(220, "lead hero__lead")}>
+        <p className="lead hero__lead hero__rise">
           I pick one real problem at a time, ship something usable, and keep working on it long
           after launch. No agency retainers, no discovery decks.
         </p>
 
-        <div {...reveal(330)}>
+        <div className="hero__cta hero__rise">
           <Link className="btn btn--ghost btn--block-sm" href="#contact">
             Work with me
             <ArrowRight className="btn__arrow" />

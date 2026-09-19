@@ -29,6 +29,9 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const outDir = path.resolve(process.argv[2] || "docs/site/review/goldens");
 const shotsDir = path.join(outDir, "shots");
 fs.mkdirSync(shotsDir, { recursive: true });
+// Start clean: a frame this run does not produce must not survive into the
+// hashes as if it had (a renamed frame would otherwise linger as "unchanged").
+for (const f of fs.readdirSync(shotsDir)) if (f.endsWith(".png")) fs.unlinkSync(path.join(shotsDir, f));
 
 const PORT = 4174;
 const BASE = `http://127.0.0.1:${PORT}`;
@@ -123,22 +126,25 @@ async function targets(page) {
   return page.evaluate(() => {
     const top = (el) => el.getBoundingClientRect().top + window.scrollY;
     const el = (s) => document.querySelector(s);
+    // Section frames start where a nav click would land the section: its top
+    // less its scroll-margin-top (D19), so the fixed nav never covers a heading.
+    const anchor = (s) => top(el(s)) - parseFloat(getComputedStyle(el(s)).scrollMarginTop || "0");
     const [s1, s2] = [...document.querySelectorAll("[data-statement]")];
     const hold = (s) => top(s) + (s.offsetHeight - window.innerHeight) * 0.5;
     return [
       ["01-hero", 0],
-      ["02-03-products", top(el("#products"))],
+      ["02-03-products", anchor("#products")],
       ["04-statement-overload", hold(s1)],
       ["05-statement-breather", hold(s2)],
-      ["06-07-journal", top(el("#journal"))],
+      ["06-07-journal", anchor("#journal")],
       // Since M4 the journal cards do not fit under the heading in one frame;
       // comp 7 is the cards, so give them a frame with the art fully in it.
       ["07-journal-cards", top(el("#journal .grid-3")) - 120],
-      ["08-about", top(el("#about"))],
-      // Comp 9 is "how I work" *and* socials on one slide. The two built
-      // sections are a few px taller than a viewport, so align the bottom of
-      // #connect with the bottom of the frame: only top padding is lost.
-      ["09-how-i-work-and-socials", Math.max(top(el("#work")), top(el("#connect")) + el("#connect").offsetHeight - window.innerHeight)],
+      ["08-about", anchor("#about")],
+      // Comp 9 is "how I work" *and* socials on one slide; built, they are
+      // taller than a frame, so each gets its own, anchored like a nav click.
+      ["09-how-i-work", anchor("#work")],
+      ["09-socials", anchor("#connect")],
       ["10-contact-and-footer", document.documentElement.scrollHeight],
     ];
   });
@@ -182,6 +188,7 @@ async function metrics(page) {
       horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth,
       gutterPx: gutter,
       insetPx: inset,
+      anchorOffsetPx: parseFloat(getComputedStyle(el("#work")).scrollMarginTop || "0"),
       backdropFilter: CSS.supports("backdrop-filter", "blur(1px)") || CSS.supports("-webkit-backdrop-filter", "blur(1px)"),
       heroTitle: { ...type("#hero-title"), ...box("#hero-title"), lines: lines("#hero-title") },
       sectionTitle: type("#products-title"),
@@ -252,7 +259,7 @@ for (const name of ["laptop1280", "laptop", "laptop1440"]) {
   await warm(page);
   log.metrics[name] = await metrics(page);
   await shoot(page, `${name}__01-hero.png`);
-  await scrollTo(page, await page.evaluate(() => document.querySelector("#products").getBoundingClientRect().top + window.scrollY));
+  await scrollTo(page, (await targets(page)).find(([label]) => label === "02-03-products")[1]);
   await shoot(page, `${name}__02-03-products.png`);
   await ctx.close();
 }

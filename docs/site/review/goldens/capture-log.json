@@ -7,10 +7,11 @@
         "w": 1920,
         "h": 1080
       },
-      "pageHeight": 11265,
+      "pageHeight": 11328,
       "horizontalOverflow": false,
       "gutterPx": 260,
       "insetPx": 280,
+      "anchorOffsetPx": 96,
       "backdropFilter": true,
       "heroTitle": {
         "size": "136px",
@@ -43,7 +44,7 @@
         "products": 1212,
         "journal": 1400,
         "about": 1041,
-        "work": 759,
+        "work": 822,
         "connect": 430,
         "contact": 498
       },
@@ -65,6 +66,7 @@
       "horizontalOverflow": false,
       "gutterPx": 0,
       "insetPx": 18,
+      "anchorOffsetPx": 96,
       "backdropFilter": true,
       "heroTitle": {
         "size": "48px",
@@ -115,10 +117,11 @@
         "w": 1280,
         "h": 800
       },
-      "pageHeight": 8852,
+      "pageHeight": 8858,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
+      "anchorOffsetPx": 96,
       "backdropFilter": true,
       "heroTitle": {
         "size": "110.08px",
@@ -151,7 +154,7 @@
         "products": 991,
         "journal": 1118,
         "about": 845,
-        "work": 655,
+        "work": 660,
         "connect": 374,
         "contact": 422
       },
@@ -169,10 +172,11 @@
         "w": 1366,
         "h": 768
       },
-      "pageHeight": 8942,
+      "pageHeight": 8946,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
+      "anchorOffsetPx": 96,
       "backdropFilter": true,
       "heroTitle": {
         "size": "117.476px",
@@ -205,7 +209,7 @@
         "products": 1048,
         "journal": 1183,
         "about": 895,
-        "work": 693,
+        "work": 697,
         "connect": 391,
         "contact": 448
       },
@@ -223,10 +227,11 @@
         "w": 1440,
         "h": 900
       },
-      "pageHeight": 9726,
+      "pageHeight": 9732,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
+      "anchorOffsetPx": 96,
       "backdropFilter": true,
       "heroTitle": {
         "size": "123.84px",
@@ -259,7 +264,7 @@
         "products": 1083,
         "journal": 1180,
         "about": 922,
-        "work": 711,
+        "work": 716,
         "connect": 397,
         "contact": 460
       },

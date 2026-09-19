@@ -31,7 +31,7 @@ PAIRS = {
     "06-journal-cta": "desktop__06-07-journal.png",
     "07-journal-cards": "desktop__07-journal-cards.png",
     "08-about": "desktop__08-about.png",
-    "09-how-i-work-and-socials": "desktop__09-how-i-work-and-socials.png",
+    "09-how-i-work-and-socials": "desktop__09-how-i-work.png",
     "10-contact-and-footer": "desktop__10-contact-and-footer.png",
 }
 
