@@ -166,3 +166,37 @@ They are also 43MB per round, and there will be several rounds. From M3:
 M2's frames stay in history. One round at 43MB is a fair price; a hundred
 megabytes by M5 is not. If the repo ever feels heavy, stripping them is still
 possible while this repo is small.
+
+## D14 — Comp 10's photographic background is not reproduced
+
+The faint hand-and-network-diagram texture behind the contact card in comp 10
+is **stock from the slide template**, confirmed by the owner. It is not a Mugu
+Labs asset.
+
+So the build does not chase it. The contact section keeps the gradient and the
+grain layer. Anything that looked like a missing background there is answered:
+nothing is missing.
+
+This is also the general rule when a comp contains template furniture — match
+what the studio owns, not what the slide deck shipped with.
+
+## D15 — The product status badges are true
+
+LIVE on Dashboard X and Bookflow, IN BUILD on ODA — **confirmed by the owner**.
+They were invented by the lead in the first draft of `lib/site.ts` and are now
+owner-verified fact.
+
+They stay. If a status changes, `lib/site.ts` → `products[].status` is the one
+place to change it, and the badge and the product page's eyebrow both follow.
+
+## D16 — Deployed on Vercel
+
+The owner completed the Vercel import; the site is live on its Vercel URL.
+
+`site.url` in `lib/site.ts` is still `https://mugu-labs.com`, which is what the
+canonical tags, Open Graph URLs and `sitemap.xml` all advertise. Until that
+domain is attached, the deployed site is publishing canonical URLs for a host
+that does not resolve. Harmless for a few days, wrong to leave — tracked as
+`BACKLOG.md` B11 and resolved either by attaching the domain (PLAN M5) or by
+pointing `site.url` at the Vercel URL in the meantime.
+
