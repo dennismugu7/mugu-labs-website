@@ -188,6 +188,18 @@ node scripts/goldens.mjs          # → docs/site/review/goldens/shots/, hashes.
 python scripts/sheets.py          # comp-vs-build sheets, needs `pip install pillow`
 ```
 
+## Share image
+
+`public/og.jpg` (1200×630, the `og:image` / `twitter:image`) is rendered from
+the built site by `scripts/og-image.mjs` — the footer's robot mark, the hero
+line and the brand gradient, in the page's own stylesheet — so it is never
+hand-edited. After changing the mark, the gradient or the tagline:
+
+```bash
+npm run build
+node scripts/og-image.mjs         # → public/og.jpg, then build again to ship it
+```
+
 ---
 
 ## The preview harness

@@ -7,6 +7,15 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import { site } from "../lib/site";
 
+/** Rendered by scripts/og-image.mjs from the built site; re-run after a
+    change to the mark, the gradient or the hero line. */
+const shareImage = {
+  url: "/og.jpg",
+  width: 1200,
+  height: 630,
+  alt: `${site.name} — ${site.tagline}`,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
@@ -23,11 +32,13 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
+    images: [shareImage],
   },
   twitter: {
     card: "summary_large_image",
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
+    images: [shareImage],
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
