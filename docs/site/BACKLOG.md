@@ -12,7 +12,7 @@ into a `lead/NEXT-*.md`.
 | B5 | Analytics | None installed. Deliberate — decide what question you actually want answered first. |
 | B6 | Per-product OG images | One shared share image is enough until the product pages get traffic. |
 | B7 | Contact form | The email/WhatsApp choice (D7) covers it without a backend. Revisit only if the owner wants submissions logged somewhere. |
-| B8 | ESLint config | The dead `lint` script was removed in M1 (`next lint` is deprecated in Next 15.5 and gone in 16). No linter is configured. Decide what rules are actually wanted before adding one back. |
+| B8 | ~~ESLint config~~ **Decided, D21** | No linter. `strict` + `tsc` in CI, plus `noUnusedLocals` and `noUnusedParameters`, cover what ESLint would catch for one author and fifteen files — without ~100 packages and a flat-config migration Next 16 would force again. Revisit if a second person starts committing. |
 | B9 | Next 16 upgrade | `npm audit` reports a high and a moderate in `postcss`, reached through every Next 15.x. Build-time only — nothing from postcss runs in the exported site — and the only remedy npm offers is a major version bump. Taken deliberately, on its own, not as an audit reflex. |
 | B10 | `preview/build.sh` calls `npx tsx` | Reaches the network on every run, the same way `npx serve` did before it was fixed. Harness-only, and the harness already needs a network to install. |
 | B11 | `site.url` advertises a domain that is not attached yet | Canonical tags, OG URLs and `sitemap.xml` all point at `https://mugu-labs.com` while the site is served from its Vercel URL. Resolved by M5 (attach the domain) or, if that is not soon, by pointing `site.url` at the Vercel URL in the meantime. Needs the owner to confirm he holds the domain. |

@@ -239,3 +239,31 @@ the same amount.
 Found by reading an M4 contact sheet, where the clipped heading looked like a
 capture-framing artefact and was also a real bug for anyone using the nav.
 
+## D20 — Unfinished links render as placeholders, never as broken links
+
+The owner's call: the six social icons, the journal section and the product
+pages **all stay**, and the site ships before their destinations exist.
+
+Shipping unfinished is fine. Shipping something that pretends to work is not.
+An `href="#"` is a link that lies — it sits in the tab order, announces itself
+as a link, shows a pointer cursor, and jumps the page to the top when clicked.
+
+So a destination that is not yet known is `""` in `lib/site.ts`, not `"#"`, and
+the component renders a **non-interactive element** with identical visuals: no
+`href`, no `tabindex`, no link role, no hover affordance that implies clicking
+does something, and an accessible name that says the link is not there yet.
+
+Adding the real URL to `lib/site.ts` turns it back into a working anchor with
+no component edit. That property is the point.
+
+## D21 — No linter; two compiler flags instead
+
+Decided in M5, not deferred. One author, fifteen files, `strict` plus `tsc` in
+CI. ESLint's marginal catch here is unused symbols and the React hooks rules,
+at the cost of roughly 100 packages and a flat-config migration that Next 16
+would force again.
+
+`noUnusedLocals` and `noUnusedParameters` get most of that value for two lines,
+and the tree passes clean with both. Revisit if a second person starts
+committing.
+
