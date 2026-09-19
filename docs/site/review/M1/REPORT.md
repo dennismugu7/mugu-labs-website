@@ -197,3 +197,19 @@ not by GitHub. `gh` is authenticated and has the `repo` scope, so the command
 will work the moment it's allowed to run. No token was asked for or written
 anywhere. Once it runs I will confirm the push, wait for CI, and append the
 result here.
+
+## Push and CI
+
+Owner ran the `gh repo create … --push` line himself. Repo:
+<https://github.com/dennismugu7/mugu-labs-website>, public, `main` tracking
+`origin/main`, both commits pushed.
+
+CI run on that push: <https://github.com/dennismugu7/mugu-labs-website/actions/runs/35445664573>
+— **success**. Every step green: checkout, setup-node, `npm ci`,
+`npm run typecheck`, `npm run build`, "Check the export".
+
+NEXT-002 A2 answered by the same run: typecheck ran on a fresh clone with no
+`next-env.d.ts` and no `.next/`, before the build, and passed. No reordering
+needed.
+
+**M1 outcome, final: built, pushed, CI green.**
