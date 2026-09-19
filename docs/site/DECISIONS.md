@@ -200,3 +200,42 @@ that does not resolve. Harmless for a few days, wrong to leave — tracked as
 `BACKLOG.md` B11 and resolved either by attaching the domain (PLAN M5) or by
 pointing `site.url` at the Vercel URL in the meantime.
 
+## D17 — The hero has its own entrance, off the reveal system
+
+Every other section fades and rises on an IntersectionObserver. The hero does
+not, and must not: it is already in view at load, so the observer fires on
+hydration and the class often lands in the same frame as first paint — the
+text appears rather than arrives. The owner reported exactly that.
+
+The hero animates with CSS keyframes on load: a masked rise, staggered
+headline → sub → button, under ~900ms, no JS involved. It runs whether or not
+the script loads, and `prefers-reduced-motion` turns it off entirely.
+
+Animated as one block, not per line. Per-line stagger needs the breaks wrapped
+in spans, which pins the line break into the markup — and the break is only
+deterministic at ≥1280. Copy stays editable without touching layout.
+
+## D18 — Brand marks come from the brands, not from tracings
+
+The Facebook and Instagram glyphs shipped wrong: Facebook's "f" centred with
+padding where the mark sits flush to the tile's bottom edge, and Instagram's
+camera lighter and smaller than the real one. Comp 9 draws both correctly, so
+this was drift in the build, not ambiguity in the design.
+
+Replacements are taken from the brands' own asset pages or a CC0 set that
+tracks them (Simple Icons), with the path data inlined — accurate, and no
+dependency, so D1 holds. **Reference screenshots are for comparison only; marks
+are never traced from them.**
+
+The owner's references live in `docs/site/ref/social/`.
+
+## D19 — Anchor targets clear the fixed nav
+
+The nav is `position: fixed`, so a plain `#section` jump lands the heading
+behind it. Every anchor target carries `scroll-margin-top` of at least the nav
+height plus breathing room, and the golden harness offsets section captures by
+the same amount.
+
+Found by reading an M4 contact sheet, where the clipped heading looked like a
+capture-framing artefact and was also a real bug for anyone using the nav.
+
