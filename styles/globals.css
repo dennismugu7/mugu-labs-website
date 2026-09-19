@@ -611,7 +611,7 @@ button {
 .products__head {
   display: flex;
   flex-wrap: wrap;
-  align-items: end;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 1.5rem;
   margin-bottom: clamp(2.5rem, 5vw, 4rem);
