@@ -213,3 +213,119 @@ differing lines). Not a deployment problem.
 
 - **B11, seen live:** `og:url` on the hosted page is `https://mugu-labs.com/`,
   as the lead found. Untouched; next milestone.
+
+## NEXT-008 — the production URL, and what I actually fetched
+
+### 1. The exact URL I fetched for the M5 check, verbatim
+
+```
+curl -sL https://mugu-labs-website.vercel.app/
+curl -sL https://mugu-labs-website.vercel.app/_next/static/css/e5a63792c66ff97b.css
+curl -sI https://mugu-labs-website.vercel.app/
+```
+
+From this machine, in a poll loop every 20s starting at 17:23 UTC, until the
+body contained `hero__mask` — which it did on the second poll (17:24 UTC).
+The production hostname, no deployment URL, no `localhost`. The `X-Vercel-Id`
+in the M5 report (`cpt1::…`) is from that fetch: the Cape Town edge.
+
+### 2–4. The production hostname, cache-busted, with headers — 17:32 UTC
+
+```
+GET https://mugu-labs-website.vercel.app/?v=next008
+HTTP/1.1 200 OK
+Age: 0
+Cache-Control: public, max-age=0, must-revalidate
+Content-Length: 55149
+Etag: "88d2d9641fb31c72c5650ed103cadfc2"
+X-Vercel-Cache: MISS
+X-Vercel-Id: cpt1::kgkzh-1789839147604-e016b3b32134
+```
+
+| In the body | Count |
+| --- | --- |
+| "A one-person studio" | **0** |
+| "Short notes on what" | **0** |
+| `hero__mask` | 1 |
+| `section-title about__title` | 1 |
+| `data-tint-release` | 1 |
+
+`MISS` with `Age: 0` — that is the origin, not a CDN copy, and it is the M5
+document. Then the same URL with the lead's own query string,
+`?cachebust=m5`, four more times across two user agents (curl and a
+Chrome UA): every response `Etag "88d2d964…"`, `Content-Length 55149`,
+eyebrow 0, subtitle 0, `hero__mask` 1, Next build id `oO2JpQxAkLABeyYSwK76D`
+(the Vercel build of `d18b283`). Then the no-query URL, then forced IPv4 and
+forced IPv6 (DNS gives `64.29.17.131` and two `64:ff9b::` addresses): same.
+Then the three `Accept-Encoding` variants a browser sends — identity, gzip,
+br — because an edge cache is keyed on encoding and a stale brotli copy is a
+real way for two clients to see two sites: all three the same weak etag,
+same M5 body.
+
+Because every one of those goes through the same edge (`cpt1`), I also
+fetched the production hostname through a US-hosted reader proxy
+(`r.jina.ai`, which fetches server-side from its own network):
+`?v=jina1` → HTTP 200, no "one-person studio", no "Short notes on what".
+
+**The stylesheet the hosted page links**
+(`/_next/static/css/e5a63792c66ff97b.css`, `Cache-Control: immutable`,
+`X-Vercel-Cache: MISS`): `--u:` ×3, `scroll-margin-top` ×1, `hero-rise` ×2,
+`hero-unmask` ×2, `min(1400px` ×1, `--anchor-offset` ×2. CSS and HTML are
+from the same build — this is **not** the new-CSS-old-HTML case.
+
+The hosted document and `out/index.html`, normalised for Next's build id,
+chunk hashes and inline scripts: **0 differing lines**.
+
+### What that means
+
+From two vantage points, every cache-busting variant, both IP families and
+all three encodings, `https://mugu-labs-website.vercel.app/` serves the M5
+build and has since 17:24 UTC. The production alias is pointed at `main`'s
+latest build and the Git integration is promoting — the suspicion in NEXT-008
+is killed for this project, at least as seen from here.
+
+So I cannot reproduce the M2 document the lead is getting, and I have no
+fetch that returns it. The remaining candidates are all on the lead's side of
+the wire, in order of likelihood: (1) the tool's own 15-minute cache keyed on
+host + path, so `?cachebust=m5` does not miss it (the first fetch was made
+before 17:24 and primed it; the second hit the primed copy); (2) an
+intermediate proxy between the tool and Vercel doing the same; (3) a fetch of
+a different hostname than the one written down. What would settle it in one
+line: the `Etag`, `X-Vercel-Id` and `Age` from the lead's own response — if
+the etag is not `88d2d964…` (or `c4ffeb06…` after Part B, below), the two of
+us are being served different documents and the `X-Vercel-Id` says by which
+edge; if there are no Vercel headers at all, the response never reached
+Vercel.
+
+Not touched: the Vercel dashboard, per the brief.
+
+### Part B — YouTube
+
+The glyph is now the play triangle alone: the triangle subpath from Simple
+Icons' youtube mark (CC0, 16.31), scaled to 14 units on the 24 box and kept
+at the mark's own slightly-right-of-centre position, drawn at 70% of the
+tile. Tile colour and radius unchanged. `social-row.png` regenerated (comp 9 /
+M4 / now). Six goldens moved, all frames that show the row:
+`desktop__09-socials`, `desktop__10`, `desktop__contact-menu`,
+`desktop__reduced-motion`, `mobile__09-socials`, `mobile__10`. Nothing else.
+
+### Deployed (NEXT-008)
+
+- **Pushed:** `45300b6..7b46697` (`347c36a` the lead's files, `7b46697` the
+  YouTube glyph). `main` = `origin/main` = `7b46697`.
+- **CI:** <https://github.com/dennismugu7/mugu-labs-website/actions/runs/35458659212> — success.
+- **Fetched, verbatim:** `curl -sS -D - https://mugu-labs-website.vercel.app/?v=next008-b`
+  at 17:38:09 UTC, 15s after the push, HTTP 200:
+
+  ```
+  Age: 0
+  Content-Length: 54809
+  Etag: "c4ffeb06fa4df0a16dd8129818caa8c1"
+  X-Vercel-Cache: MISS
+  X-Vercel-Id: cpt1::tgdd6-1789839489156-46349a9ab5db
+  ```
+
+  Body: "A one-person studio" 0, "Short notes on what" 0, `hero__mask` 1,
+  the Facebook glyph transform `translate(9.6 3)` 1, the YouTube triangle
+  transform `translate(12.4 12)` 1, Next build id `YqeOwLZcRP5FQHDsz8H18`.
+  Against `out/index.html`, normalised: 0 differing lines.
