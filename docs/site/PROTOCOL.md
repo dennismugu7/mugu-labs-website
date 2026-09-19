@@ -56,6 +56,25 @@ build should not fail against it.
 - **Attribute every remaining diff.** "Six hashes moved" is not a finding;
   "six hashes moved, here is which change caused each" is.
 
+## A milestone is not done until it is deployed
+
+Committed is not pushed. Pushed is not deployed. Deployed is not verified.
+
+"Three commits, tree clean" is a true sentence that sounds like shipped, and it
+is not — M3 and M4 both passed their gates while sitting unpushed on one
+machine, and the live site served the M2 build for two milestones.
+
+Every gate report ends with a **Deployed** section stating:
+
+- the commit range pushed, and that `origin/main` matches local
+- the CI run and its result
+- that the **hosted URL** was fetched and checked — not the local `out/`
+  directory, not the build log
+
+"Unchanged this milestone" is a valid answer. Silence is not. A green build and
+a clean tree say nothing about what a visitor sees; only fetching the live URL
+does.
+
 ## Scope rule
 
 Ship what is in the design comps under `docs/site/screens/`, plus only what those comps need in order to function.
