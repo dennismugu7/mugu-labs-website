@@ -185,3 +185,31 @@ Nothing unattributed. Two runs of the final build: identical.
 1. YouTube's framing (Part B table). Fix it as the red wide mark, or keep the
    uniform square tiles for the row's rhythm? Comp 9 does the former.
 2. Per-line stagger: the runtime-wrapping proposal above — want it?
+
+## Deployed
+
+Per `NEXT-007` and the new `PROTOCOL.md` rule.
+
+- **Pushed:** `b3cdee4..d18b283` (`main → origin/main`, 9 commits: all of M3,
+  M4 and M5). After the push `git rev-parse main origin/main` both read
+  `d18b283`.
+- **CI:** <https://github.com/dennismugu7/mugu-labs-website/actions/runs/35457845513>
+  — success.
+- **Vercel:** <https://mugu-labs-website.vercel.app/> served the new build
+  about 20s after the push (`X-Vercel-Id: cpt1::…`). Fetched the hosted page
+  and its stylesheet, not `out/`:
+
+| Check | Live |
+| --- | --- |
+| "A one-person studio" (hero eyebrow, cut in M3) | **absent** (0 matches) |
+| "Short notes on what" (journal subtitle, cut in M3) | **absent** (0 matches) |
+| About heading light | `class="section-title about__title"` present; `.about__card{…background:var(--navy)…}` in the served CSS |
+| Contact backdrop returns to blue | `data-tint-release` on `#contact` present |
+| M4 / M5 markers | `--u:` ×3, `min(1400px`, `scroll-margin-top`, `--anchor-offset`, `hero-rise`, `hero-unmask` all in the served CSS; `social--facebook` with the `translate(9.6 3)` glyph in the HTML |
+
+The hosted `index.html` and the local `out/index.html` are the same document
+once Next's build ids, chunk hashes and inline scripts are normalised (zero
+differing lines). Not a deployment problem.
+
+- **B11, seen live:** `og:url` on the hosted page is `https://mugu-labs.com/`,
+  as the lead found. Untouched; next milestone.
