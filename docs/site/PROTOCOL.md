@@ -68,8 +68,13 @@ Every gate report ends with a **Deployed** section stating:
 
 - the commit range pushed, and that `origin/main` matches local
 - the CI run and its result
-- that the **hosted URL** was fetched and checked — not the local `out/`
-  directory, not the build log
+- that the **production hostname the public uses** was fetched and checked —
+  not the local `out/` directory, not the build log, and **not a per-deployment
+  preview URL**, which can serve the newest commit while the production alias
+  still points somewhere older
+- **the exact URL fetched, verbatim**, with a cache-busting query. "I fetched
+  the hosted page" is not checkable; "I fetched `https://…/?v=3`, HTTP 200,
+  `x-vercel-cache: MISS`" is
 
 "Unchanged this milestone" is a valid answer. Silence is not. A green build and
 a clean tree say nothing about what a visitor sees; only fetching the live URL
