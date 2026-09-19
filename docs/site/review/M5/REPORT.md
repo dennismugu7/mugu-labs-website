@@ -423,3 +423,121 @@ already fail loudly.
 
 Not applied — B8 says decide first. It is two lines in `tsconfig.json` when
 you say so.
+
+## Domain live check — `mugu-labs.com`, end to end (2026-09-19, 18:52–19:00 UTC)
+
+Owner request, relayed by the builder's operator: verify the attached domain
+from the outside. Everything below was fetched with `curl 8.21` /
+`openssl s_client` / `nslookup` from this machine, with the caveat in the
+first item.
+
+### 0. A local artefact, so the numbers below are not misread
+
+This machine's upstream resolver still returns the **old** apex A record,
+`34.111.179.208` (a Google-hosted Replit "This app isn't live yet" page — the
+domain's previous parking), and the network is NAT64, so IPv4 and IPv6 both
+land there. Flushing the OS cache did not help; the stale answer is upstream.
+Every public resolver disagrees with it:
+
+| Resolver | `mugu-labs.com` A |
+| --- | --- |
+| Cloudflare authoritative (`adele.ns.cloudflare.com`) | `216.198.79.1` |
+| 1.1.1.1 | `216.198.79.65` |
+| 8.8.8.8 | `216.198.79.1` |
+| 9.9.9.9 | `216.198.79.65` |
+| this machine's default resolver | `34.111.179.208` (stale) |
+
+`www.mugu-labs.com` is `CNAME 959a6e4306e0f6f4.vercel-dns-017.com`
+everywhere, including here. So all HTTP checks below are pinned with
+`--resolve` to the authoritative answer, `216.198.79.1` (and repeated
+against `64.29.17.1` and `216.198.79.65`, same results). The public internet
+sees the new site; one stale cache in this house does not. It will expire.
+
+### 1. Apex and www, with headers
+
+```
+GET https://mugu-labs.com/?v=verify   (pinned 216.198.79.1)
+HTTP/1.1 200 OK
+Server: Vercel
+Content-Type: text/html; charset=utf-8
+Content-Length: 56049
+Etag: "9e97dfcdf7699eed29407dbff2222f25"
+X-Vercel-Cache: HIT   Age: 2798
+X-Vercel-Id: cpt1::fnmx5-1789844043167-bb5417b0eabf
+```
+
+Body: `hero__mask` 1, "A one-person studio" 0, YouTube triangle transform 1
+— the current build (`42eed4c`+), same document the Vercel hostname serves.
+
+### 2. Redirect chain
+
+| Request | Hop 1 | Hop 2 | Final |
+| --- | --- | --- | --- |
+| `http://mugu-labs.com/` | `308 → https://mugu-labs.com/` (Vercel) | — | **200** |
+| `http://www.mugu-labs.com/` | `308 → https://www.mugu-labs.com/` | `308 → https://mugu-labs.com/` | **200** |
+| `https://www.mugu-labs.com/` | `308 → https://mugu-labs.com/` (`Refresh: 0;url=…` as well) | — | **200** |
+| `https://mugu-labs.com/` | — | — | **200** |
+
+Apex is canonical, www folds into it, http upgrades to https, all 308s,
+`Strict-Transport-Security: max-age=63072000` on the apex responses.
+
+(For the record: the stale `34.111.179.208` answers `http://` with a
+`301 → https://mugu-labs.com:443/` — the `:443` in the Location is the tell
+that a response came from the old host, not from Vercel.)
+
+### 3. Certificates
+
+| Host | Subject | Issuer | Valid | SAN | Verify |
+| --- | --- | --- | --- | --- | --- |
+| `mugu-labs.com` | `CN=mugu-labs.com` | Let's Encrypt `YR1` | 2026-09-19 17:25 → 2026-12-18 17:25 UTC | `DNS:mugu-labs.com` | 0 (ok), TLS 1.3, `TLS_AES_128_GCM_SHA256` |
+| `www.mugu-labs.com` | `CN=www.mugu-labs.com` | Let's Encrypt `YR1` | 2026-09-19 17:52 → 2026-12-18 17:52 UTC | `DNS:www.mugu-labs.com` | 0 (ok), TLS 1.3 |
+
+Two separate certs, issued 17:25 and 17:52 UTC today — i.e. the apex was
+attached about half an hour before www. Vercel renews them.
+
+### 4. The tags, on the domain they name
+
+| Tag | Value on the live apex | Resolves |
+| --- | --- | --- |
+| `og:url` | `https://mugu-labs.com/` | **200** |
+| `og:image` / `twitter:image` | `https://mugu-labs.com/og.jpg` | **200**, `image/jpeg`, 73,376 bytes, 1200×630, byte-identical to `public/og.jpg` |
+| `robots.txt` → `Sitemap:` | `https://mugu-labs.com/sitemap.xml` | **200**, `application/xml` |
+| sitemap `<loc>`s | `/`, `/products/dashboard-x/`, `/products/bookflow/`, `/products/oda/` — all on `https://mugu-labs.com` | **200 × 4** |
+
+B11 is closed by the domain arriving, exactly as NEXT-009 said it would: no
+code changed, and the `og:url` / `og:image` that were 404 two hours ago are
+200 now.
+
+**One finding: there is no `<link rel="canonical">` on any page.** Next only
+emits one when `alternates.canonical` is set, and `app/layout.tsx` does not
+set it; `og:url` is doing that job informally. Crawlers treat the two
+differently — `og:url` is a hint for sharing, `rel=canonical` is the one
+search engines act on. It is a two-line addition (`alternates: { canonical:
+"/" }` in the root metadata and `canonical: \`/products/${slug}/\`` in the
+product page's `generateMetadata`). Not done here; verification only.
+
+### 5. Mail — did the Zoho MX survive the DNS change
+
+Checked on the zone, via 1.1.1.1 (not the stale local resolver):
+
+| Record | Value |
+| --- | --- |
+| MX | `10 mx.zoho.com`, `20 mx2.zoho.com`, `50 mx3.zoho.com` — all resolve (`136.143.191.44`) |
+| SPF | `v=spf1 include:zohomail.com ~all` |
+| DKIM | `zmail._domainkey` present (`v=DKIM1`) |
+| DMARC | `v=DMARC1; p=none; rua=mailto:rua@dmarc.brevo.com` |
+| Zoho verification TXT | `zoho-verification=zb88548457.zmverify.zoho.com` |
+
+All five intact alongside the new A/CNAME records. Then the wire: TCP to
+`mx.zoho.com` on 25 and 587 connects from here, and an SMTP handshake
+(`EHLO`, `MAIL FROM:<>`, `RCPT TO:` for `postmaster@`, `hello@`, `dennis@`
+— **no `DATA`, nothing sent**) is answered by `mx.zohomail.com` with a `550`
+that is a policy rejection of *this residential IP* (Spamhaus dynamic-range
+rule), not "unknown domain" or "relay denied". Zoho is answering for
+`mugu-labs.com`; it will not accept mail from a home connection, by design.
+
+**The test email itself was not sent, and cannot be sent from here.** I have
+no Zoho mailbox, no SMTP credentials, and the MX refuses residential
+senders regardless. What proves delivery end to end is one message from any
+real mail provider — e.g. the owner's Gmail — to an address at
+`mugu-labs.com`, and the Zoho inbox showing it. DNS says it will arrive.
