@@ -56,9 +56,12 @@ const FREEZE = "*, *::before, *::after { animation: none !important; }";
 const viewports = {
   desktop: { viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 },
   mobile: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 },
-  // The common cheap laptop: inside the D12 large-screen block, but with the
-  // least room for --shell. Only the hero is captured at this size.
+  // The 1280-1440 band: inside the D12 large-screen block with the least
+  // room for --shell, where the content inset is meant to hold at 70px.
+  // Hero and products only at these sizes.
+  laptop1280: { viewport: { width: 1280, height: 800 }, deviceScaleFactor: 1 },
   laptop: { viewport: { width: 1366, height: 768 }, deviceScaleFactor: 1 },
+  laptop1440: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 },
 };
 
 const log = { console: [], failed: [], metrics: {} };
@@ -128,6 +131,9 @@ async function targets(page) {
       ["04-statement-overload", hold(s1)],
       ["05-statement-breather", hold(s2)],
       ["06-07-journal", top(el("#journal"))],
+      // Since M4 the journal cards do not fit under the heading in one frame;
+      // comp 7 is the cards, so give them a frame with the art fully in it.
+      ["07-journal-cards", top(el("#journal .grid-3")) - 120],
       ["08-about", top(el("#about"))],
       // Comp 9 is "how I work" *and* socials on one slide. The two built
       // sections are a few px taller than a viewport, so align the bottom of
@@ -168,11 +174,14 @@ async function metrics(page) {
     const rows = new Set(socials).size;
     const shell = el("#products .shell") || el(".shell");
     const gutter = shell ? Math.round(shell.getBoundingClientRect().left) : null;
+    // Where content actually starts: the shell's edge plus its padding.
+    const inset = shell ? Math.round(shell.getBoundingClientRect().left + parseFloat(getComputedStyle(shell).paddingLeft)) : null;
     return {
       viewport: { w: window.innerWidth, h: window.innerHeight },
       pageHeight: document.documentElement.scrollHeight,
       horizontalOverflow: document.documentElement.scrollWidth > window.innerWidth,
       gutterPx: gutter,
+      insetPx: inset,
       backdropFilter: CSS.supports("backdrop-filter", "blur(1px)") || CSS.supports("-webkit-backdrop-filter", "blur(1px)"),
       heroTitle: { ...type("#hero-title"), ...box("#hero-title"), lines: lines("#hero-title") },
       sectionTitle: type("#products-title"),
@@ -207,6 +216,7 @@ for (const name of ["desktop", "mobile"]) {
   await warm(page);
   log.metrics[name] = await metrics(page);
   for (const [label, y] of await targets(page)) {
+    if (name === "mobile" && label === "07-journal-cards") continue; // the phone frame already shows the cards
     await scrollTo(page, y);
     await shoot(page, `${name}__${label}.png`);
   }
@@ -237,11 +247,13 @@ console.log("extras");
   await shoot(page, "desktop__reduced-motion.png", { fullPage: true });
   await ctx.close();
 }
-{
-  const { ctx, page } = await open("laptop", "/");
+for (const name of ["laptop1280", "laptop", "laptop1440"]) {
+  const { ctx, page } = await open(name, "/");
   await warm(page);
-  log.metrics.laptop = await metrics(page);
-  await shoot(page, "laptop__01-hero.png");
+  log.metrics[name] = await metrics(page);
+  await shoot(page, `${name}__01-hero.png`);
+  await scrollTo(page, await page.evaluate(() => document.querySelector("#products").getBoundingClientRect().top + window.scrollY));
+  await shoot(page, `${name}__02-03-products.png`);
   await ctx.close();
 }
 {

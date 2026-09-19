@@ -5,8 +5,10 @@ height, with a label strip. One sheet per comp folder in docs/site/screens/.
     python scripts/sheets.py [shots_dir] [sheets_dir]
     # defaults: docs/site/review/goldens/{shots,sheets}
 
-Comps 2+3 and 6+7 map to one built section each (DECISIONS D3, D4), so those
-sheets share a build shot.
+Comps 2+3 map to one built section (DECISIONS D3), so those sheets share a
+build shot. Comps 6+7 are one section too (D4), but since M4 the cards no
+longer fit under the heading in a 1080 frame, so comp 7 gets its own frame
+anchored on the cards.
 """
 import sys
 from pathlib import Path
@@ -27,7 +29,7 @@ PAIRS = {
     "04-statement-overload": "desktop__04-statement-overload.png",
     "05-statement-breather": "desktop__05-statement-breather.png",
     "06-journal-cta": "desktop__06-07-journal.png",
-    "07-journal-cards": "desktop__06-07-journal.png",
+    "07-journal-cards": "desktop__07-journal-cards.png",
     "08-about": "desktop__08-about.png",
     "09-how-i-work-and-socials": "desktop__09-how-i-work-and-socials.png",
     "10-contact-and-footer": "desktop__10-contact-and-footer.png",

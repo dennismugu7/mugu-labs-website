@@ -7,9 +7,10 @@
         "w": 1920,
         "h": 1080
       },
-      "pageHeight": 10599,
+      "pageHeight": 11265,
       "horizontalOverflow": false,
       "gutterPx": 260,
+      "insetPx": 280,
       "backdropFilter": true,
       "heroTitle": {
         "size": "136px",
@@ -39,12 +40,12 @@
       "socialCount": 6,
       "sectionHeights": {
         "hero": 1080,
-        "products": 1104,
-        "journal": 1115,
-        "about": 906,
-        "work": 714,
-        "connect": 406,
-        "contact": 450
+        "products": 1212,
+        "journal": 1400,
+        "about": 1041,
+        "work": 759,
+        "connect": 430,
+        "contact": 498
       },
       "headingLines": {
         "products": 2,
@@ -63,6 +64,7 @@
       "pageHeight": 9305,
       "horizontalOverflow": false,
       "gutterPx": 0,
+      "insetPx": 18,
       "backdropFilter": true,
       "heroTitle": {
         "size": "48px",
@@ -108,14 +110,69 @@
         "contact": 3
       }
     },
+    "laptop1280": {
+      "viewport": {
+        "w": 1280,
+        "h": 800
+      },
+      "pageHeight": 8852,
+      "horizontalOverflow": false,
+      "gutterPx": 50,
+      "insetPx": 70,
+      "backdropFilter": true,
+      "heroTitle": {
+        "size": "110.08px",
+        "weight": "700",
+        "tracking": "-3.08224px",
+        "lineHeight": "105.677px",
+        "family": "Poppins",
+        "w": 789,
+        "h": 317,
+        "lines": 3
+      },
+      "sectionTitle": {
+        "size": "76.8px",
+        "weight": "300",
+        "tracking": "-1.536px",
+        "lineHeight": "78.336px",
+        "family": "Poppins"
+      },
+      "statement": {
+        "size": "66.56px",
+        "weight": "300",
+        "tracking": "-1.19808px",
+        "lineHeight": "74.5472px",
+        "family": "Poppins"
+      },
+      "socialRows": 1,
+      "socialCount": 6,
+      "sectionHeights": {
+        "hero": 800,
+        "products": 991,
+        "journal": 1118,
+        "about": 845,
+        "work": 655,
+        "connect": 374,
+        "contact": 422
+      },
+      "headingLines": {
+        "products": 2,
+        "journal": 1,
+        "about": 2,
+        "work": 1,
+        "connect": 1,
+        "contact": 2
+      }
+    },
     "laptop": {
       "viewport": {
         "w": 1366,
         "h": 768
       },
-      "pageHeight": 8635,
+      "pageHeight": 8942,
       "horizontalOverflow": false,
-      "gutterPx": 0,
+      "gutterPx": 50,
+      "insetPx": 70,
       "backdropFilter": true,
       "heroTitle": {
         "size": "117.476px",
@@ -145,12 +202,66 @@
       "socialCount": 6,
       "sectionHeights": {
         "hero": 768,
-        "products": 1040,
-        "journal": 929,
-        "about": 860,
-        "work": 689,
+        "products": 1048,
+        "journal": 1183,
+        "about": 895,
+        "work": 693,
         "connect": 391,
-        "contact": 445
+        "contact": 448
+      },
+      "headingLines": {
+        "products": 2,
+        "journal": 1,
+        "about": 2,
+        "work": 1,
+        "connect": 1,
+        "contact": 2
+      }
+    },
+    "laptop1440": {
+      "viewport": {
+        "w": 1440,
+        "h": 900
+      },
+      "pageHeight": 9726,
+      "horizontalOverflow": false,
+      "gutterPx": 50,
+      "insetPx": 70,
+      "backdropFilter": true,
+      "heroTitle": {
+        "size": "123.84px",
+        "weight": "700",
+        "tracking": "-3.46752px",
+        "lineHeight": "118.886px",
+        "family": "Poppins",
+        "w": 888,
+        "h": 357,
+        "lines": 3
+      },
+      "sectionTitle": {
+        "size": "86.4px",
+        "weight": "300",
+        "tracking": "-1.728px",
+        "lineHeight": "88.128px",
+        "family": "Poppins"
+      },
+      "statement": {
+        "size": "74.88px",
+        "weight": "300",
+        "tracking": "-1.34784px",
+        "lineHeight": "83.8656px",
+        "family": "Poppins"
+      },
+      "socialRows": 1,
+      "socialCount": 6,
+      "sectionHeights": {
+        "hero": 900,
+        "products": 1083,
+        "journal": 1180,
+        "about": 922,
+        "work": 711,
+        "connect": 397,
+        "contact": 460
       },
       "headingLines": {
         "products": 2,
