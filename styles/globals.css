@@ -842,7 +842,7 @@ button {
   animation-delay: -6s;
 }
 
-.post:hover .post__art img {
+.post--link:hover .post__art img {
   transform: scale(1.06) rotate(-2deg);
 }
 
@@ -871,7 +871,7 @@ button {
   transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
 }
 
-.post:hover .tag {
+.post--link:hover .tag {
   background: rgba(0, 28, 150, 0.7);
   color: var(--text);
 }
@@ -1056,6 +1056,31 @@ button {
 .social:hover {
   transform: translateY(-6px) scale(1.06);
   box-shadow: 0 24px 40px -18px rgba(0, 0, 0, 0.95);
+}
+
+/* Placeholders (D20): identical at rest, but nothing suggests a click */
+.social--placeholder,
+.btn--placeholder {
+  cursor: default;
+}
+
+.social--placeholder:hover {
+  transform: none;
+  box-shadow: 0 16px 30px -18px rgba(0, 0, 0, 0.9);
+}
+
+.btn--placeholder:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--btn-line);
+}
+
+.btn--placeholder:hover::before {
+  opacity: 0;
+}
+
+.btn--placeholder:hover .btn__arrow {
+  transform: none;
 }
 
 .social--facebook {

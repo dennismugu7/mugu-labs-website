@@ -13,19 +13,21 @@ export default function Connect() {
         <ul className="socials">
           {socials.map((social, i) => {
             const Icon = socialIcons[social.id];
-            const unlinked = social.href === "#";
+            const className = `social social--${social.id}`;
 
             return (
               <li key={social.id} {...reveal(i * 70)}>
-                <a
-                  className={`social social--${social.id}`}
-                  href={social.href}
-                  aria-label={unlinked ? `${social.name} (coming soon)` : social.name}
-                  aria-disabled={unlinked || undefined}
-                  {...(unlinked ? {} : { target: "_blank", rel: "noreferrer noopener" })}
-                >
-                  {Icon ? <Icon /> : null}
-                </a>
+                {social.href ? (
+                  <a className={className} href={social.href} aria-label={social.name} target="_blank" rel="noreferrer noopener">
+                    {Icon ? <Icon /> : null}
+                  </a>
+                ) : (
+                  /* No destination yet: the same tile, but not a link — nothing
+                     to tab to, nothing to click, and it says so (D20). */
+                  <span className={`${className} social--placeholder`} role="img" aria-label={`${social.name} — not linked yet`}>
+                    {Icon ? <Icon /> : null}
+                  </span>
+                )}
               </li>
             );
           })}

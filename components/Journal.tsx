@@ -3,7 +3,8 @@ import { reveal } from "./reveal";
 import { posts, site } from "../lib/site";
 
 export default function Journal() {
-  const external = site.blogUrl.startsWith("http");
+  const blog = site.blogUrl;
+  const external = blog.startsWith("http");
 
   return (
     <section className="section" id="journal" aria-labelledby="journal-title">
@@ -15,9 +16,9 @@ export default function Journal() {
         </div>
 
         <ul className="grid-3">
-          {posts.map((post, i) => (
-            <li key={post.title} {...reveal(i * 110)}>
-              <a className="card card--hover post" href={post.href}>
+          {posts.map((post, i) => {
+            const body = (
+              <>
                 <span className="post__art">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={post.art} alt={post.alt} loading="lazy" />
@@ -32,20 +33,38 @@ export default function Journal() {
                     </li>
                   ))}
                 </ul>
-              </a>
-            </li>
-          ))}
+              </>
+            );
+
+            return (
+              <li key={post.title} {...reveal(i * 110)}>
+                {post.href ? (
+                  <a className="card card--hover post post--link" href={post.href}>
+                    {body}
+                  </a>
+                ) : (
+                  /* No post to go to yet: the same card as plain content (D20). */
+                  <article className="card post">{body}</article>
+                )}
+              </li>
+            );
+          })}
         </ul>
 
         <div {...reveal(0, "journal__foot")}>
-          <a
-            className="btn btn--navy"
-            href={site.blogUrl}
-            {...(external ? { target: "_blank", rel: "noreferrer noopener" } : {})}
-          >
-            more at mugu labs blog
-            <ArrowRight className="btn__arrow" />
-          </a>
+          {blog ? (
+            <a className="btn btn--navy" href={blog} {...(external ? { target: "_blank", rel: "noreferrer noopener" } : {})}>
+              more at mugu labs blog
+              <ArrowRight className="btn__arrow" />
+            </a>
+          ) : (
+            /* The blog does not exist yet: same pill, not a link (D20). */
+            <span className="btn btn--navy btn--placeholder">
+              more at mugu labs blog
+              <span className="sr-only"> — coming soon</span>
+              <ArrowRight className="btn__arrow" />
+            </span>
+          )}
         </div>
       </div>
     </section>

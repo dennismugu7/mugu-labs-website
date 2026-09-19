@@ -18,6 +18,10 @@ const shareImage = {
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+  /* Three hostnames serve this content (the apex, www, the Vercel alias);
+     this is the one search engines should index. Relative, resolved against
+     metadataBase. Pages with their own URL set their own (products). */
+  alternates: { canonical: "/" },
   title: {
     default: `${site.name} — ${site.tagline}`,
     template: `%s — ${site.name}`,

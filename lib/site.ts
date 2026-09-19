@@ -32,8 +32,10 @@ export const site = {
     bio: "Mugu Labs started out of personal necessity — I was tired of clunky, overcomplicated software, so I started coding my own solutions. What began as a personal habit quickly turned into a studio dedicated to clean design and effortless utility.",
   },
 
-  /** ---- Blog ---------------------------------------------------------- */
-  blogUrl: "#journal",
+  /** ---- Blog ----------------------------------------------------------
+   *  Paste the blog's URL when it exists. Empty means "not yet": the button
+   *  renders as a placeholder rather than a link (DECISIONS D20). */
+  blogUrl: "",
 } as const;
 
 /** ---- Products -------------------------------------------------------- */
@@ -151,6 +153,7 @@ export type Post = {
   art: string;
   alt: string;
   tags: string[];
+  /** The post's URL, or "" while the blog does not exist yet (D20). */
   href: string;
 };
 
@@ -160,21 +163,21 @@ export const posts: Post[] = [
     art: "/assets/art-budget.png",
     alt: "Illustration of a budget chart with coins and a magnifying glass",
     tags: ["Dashboard X", "Smart Moves & Quick Hacks", "Money tips"],
-    href: "#",
+    href: "",
   },
   {
     title: "Ditch the Clunky Spreadsheet: Level up your bank sync so your accounts actually talk to each other",
     art: "/assets/art-sync.png",
     alt: "Illustration of two arrows circling a dollar sign",
     tags: ["Dashboard X", "Smart Moves & Quick Hacks", "Money tips"],
-    href: "#",
+    href: "",
   },
   {
     title: "Less Drama, More Glam: We built the exact booking tools you asked for.",
     art: "/assets/art-calendar.png",
     alt: "Illustration of a calendar with a notification bell",
     tags: ["Bookflow", "Smart Moves & Quick Hacks", "Beauty Cheat Codes"],
-    href: "#",
+    href: "",
   },
 ];
 
@@ -196,17 +199,18 @@ export const principles = [
 ];
 
 /** ---- Socials ---------------------------------------------------------
- *  Swap the "#" for your real profile URLs. Any entry left as "#" is
- *  rendered but marked as not-yet-linked for screen readers.
+ *  Paste the real profile URLs here. An entry left as "" renders the tile
+ *  as a placeholder — identical to look at, but not a link — and tells a
+ *  screen reader it is not linked yet (DECISIONS D20).
  * ---------------------------------------------------------------------- */
 
 export const socials = [
-  { name: "Facebook", href: "#", id: "facebook" },
-  { name: "Instagram", href: "#", id: "instagram" },
-  { name: "X", href: "#", id: "x" },
-  { name: "YouTube", href: "#", id: "youtube" },
-  { name: "LinkedIn", href: "#", id: "linkedin" },
-  { name: "Discord", href: "#", id: "discord" },
+  { name: "Facebook", href: "", id: "facebook" },
+  { name: "Instagram", href: "", id: "instagram" },
+  { name: "X", href: "", id: "x" },
+  { name: "YouTube", href: "", id: "youtube" },
+  { name: "LinkedIn", href: "", id: "linkedin" },
+  { name: "Discord", href: "", id: "discord" },
 ] as const;
 
 /** ---- Derived links --------------------------------------------------- */
