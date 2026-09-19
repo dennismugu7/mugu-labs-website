@@ -9,7 +9,7 @@ export default function About() {
     <section className="section" id="about" aria-labelledby="about-title">
       <div className="shell about">
         <div>
-          <h2 id="about-title" {...reveal(0, "display about__title")}>
+          <h2 id="about-title" {...reveal(0, "section-title about__title")}>
             Made by a human
           </h2>
 

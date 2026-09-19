@@ -12,10 +12,6 @@ export default function Journal() {
           <h2 id="journal-title" {...reveal(0, "section-title")}>
             Learn more at mugu labs blog
           </h2>
-
-          <p {...reveal(110, "lead")}>
-            Short notes on what I&rsquo;m building, what broke, and the shortcuts worth keeping.
-          </p>
         </div>
 
         <ul className="grid-3">

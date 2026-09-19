@@ -3,6 +3,7 @@ Contact sheets: design comp on the left, built site on the right, same
 height, with a label strip. One sheet per comp folder in docs/site/screens/.
 
     python scripts/sheets.py [shots_dir] [sheets_dir]
+    # defaults: docs/site/review/goldens/{shots,sheets}
 
 Comps 2+3 and 6+7 map to one built section each (DECISIONS D3, D4), so those
 sheets share a build shot.
@@ -14,8 +15,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 SCREENS = ROOT / "docs/site/screens"
-SHOTS = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "docs/site/review/M2/shots"
-SHEETS = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "docs/site/review/M2/sheets"
+SHOTS = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "docs/site/review/goldens/shots"
+SHEETS = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "docs/site/review/goldens/sheets"
 SHEETS.mkdir(parents=True, exist_ok=True)
 
 # comp folder -> build golden (desktop)

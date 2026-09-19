@@ -25,6 +25,22 @@ These come from real failures on a previous build. They are not negotiable.
 - If you believe there is "nothing new to act on", check what is actually on disk before saying so.
 - Write reports to `docs/site/review/<milestone>/REPORT.md`. One folder per milestone, never overwritten.
 
+## Resuming after a session ends mid-task
+
+A builder session can close unexpectedly. It costs almost nothing here, because
+the instructions live in `lead/` and the work lives on disk — but only if the
+restart is handled as a resume rather than a restart.
+
+- **The lead reads the working tree first** and writes a new `NEXT-*.md` that
+  states what is already done. The builder does not re-derive it and does not
+  start the previous file over.
+- **The builder never `checkout`s, `reset`s, `stash`es or `clean`s to "get back
+  to a known state".** Uncommitted work from the dead session is the most
+  valuable thing in the repo at that moment. Commit it first, then carry on.
+- **Committed hashes and reports are the memory.** A baseline written before a
+  change is not stale — it is the before-picture, and it is usually the fastest
+  way to prove the change did what it claimed.
+
 ## Scope rule
 
 Ship what is in the design comps under `docs/site/screens/`, plus only what those comps need in order to function.

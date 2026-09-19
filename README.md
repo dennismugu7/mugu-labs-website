@@ -173,6 +173,22 @@ caught before you wonder why the page looks wrong.
 
 ---
 
+## Goldens
+
+`scripts/goldens.mjs` screenshots the built site at 1920×1080 and 390×844 with
+every animation frozen, so two runs of the same build produce identical files.
+The frames are not committed; `docs/site/review/goldens/hashes.json` is, and
+the script exits non-zero and lists which goldens changed.
+
+```bash
+npx playwright install chromium   # once per machine — downloads a browser (~150MB)
+npm run build
+node scripts/goldens.mjs          # → docs/site/review/goldens/shots/, hashes.json
+python scripts/sheets.py          # comp-vs-build sheets, needs `pip install pillow`
+```
+
+---
+
 ## The preview harness
 
 `preview/` renders the components with `react-dom/server` into plain HTML and

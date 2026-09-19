@@ -6,10 +6,6 @@ export default function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="shell hero__inner">
-        <p {...reveal(0, "eyebrow")}>
-          A one-person studio
-        </p>
-
         <h1 id="hero-title" {...reveal(90, "display hero__title")}>
           Neat apps with a human touch
         </h1>

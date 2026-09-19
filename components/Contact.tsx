@@ -3,7 +3,12 @@ import { reveal } from "./reveal";
 
 export default function Contact() {
   return (
-    <section className="section section--tight" id="contact" aria-labelledby="contact-title">
+    <section
+      className="section section--tight"
+      id="contact"
+      data-tint-release
+      aria-labelledby="contact-title"
+    >
       <div className="shell">
         <div {...reveal(0, "card contact__card")}>
           {/* eslint-disable-next-line @next/next/no-img-element */}

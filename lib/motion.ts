@@ -38,7 +38,7 @@ function initReveals(): Cleanup {
         observer.unobserve(entry.target);
       }
     },
-    { rootMargin: "0px 0px -12% 0px", threshold: 0.08 }
+    { rootMargin: "0px 0px -5% 0px", threshold: 0.05 }
   );
 
   nodes.forEach((n) => observer.observe(n));
@@ -52,6 +52,7 @@ function initScrollVars(): Cleanup {
   const statements = Array.from(document.querySelectorAll<HTMLElement>("[data-statement]"));
   const drifters = Array.from(document.querySelectorAll<HTMLElement>("[data-drift]"));
   const tintAnchor = document.querySelector<HTMLElement>("[data-tint-anchor]");
+  const tintRelease = document.querySelector<HTMLElement>("[data-tint-release]");
   const nav = document.querySelector<HTMLElement>("[data-nav]");
 
   let frame = 0;
@@ -66,10 +67,17 @@ function initScrollVars(): Cleanup {
     const scrollable = Math.max(1, document.body.scrollHeight - vh);
     root.style.setProperty("--scroll", (y / scrollable).toFixed(4));
 
-    /* Backdrop hue change, anchored to a real section rather than a guess */
+    /* Backdrop hue change, anchored to real sections rather than a guess:
+       ramps to violet as the anchor enters, holds, and is back to blue once
+       the release section is halfway up the viewport (D5). */
     if (tintAnchor) {
       const top = tintAnchor.getBoundingClientRect().top;
-      root.style.setProperty("--tint", clamp(1 - top / vh).toFixed(4));
+      let tint = clamp(1 - top / vh);
+      if (tintRelease) {
+        const releaseTop = tintRelease.getBoundingClientRect().top;
+        tint *= 1 - clamp((vh - releaseTop) / (vh * 0.5));
+      }
+      root.style.setProperty("--tint", tint.toFixed(4));
     }
 
     /* Nav background once we're off the hero */

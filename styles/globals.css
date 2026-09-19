@@ -753,10 +753,6 @@ button {
   text-align: center;
 }
 
-.journal__head .lead {
-  margin-inline: auto;
-}
-
 .post {
   display: flex;
   flex-direction: column;
@@ -851,9 +847,8 @@ button {
   padding: clamp(1.6rem, 2.6vw, 2.25rem);
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: var(--radius-lg);
-  background: rgba(0, 18, 108, 0.55);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+  /* Solid, as drawn — the one card on the page that is not glass */
+  background: var(--navy);
   font-size: var(--fs-lead);
   font-weight: 300;
   line-height: 1.55;
@@ -1311,6 +1306,45 @@ button {
 /* ======================================================================
    Responsive
    ====================================================================== */
+
+/* Large screens (D12): the comps are matched on impression, not pixels.
+   Everything in here only applies from 1280px up, so phones and laptops
+   render exactly as before. */
+@media (min-width: 1280px) {
+  :root {
+    --shell: 1400px;
+    --fs-display: clamp(3rem, 8.6vw, 8.5rem);
+    --fs-statement: clamp(2rem, 5.2vw, 5.5rem);
+    --fs-section: clamp(2.4rem, 6vw, 6rem);
+  }
+
+  /* Three lines, as drawn in comp 1 */
+  .hero__title {
+    max-width: 11ch;
+  }
+
+  .about__card {
+    max-width: 46ch;
+  }
+
+  .product__icon {
+    width: clamp(120px, 15vw, 230px);
+  }
+
+  .post__art {
+    height: clamp(118px, 12vw, 300px);
+    margin-top: -5.5rem;
+  }
+
+  .footer__mark {
+    width: 120px;
+    height: 120px;
+  }
+
+  .footer__legal {
+    font-size: 1.25rem;
+  }
+}
 
 @media (max-width: 960px) {
   .grid-3 {

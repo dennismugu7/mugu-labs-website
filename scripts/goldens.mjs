@@ -3,10 +3,14 @@
  * against docs/site/screens/ and as byte-stable regression images.
  *
  *   npm run build
- *   node scripts/goldens.mjs [outDir]        # default docs/site/review/M2/shots
+ *   node scripts/goldens.mjs [outDir]        # default docs/site/review/goldens
  *
- * Needs `playwright` resolvable (it is not a devDependency — point NODE_PATH
- * at an install of it) and serves out/ itself on a free port.
+ * The frames themselves stay out of git (D13). What is committed is
+ * <outDir>/hashes.json — a SHA-256 per golden — and every run reports which
+ * hashes moved against the committed set, so a render change fails loudly.
+ *
+ * Needs the Chromium that Playwright downloads: `npx playwright install chromium`
+ * once per machine. Serves out/ itself on a free port.
  *
  * Every capture freezes CSS animations (the reveal effects are transitions,
  * so they survive), warms every IntersectionObserver reveal by scrolling the
@@ -14,6 +18,7 @@
  */
 import { chromium } from "playwright";
 import { spawn } from "node:child_process";
+import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import http from "node:http";
@@ -21,8 +26,9 @@ import path from "node:path";
 import fs from "node:fs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const outDir = path.resolve(process.argv[2] || "docs/site/review/M2/shots");
-fs.mkdirSync(outDir, { recursive: true });
+const outDir = path.resolve(process.argv[2] || "docs/site/review/goldens");
+const shotsDir = path.join(outDir, "shots");
+fs.mkdirSync(shotsDir, { recursive: true });
 
 const PORT = 4174;
 const BASE = `http://127.0.0.1:${PORT}`;
@@ -102,7 +108,7 @@ async function shoot(page, file, opts = {}) {
     });
     await page.waitForTimeout(200);
   }
-  await page.screenshot({ path: path.join(outDir, file), ...opts });
+  await page.screenshot({ path: path.join(shotsDir, file), ...opts });
   console.log("  " + file);
 }
 
@@ -244,6 +250,24 @@ for (const url of ["/products/dashboard-x/", "/products/oda/", "/404.html"]) {
 
 await browser.close();
 server.kill();
-fs.writeFileSync(path.join(outDir, "..", "capture-log.json"), JSON.stringify(log, null, 2) + "\n");
-console.log(`\n${fs.readdirSync(outDir).length} files in ${path.relative(root, outDir)}`);
+fs.writeFileSync(path.join(outDir, "capture-log.json"), JSON.stringify(log, null, 2) + "\n");
+
+// ---- hashes: the committed regression record ------------------------------------
+const hashFile = path.join(outDir, "hashes.json");
+const previous = fs.existsSync(hashFile) ? JSON.parse(fs.readFileSync(hashFile, "utf8")) : {};
+const current = {};
+for (const file of fs.readdirSync(shotsDir).sort()) {
+  current[file] = createHash("sha256").update(fs.readFileSync(path.join(shotsDir, file))).digest("hex");
+}
+const moved = Object.keys(current).filter((f) => previous[f] && previous[f] !== current[f]);
+const added = Object.keys(current).filter((f) => !previous[f]);
+const gone = Object.keys(previous).filter((f) => !current[f]);
+fs.writeFileSync(hashFile, JSON.stringify(current, null, 2) + "\n");
+
+console.log(`\n${Object.keys(current).length} goldens in ${path.relative(root, shotsDir)}`);
 console.log(`console: ${log.console.length}  failed requests: ${log.failed.length}`);
+if (moved.length) console.log(`CHANGED (${moved.length}):\n  ` + moved.join("\n  "));
+if (added.length) console.log(`new (${added.length}): ` + added.join(", "));
+if (gone.length) console.log(`missing (${gone.length}): ` + gone.join(", "));
+if (!moved.length && !added.length && !gone.length) console.log("all hashes unchanged");
+process.exitCode = moved.length || gone.length ? 1 : 0;
