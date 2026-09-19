@@ -141,9 +141,17 @@ export const socialIcons: Record<string, (p: IconProps) => ReactElement> = {
       <path d="M17.53 3h3.04l-6.64 7.59L21.75 21h-5.96l-4.67-6.1L5.77 21H2.72l7.1-8.12L2.25 3h6.11l4.22 5.58L17.53 3Zm-1.07 16.17h1.68L7.6 4.74H5.8l10.66 14.43Z" />
     </svg>
   ),
+  /* YouTube: the mark *is* the red rounded rectangle with the play
+     triangle, and the tile already is that rectangle, so the glyph is the
+     triangle alone (NEXT-008 B). Its geometry is the triangle from Simple
+     Icons' youtube path (CC0, simple-icons 16.31), scaled to 14 units tall
+     and kept at the mark's own slightly right-of-centre position. */
   youtube: ({ className }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M21.6 7.2a2.51 2.51 0 0 0-1.77-1.77C18.25 5 12 5 12 5s-6.25 0-7.83.43A2.51 2.51 0 0 0 2.4 7.2C2 8.79 2 12 2 12s0 3.21.4 4.8a2.51 2.51 0 0 0 1.77 1.77C5.75 19 12 19 12 19s6.25 0 7.83-.43a2.51 2.51 0 0 0 1.77-1.77C22 15.21 22 12 22 12s0-3.21-.4-4.8ZM10.02 15.02V8.98L15.2 12l-5.18 3.02Z" />
+      <path
+        transform="translate(12.4 12) scale(1.962) translate(-12.6815 -12)"
+        d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+      />
     </svg>
   ),
   linkedin: ({ className }) => (

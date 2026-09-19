@@ -1047,6 +1047,12 @@ button {
   height: 74%;
 }
 
+/* The play triangle alone: the tile is already the YouTube rectangle. */
+.social--youtube svg {
+  width: 70%;
+  height: 70%;
+}
+
 .social:hover {
   transform: translateY(-6px) scale(1.06);
   box-shadow: 0 24px 40px -18px rgba(0, 0, 0, 0.95);
