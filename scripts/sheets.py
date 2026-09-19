@@ -15,8 +15,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = Path(__file__).resolve().parent.parent
 SCREENS = ROOT / "docs/site/screens"
-SHOTS = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "docs/site/review/goldens/shots"
-SHEETS = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / "docs/site/review/goldens/sheets"
+SHOTS = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROOT / "docs/site/review/goldens/shots"
+SHEETS = Path(sys.argv[2]).resolve() if len(sys.argv) > 2 else ROOT / "docs/site/review/goldens/sheets"
 SHEETS.mkdir(parents=True, exist_ok=True)
 
 # comp folder -> build golden (desktop)

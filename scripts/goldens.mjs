@@ -56,6 +56,9 @@ const FREEZE = "*, *::before, *::after { animation: none !important; }";
 const viewports = {
   desktop: { viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 },
   mobile: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 },
+  // The common cheap laptop: inside the D12 large-screen block, but with the
+  // least room for --shell. Only the hero is captured at this size.
+  laptop: { viewport: { width: 1366, height: 768 }, deviceScaleFactor: 1 },
 };
 
 const log = { console: [], failed: [], metrics: {} };
@@ -198,7 +201,7 @@ async function metrics(page) {
 }
 
 // ---- the comp set, both viewports --------------------------------------------
-for (const name of Object.keys(viewports)) {
+for (const name of ["desktop", "mobile"]) {
   console.log(name);
   const { ctx, page } = await open(name, "/");
   await warm(page);
@@ -232,6 +235,13 @@ console.log("extras");
   const { ctx, page } = await open("desktop", "/", { reducedMotion: "reduce" });
   await page.waitForTimeout(800);
   await shoot(page, "desktop__reduced-motion.png", { fullPage: true });
+  await ctx.close();
+}
+{
+  const { ctx, page } = await open("laptop", "/");
+  await warm(page);
+  log.metrics.laptop = await metrics(page);
+  await shoot(page, "laptop__01-hero.png");
   await ctx.close();
 }
 {

@@ -175,7 +175,8 @@ caught before you wonder why the page looks wrong.
 
 ## Goldens
 
-`scripts/goldens.mjs` screenshots the built site at 1920×1080 and 390×844 with
+`scripts/goldens.mjs` screenshots the built site at 1920×1080 and 390×844 (plus
+one hero frame at 1366×768) with
 every animation frozen, so two runs of the same build produce identical files.
 The frames are not committed; `docs/site/review/goldens/hashes.json` is, and
 the script exits non-zero and lists which goldens changed.

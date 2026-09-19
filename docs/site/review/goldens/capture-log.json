@@ -1,0 +1,165 @@
+{
+  "console": [],
+  "failed": [],
+  "metrics": {
+    "desktop": {
+      "viewport": {
+        "w": 1920,
+        "h": 1080
+      },
+      "pageHeight": 10599,
+      "horizontalOverflow": false,
+      "gutterPx": 260,
+      "backdropFilter": true,
+      "heroTitle": {
+        "size": "136px",
+        "weight": "700",
+        "tracking": "-3.808px",
+        "lineHeight": "130.56px",
+        "family": "Poppins",
+        "w": 975,
+        "h": 392,
+        "lines": 3
+      },
+      "sectionTitle": {
+        "size": "96px",
+        "weight": "300",
+        "tracking": "-1.92px",
+        "lineHeight": "97.92px",
+        "family": "Poppins"
+      },
+      "statement": {
+        "size": "88px",
+        "weight": "300",
+        "tracking": "-1.584px",
+        "lineHeight": "98.56px",
+        "family": "Poppins"
+      },
+      "socialRows": 1,
+      "socialCount": 6,
+      "sectionHeights": {
+        "hero": 1080,
+        "products": 1104,
+        "journal": 1115,
+        "about": 906,
+        "work": 714,
+        "connect": 406,
+        "contact": 450
+      },
+      "headingLines": {
+        "products": 2,
+        "journal": 2,
+        "about": 2,
+        "work": 1,
+        "connect": 1,
+        "contact": 2
+      }
+    },
+    "mobile": {
+      "viewport": {
+        "w": 390,
+        "h": 844
+      },
+      "pageHeight": 9305,
+      "horizontalOverflow": false,
+      "gutterPx": 0,
+      "backdropFilter": true,
+      "heroTitle": {
+        "size": "48px",
+        "weight": "700",
+        "tracking": "-1.344px",
+        "lineHeight": "46.08px",
+        "family": "Poppins",
+        "w": 354,
+        "h": 138,
+        "lines": 3
+      },
+      "sectionTitle": {
+        "size": "38.4px",
+        "weight": "300",
+        "tracking": "-0.768px",
+        "lineHeight": "39.168px",
+        "family": "Poppins"
+      },
+      "statement": {
+        "size": "32px",
+        "weight": "300",
+        "tracking": "-0.576px",
+        "lineHeight": "35.84px",
+        "family": "Poppins"
+      },
+      "socialRows": 2,
+      "socialCount": 6,
+      "sectionHeights": {
+        "hero": 582,
+        "products": 1521,
+        "journal": 1553,
+        "about": 805,
+        "work": 874,
+        "connect": 342,
+        "contact": 432
+      },
+      "headingLines": {
+        "products": 3,
+        "journal": 2,
+        "about": 1,
+        "work": 1,
+        "connect": 2,
+        "contact": 3
+      }
+    },
+    "laptop": {
+      "viewport": {
+        "w": 1366,
+        "h": 768
+      },
+      "pageHeight": 8635,
+      "horizontalOverflow": false,
+      "gutterPx": 0,
+      "backdropFilter": true,
+      "heroTitle": {
+        "size": "117.476px",
+        "weight": "700",
+        "tracking": "-3.28933px",
+        "lineHeight": "112.777px",
+        "family": "Poppins",
+        "w": 842,
+        "h": 338,
+        "lines": 3
+      },
+      "sectionTitle": {
+        "size": "81.96px",
+        "weight": "300",
+        "tracking": "-1.6392px",
+        "lineHeight": "83.5992px",
+        "family": "Poppins"
+      },
+      "statement": {
+        "size": "71.032px",
+        "weight": "300",
+        "tracking": "-1.27858px",
+        "lineHeight": "79.5558px",
+        "family": "Poppins"
+      },
+      "socialRows": 1,
+      "socialCount": 6,
+      "sectionHeights": {
+        "hero": 768,
+        "products": 1040,
+        "journal": 929,
+        "about": 860,
+        "work": 689,
+        "connect": 391,
+        "contact": 445
+      },
+      "headingLines": {
+        "products": 2,
+        "journal": 1,
+        "about": 2,
+        "work": 1,
+        "connect": 1,
+        "contact": 2
+      }
+    }
+  }
+}
