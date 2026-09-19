@@ -51,13 +51,21 @@ continuous page.
 
 ## D5 — One continuous backdrop that shifts hue with scroll depth
 
-Comps 1–8 are blue; comp 9 is violet. Rather than two backgrounds meeting at a
-seam, a single fixed gradient layer cross-fades blue → violet as the "How I
-work" section enters the viewport, driven by a `--tint` custom property.
+Comps 1–8 are blue, comp 9 is violet, **and comp 10 returns to blue.** A single
+fixed gradient layer cross-fades blue → violet → blue, driven by a `--tint`
+custom property.
+
+**Revised after M2.** The original implementation ramped to violet at "How I
+work" and never came back, which contradicted comp 10. Violet is a passage the
+page moves through, not a destination: the site opens and closes in the brand
+blue. `--tint` peaks across the principles and socials sections and returns to
+0 by the contact card.
 
 ## D6 — Fonts are self-hosted, not loaded from Google
 
-Poppins, subsetted to Latin, four weights, ~65KB total, in `public/fonts/`.
+Poppins, subsetted to Latin, four weights, **woff2, ~32KB total**, in
+`public/fonts/`. (Shipped as .ttf at ~65KB until M2; the woff2 swap was verified
+by all twenty goldens staying byte-identical.)
 
 **Reason.** One less third-party connection, no render-blocking request to a
 host that may be slow from Nairobi, and the site works offline in dev.
@@ -89,7 +97,7 @@ with no build step to remember is the shortest loop. Because of D1 the output
 is static, so moving to Cloudflare Pages or Netlify later costs a settings
 change, not a rewrite.
 
-## D10 — The site has never been built
+## D10 — The site was written without ever being built (resolved in M1)
 
 Written in an environment where `npm install` was blocked by network policy.
 Verified instead by server-rendering the real components with
@@ -97,8 +105,9 @@ Verified instead by server-rendering the real components with
 how the layout was checked against the comps, and how one real bug was caught
 (a spread was overwriting `className` on every styled element).
 
-`next build` itself has never run. Treat the first build as untrusted: see
-`lead/NEXT-001`, which lists the four places it is most likely to fail.
+**Resolved in M1.** It built first try on Next 15.5.25 with no code changes —
+none of the four predicted failure points fired. Kept here as the record of why
+M1 was shaped the way it was.
 
 ## D11 — The `preview/` folder is a dev harness, not part of the site
 
@@ -107,3 +116,36 @@ never touches it. It stays because it is the fastest way to eyeball every
 section at once, and because it does not need a browser or a dev server.
 
 If it becomes a maintenance cost, delete the folder — nothing imports from it.
+
+## D12 — Desktop scale: the build was undersized, and that is being fixed
+
+M2's contact sheets showed the build rendering at roughly 0.65–0.7× the comps
+at 1920 wide, consistently across all ten. This is not a slide artefact to be
+waved away — at 1920 the hero occupies a narrow centre column and reads as a
+1180px design stretched onto a large monitor, where the comp reads as
+confident. The comps are right about presence.
+
+So: the shell widens and the type clamps rise on large screens. The comps are
+**matched on impression, not copied on pixels** — a web page keeps a readable
+measure for prose (`.lead` stays capped in `ch`) and keeps its responsive
+behaviour intact; nothing below 1280px should change materially.
+
+Acceptance: at 1920 the hero headline wraps to three lines as drawn, and lands
+within about 10% of the comp's cap height.
+
+## D13 — Goldens are a regression asset; the raw frames stay out of git from M3
+
+`scripts/goldens.mjs` produces byte-stable captures — animations frozen,
+reveals warmed, pinned statements caught mid-hold. Two consecutive runs matched
+exactly, which is what makes them regression tests rather than screenshots.
+
+They are also 43MB per round, and there will be several rounds. From M3:
+
+- `sheets/` stays in git — small, and it is the artefact a human reviews
+- `shots/` is gitignored, and the script writes a committed `hashes.json`
+  (SHA-256 per golden) instead — a few KB that still fails loudly when a render
+  changes
+
+M2's frames stay in history. One round at 43MB is a fair price; a hundred
+megabytes by M5 is not. If the repo ever feels heavy, stripping them is still
+possible while this repo is small.
