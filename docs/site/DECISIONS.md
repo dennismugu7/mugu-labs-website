@@ -133,6 +133,23 @@ behaviour intact; nothing below 1280px should change materially.
 Acceptance: at 1920 the hero headline wraps to three lines as drawn, and lands
 within about 10% of the comp's cap height.
 
+**Met in M3.** Three lines; cap height 95px against the comp's 99px, −4%,
+measured off the captured frames rather than read from the CSS. Implemented as
+an `@media (min-width: 1280px)` block rather than by editing the root tokens,
+which makes "nothing below 1280 changes" structural instead of a thing to
+re-check — and that was proved by deleting the block, capturing, and restoring:
+all nine mobile goldens identical with and without it.
+
+**Scale is two rounds, not one.** M3 scaled headings, shell and art; the
+contents of the boxes — card bodies, buttons, social icons, the contact card —
+were still M2-sized inside M3-sized boxes. That is M4.
+
+**One regression it introduced**, found at capture: a hard `--shell: 1400px`
+made the content inset *drop* from ~70px at 1279 to 20px at 1280, tightening
+the site at exactly the width meant to loosen it. Fixed by making the shell
+fluid — `min(1400px, 100vw - 100px)` — which lands the inset at 70px on both
+sides of the breakpoint and grows from there.
+
 ## D13 — Goldens are a regression asset; the raw frames stay out of git from M3
 
 `scripts/goldens.mjs` produces byte-stable captures — animations frozen,

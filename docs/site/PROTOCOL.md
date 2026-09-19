@@ -41,6 +41,21 @@ restart is handled as a resume rather than a restart.
   change is not stale — it is the before-picture, and it is usually the fastest
   way to prove the change did what it claimed.
 
+## Acceptance tests must isolate one variable
+
+A test that cannot isolate what it claims to measure is not a test, and a good
+build should not fail against it.
+
+- **The builder says so rather than reporting a false failure.** If the lead's
+  criterion is confounded — the commit carries other changes that legitimately
+  affect the same surface — run the test that does isolate the variable, and
+  report both the criterion as written and the one you actually ran.
+- **The technique for a gated change**: remove the gate, build, capture, restore
+  the source byte-for-byte, rebuild. Identical output with and without the gate
+  proves the gate held, regardless of what else moved in the commit.
+- **Attribute every remaining diff.** "Six hashes moved" is not a finding;
+  "six hashes moved, here is which change caused each" is.
+
 ## Scope rule
 
 Ship what is in the design comps under `docs/site/screens/`, plus only what those comps need in order to function.
