@@ -329,3 +329,97 @@ M4 / now). Six goldens moved, all frames that show the row:
   the Facebook glyph transform `translate(9.6 3)` 1, the YouTube triangle
   transform `translate(12.4 12)` 1, Next build id `YqeOwLZcRP5FQHDsz8H18`.
   Against `out/index.html`, normalised: 0 differing lines.
+
+## NEXT-009 — B6, the share image
+
+### What was built
+
+`scripts/og-image.mjs` (Playwright, like the goldens): serves `out/`, opens
+the built home page at 1200×630, removes `main`, nav and footer, keeps the
+backdrop at `--tint: 0` (the blue) and the stylesheet, and appends a card made
+of the footer's own robot SVG, the `.brand` wordmark text, the `#hero-title`
+text in the page's `.display` class, and the `og:url` hostname. One source of
+truth: change the mark, the gradient or the tagline in `lib/site.ts`, rebuild,
+re-run, and the card follows. Output `public/og.jpg`, 1200×630, **72KB** (the
+same frame as PNG is 780KB — gradient plus grain does not compress — and
+every crawler that reads `og:image` reads JPEG).
+
+`app/layout.tsx`: one `shareImage` object (`/og.jpg`, 1200, 630, alt
+"Mugu labs — Neat apps with a human touch") in both `openGraph.images` and
+`twitter.images`; `metadataBase` turns it absolute. The built page carries
+`og:image`, `og:image:width/height/alt` and `twitter:image` plus its
+width/height/alt. README has a *Share image* section.
+
+### Verified
+
+- **Pushed:** `2216b95..42eed4c` (`2216b95` the lead's NEXT-009 and PROTOCOL
+  edit, `42eed4c` B6). `main` = `origin/main` = `42eed4c`.
+- **CI:** <https://github.com/dennismugu7/mugu-labs-website/actions/runs/35459612122> — success.
+- **Fetched, verbatim:** `curl -sS -D - https://mugu-labs-website.vercel.app/?v=next009`
+  at 17:57:13 UTC, 15s after the push — HTTP 200, `Age: 0`,
+  `X-Vercel-Cache: MISS`, `Etag "ae5f4062…"`, `X-Vercel-Id: cpt1::nw866-…`.
+  Body: `<meta property="og:image" content="https://mugu-labs.com/og.jpg"/>`
+  and `<meta name="twitter:image" content="https://mugu-labs.com/og.jpg"/>`.
+- **The image, from the production hostname:**
+  `https://mugu-labs-website.vercel.app/og.jpg?v=1` → 200, `image/jpeg`,
+  73,376 bytes, decodes as 1200×630 JPEG, **byte-identical to
+  `public/og.jpg`**.
+
+**One thing to say loudly, and it is B11, not B6.** The tag's absolute URL is
+`https://mugu-labs.com/og.jpg`, because `metadataBase` is `site.url`. That
+host resolves (`34.111.179.208`) and answers **404** today — for `/` and for
+`/og.jpg`. So until the domain is attached, a crawler reading the Vercel
+page finds an `og:image` it cannot fetch, and link previews show no image.
+This is exactly the `og:url` situation already on record, one tag wider, and
+the fix is the same one with no code change: the domain arrives, both become
+correct. Per NEXT-009 I have **not** pointed `site.url` at the Vercel URL. If
+the owner wants previews working before the domain is attached, that is the
+one-line decision to make, and it is his.
+
+### Goldens
+
+Two runs on this build. Between them, and against the previous run, the
+frames were byte-identical except one at a time of `desktop__06-07-journal`
+and `desktop__08-about`, which alternated by **at most 44 pixels, none
+differing by more than 8/255, all inside a 22×2px patch at (303–325, 26–28)**
+— the nav's brand mark, under the stuck nav's `backdrop-filter` blur.
+Nothing in this commit touches the page body; the metadata is in `<head>`.
+That is a compositor-level flake in the blur, not a change, and it is the
+first run-to-run instability the harness has shown since M2. Noted here so
+the next "one desktop hash moved" is not chased as a regression; if it
+recurs, the fix would be to compare with a tolerance rather than byte
+equality, which I have not done.
+
+### B8 — an opinion, since you asked
+
+**No linter, for now. Two compiler flags instead.**
+
+What a linter would catch here that nothing else does: unused imports and
+variables, and the two React hooks rules (`rules-of-hooks`,
+`exhaustive-deps`). The codebase has three components that use hooks
+(`Nav`, `ContactChoice`, `Motion`), fifteen files, one author, `strict: true`
+and `tsc --noEmit` in CI. Everything else `eslint-config-next` brings — the
+`@next/next` rules, `jsx-a11y` — is either already satisfied or is caught by
+the build (Next's compiler already warned on the one `<img>` rule, and the
+comments disabling it are in the source).
+
+What it would cost: ESLint 9's flat config, `eslint-config-next` and its
+plugin tree (≈100 packages), the `next lint` → `eslint` CLI migration that
+Next 15.5 has already started and Next 16 finishes (B9), and a config to keep
+in step with both. For one author on fifteen files that is more machinery
+than defect.
+
+The two things worth having are free: `"noUnusedLocals": true` and
+`"noUnusedParameters": true` in `tsconfig.json`. I ran the compiler with both
+flags on the current tree — it passes clean — so they cost nothing today and
+fail the build the day an import goes stale. That leaves `exhaustive-deps`
+uncovered, and I would accept that: the three effects in the codebase are
+`[]`-dependency mount effects, reviewed by hand.
+
+Revisit when any of these becomes true: a second contributor, the hooks
+count doubles, or Next 16 lands and the ESLint story is settled. Until then
+the goldens are the regression suite that matters for this site, and they
+already fail loudly.
+
+Not applied — B8 says decide first. It is two lines in `tsconfig.json` when
+you say so.
