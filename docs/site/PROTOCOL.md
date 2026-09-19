@@ -80,6 +80,31 @@ Every gate report ends with a **Deployed** section stating:
 a clean tree say nothing about what a visitor sees; only fetching the live URL
 does.
 
+## When the lead and the builder disagree about what a URL serves
+
+This happened. The lead fetched the production URL twice, saw two-milestone-old
+content, and opened an investigation into a deployment that was perfectly
+healthy. The builder was right.
+
+The asymmetry that caused it, and the rule that follows:
+
+- **The lead's fetching tool has a cache the lead cannot see, inspect or
+  reliably bust**, and it returns a *summary of rendered content* — never
+  response headers. The lead cannot produce an `Etag`, an `Age` or an
+  `X-Vercel-Cache` value. Not "did not"; **cannot**. The builder should never
+  wait on the lead for header evidence.
+- **The builder's `curl` is the stronger instrument.** Status, `Age`,
+  `X-Vercel-Cache`, `Etag`, forced IPv4/IPv6, encoding variants, a second
+  vantage point — that is evidence. A content summary from a caching proxy is
+  an observation.
+- **So: headers win.** When the two disagree about what a hostname serves, the
+  side holding response headers is right until something with headers says
+  otherwise. The lead re-tests with a never-before-used URL before concluding
+  anything, and says plainly when it was the one that was wrong.
+- **The builder is expected to push back like this** — with evidence, from
+  several angles, naming the most likely cause including "the lead's tooling".
+  That is the job, not insubordination.
+
 ## Scope rule
 
 Ship what is in the design comps under `docs/site/screens/`, plus only what those comps need in order to function.
