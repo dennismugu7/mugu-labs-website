@@ -37,7 +37,7 @@ STRIP = 44           # label strip height
 GAP = 12
 
 try:
-    FONT = ImageFont.truetype(str(ROOT / "public/fonts/poppins-500.ttf"), 20)
+    FONT = ImageFont.truetype(str(ROOT / "scripts/src-fonts/Poppins-Medium.ttf"), 20)
 except OSError:
     FONT = ImageFont.load_default()
 

@@ -8,7 +8,7 @@ Instructions: `docs/site/lead/NEXT-002-push-and-verify.md`. Screenshot index:
 
 **M1 is closed: pushed, CI green. Part B done, build warnings 1 → 0. Part C
 done: 10 sheets, 20 byte-stable goldens, zero console errors, zero failed
-requests.** The build is structurally faithful to every comp. The drift is
+requests. B2 done: fonts are woff2, 66KB → 32KB, goldens unchanged.** The build is structurally faithful to every comp. The drift is
 almost all *scale*: the comps are slide-sized and the build is web-sized, and
 the difference is consistent (roughly 0.65×) rather than random. One thing is
 plainly wrong — the "Made by a human" heading weight. One thing is a real
@@ -22,7 +22,8 @@ Nothing visual was changed. All of it is in the table below.
 | --- | --- |
 | `3e407e5` | M1: push and CI confirmed; commit NEXT-002 and the lead's backlog edits |
 | `d50f94f` | Housekeeping from NEXT-002 Part B: Node 24, .gitattributes, flex-end |
-| _(next)_ | M2: goldens, sheets, capture tooling, report |
+| `5630f41` | M2: goldens and contact sheets against the design comps, with report |
+| _(next)_ | B2: fonts shipped as woff2 |
 
 ## Part A — M1 closed
 
@@ -191,7 +192,19 @@ All of it. The one thing not done in a real, headed browser is the
 show blur, which is the same engine Chrome uses; Safari and Firefox were not
 tested this milestone.
 
-## B2 (woff2)
+## B2 (woff2) — done
 
-Not started. C1–C5 used the time. It is self-contained; say the word and it
-is a one-commit change.
+`pip install fonttools brotli` (fonttools 4.65.0, brotli 1.2.0), then
+`python scripts/build-fonts.py --woff2`. Four files, 7.8–7.9KB each:
+**66KB → 32KB** of fonts. `styles/fonts.css` now points at `.woff2` with
+`format("woff2")`; the `.ttf` copies are removed from `public/fonts/`; README's
+*Fonts* section rewritten to describe what ships. `out/` is now 2,468,550
+bytes (was 2,503,509).
+
+Proof it renders identically: after the swap, a fresh build and a fresh
+capture produced **all 20 goldens byte-identical** to the committed ones. If
+the woff2 had failed to load, the fallback face would have changed every
+pixel of text. 0 console messages, 0 failed requests.
+
+`DECISIONS.md` D6 still says "~65KB total" — yours to update, I do not edit
+that file.

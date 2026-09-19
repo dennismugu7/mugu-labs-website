@@ -96,20 +96,20 @@ CSS and in `initMotion()`, so it holds even if JS is slow to start.
 
 ## Fonts
 
-Poppins, self-hosted and subsetted to Latin — four weights, ~65KB total, no
-request to Google. The files are in `public/fonts/`, declared in
+Poppins, self-hosted and subsetted to Latin — four weights as `.woff2`, ~32KB
+total, no request to Google. The files are in `public/fonts/`, declared in
 `styles/fonts.css`.
 
-To regenerate them as `.woff2` (roughly half the bytes):
+To regenerate them (after changing the subset, or the source files):
 
 ```bash
 pip install fonttools brotli
-# put the Poppins .ttf files in scripts/src-fonts/ (fonts.google.com/specimen/Poppins)
+# the Poppins .ttf sources live in scripts/src-fonts/ (fonts.google.com/specimen/Poppins)
 python scripts/build-fonts.py --woff2
 ```
 
-Then change `format('truetype')` → `format('woff2')` and the `.ttf` extensions
-in `styles/fonts.css`.
+`--woff2` is what the site ships. Without it the script emits `.ttf`, in
+which case `styles/fonts.css` needs `format('truetype')` and `.ttf` extensions.
 
 ---
 
