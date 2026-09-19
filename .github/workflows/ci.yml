@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+
+      # Cheap smoke test: the page exists and every section actually rendered.
+      - name: Check the export
+        run: |
+          test -f out/index.html || { echo "out/index.html is missing"; exit 1; }
+          for id in products journal about work contact; do
+            grep -q "id=\"$id\"" out/index.html || { echo "section #$id is missing from index.html"; exit 1; }
+          done
+          echo "index.html present, all five section anchors found"

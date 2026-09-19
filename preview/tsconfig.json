@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "paths": {
+      "next/link": ["./stubs/next-link.tsx"],
+      "next/navigation": ["./stubs/next-navigation.ts"]
+    }
+  }
+}

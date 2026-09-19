@@ -1,0 +1,17 @@
+import { chromium } from "playwright";
+const b = await chromium.launch();
+const errs = [];
+const p = await b.newPage({ viewport: { width: 1440, height: 900 } });
+p.on("console", (m) => m.type() === "error" && errs.push(m.text()));
+p.on("pageerror", (e) => errs.push(String(e)));
+p.on("requestfailed", (r) => errs.push("FAILED " + r.url()));
+await p.goto("http://127.0.0.1:8100/wrapped.html", { waitUntil: "networkidle" });
+await p.evaluate(() => document.querySelector("#contact").scrollIntoView());
+await p.waitForTimeout(1200);
+await p.click(".choice button");
+await p.waitForTimeout(500);
+await p.screenshot({ path: "preview/shots/artifact-contact.png" });
+const links = await p.$$eval(".choice__menu a", (as) => as.map((a) => a.getAttribute("href")));
+console.log("menu links:", links);
+console.log("errors:", errs.length ? errs : "none");
+await b.close();
