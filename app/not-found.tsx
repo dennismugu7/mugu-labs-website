@@ -2,12 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "../components/icons";
 
-/* A 404 is nobody's canonical address: drop the layout's "/" and keep
-   crawlers from indexing the page. */
+/* A 404 is nobody's canonical address: drop the layout's "/". (Next adds
+   the noindex robots tag to not-found pages itself.) */
 export const metadata: Metadata = {
   title: "Not found",
   alternates: { canonical: null },
-  robots: { index: false },
 };
 
 export default function NotFound() {
