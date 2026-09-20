@@ -138,8 +138,9 @@ async function targets(page) {
       ["05-statement-breather", hold(s2)],
       ["06-07-journal", anchor("#journal")],
       // Since M4 the journal cards do not fit under the heading in one frame;
-      // comp 7 is the cards, so give them a frame with the art fully in it.
-      ["07-journal-cards", top(el("#journal .grid-3")) - 120],
+      // comp 7 is the cards, so give them a frame with the art fully in it:
+      // the art breaks 88px above the grid, and the nav covers the top 73px.
+      ["07-journal-cards", top(el("#journal .grid-3")) - 170],
       ["08-about", anchor("#about")],
       // Comp 9 is "how I work" *and* socials on one slide; built, they are
       // taller than a frame, so each gets its own, anchored like a nav click.

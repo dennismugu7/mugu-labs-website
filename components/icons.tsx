@@ -141,17 +141,12 @@ export const socialIcons: Record<string, (p: IconProps) => ReactElement> = {
       <path d="M17.53 3h3.04l-6.64 7.59L21.75 21h-5.96l-4.67-6.1L5.77 21H2.72l7.1-8.12L2.25 3h6.11l4.22 5.58L17.53 3Zm-1.07 16.17h1.68L7.6 4.74H5.8l10.66 14.43Z" />
     </svg>
   ),
-  /* YouTube: the mark *is* the red rounded rectangle with the play
-     triangle, and the tile already is that rectangle, so the glyph is the
-     triangle alone (NEXT-008 B). Its geometry is the triangle from Simple
-     Icons' youtube path (CC0, simple-icons 16.31), scaled to 14 units tall
-     and kept at the mark's own slightly right-of-centre position. */
+  /* YouTube: the mark is the red rounded rectangle with the play triangle
+     knocked out of it, wider than tall - so it is drawn whole, in red, in
+     place of a tile (NEXT-012 3). Path from Simple Icons (CC0, 16.31). */
   youtube: ({ className }) => (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path
-        transform="translate(12.4 12) scale(1.962) translate(-12.6815 -12)"
-        d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z"
-      />
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
     </svg>
   ),
   linkedin: ({ className }) => (
