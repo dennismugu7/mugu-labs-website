@@ -179,3 +179,39 @@ hidden on phones and that nothing else in the hero moved.
 - **The five assets from the live domain** (`/assets/art-*.png?v=m7`): all
   200, and each **byte-identical** to the file in `public/assets/`
   (184,779 / 169,155 / 151,868 / 347,496 / 21,818 bytes).
+
+## NEXT-013 — YouTube at the comp's proportion
+
+One change, as briefed. `.social` now carries a `--tile` token (the square
+tiles' size, `clamp(54px, 6vw, 68px)`, `clamp(68px, 4.8vw, 92px)` from 1280);
+`.social--youtube` is `--tile` high and `--tile × 24 / 16.909` wide — the
+mark's own aspect, since Simple Icons' YouTube spans 16.909 of the 24-unit
+box — with the SVG's `viewBox` tightened to the mark so the CSS box *is* the
+mark. Measured on `desktop__09-socials` at 1920: **YouTube 130×92, the X
+tile 92×92**, tops and bottoms aligned to the pixel (`y 338–429` for both).
+Comp 9: 130×80 against 80×80. Same height as its neighbours, 1.41× their
+width (the comp's ~1.6 includes the mark's soft shadow), triangle showing
+the backdrop, widest item in the row. `social-row-next013.png` beside this
+file: comp 9, the M7 version, this one.
+
+On the point of precedence: noted. Next time the comp and the brief
+disagree, the comp ships and the report says so.
+
+Goldens moved: `desktop__09-socials`, `mobile__09-socials`, and the four
+frames that show the row from the page's end (`desktop__10`,
+`desktop__contact-menu`, `desktop__reduced-motion`, `mobile__10`) — six for
+the mark — plus `desktop__06-07-journal`, which is the nav-blur flake again
+(no journal change in this commit). Two runs of the final build identical.
+The goldens' socials metric had been reading `0×0` since M6 made the tiles
+spans; it counts `.social` now (`1×6` desktop, `2×6` mobile).
+
+### Deployed
+
+- **Pushed:** `2af8c37..6a5a163`; `main` = `origin/main`.
+- **CI:** <https://github.com/dennismugu7/mugu-labs-website/actions/runs/35491434544> — success.
+- **Fetched, verbatim:** `curl -sS -D - "https://mugu-labs.com/?v=next013"`
+  at 05:21:27 UTC, 15s after the push — HTTP 200, `Age: 0`,
+  `X-Vercel-Cache: MISS`, `Etag "63c93524…"`, `X-Vercel-Id: cpt1::r8pvx-…`;
+  the tightened `viewBox="0 3.545 24 16.909"` is in the body, and the served
+  stylesheet carries `.social--youtube{width:calc(var(--tile) * 24 / 16.909);
+  height:var(--tile);…}`.
