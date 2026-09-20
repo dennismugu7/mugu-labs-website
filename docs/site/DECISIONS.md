@@ -267,3 +267,46 @@ would force again.
 and the tree passes clean with both. Revisit if a second person starts
 committing.
 
+## D22 — The scroll hint is cut
+
+Removed in M7 at the owner's question. It was a lead addition, in no comp, and
+justified as "a web affordance a slide does not need".
+
+That reasoning did not survive looking at a real screenshot: at the scroll
+position where the hint sat, the next section was **already visible on screen**.
+A prompt to scroll, placed where the reader can already see what scrolling
+reveals, is decoration — and it sat alone in a large empty field of gradient,
+drawing the eye to the least important thing on the page.
+
+## D23 — Artwork is re-extracted without a background-similarity pass
+
+The 3D illustrations were cut out of the comps by flood-filling the gradient
+from the border, then fitting a quadratic background model and deleting every
+pixel within a tolerance of it, then a morphological opening.
+
+That last-but-one step is destructive when part of the subject resembles the
+background. It ate the calendar's lower body — the owner spotted it as
+"feels incomplete", and the comp confirms a clean rounded bottom edge where the
+asset has a chewed, ragged one.
+
+**The rule: never delete a pixel merely because it resembles the background.**
+A flood fill inward from the border is safe because it only reaches what is
+connected to the outside. A global similarity pass is not.
+
+**And the check that would have caught it:** every extracted asset is compared
+against its comp region side by side before it ships. Skipping that is why this
+survived six milestones of review.
+
+## D24 — YouTube renders as its real mark, not as a square tile
+
+Five of the six social marks are a brand-coloured square with a white glyph.
+YouTube is not: its mark **is** a red rounded rectangle, wider than tall, with
+the play triangle knocked out. A triangle inside a red square reads as a
+generic video-player icon, which is what the owner saw.
+
+Comp 9 draws it correctly — the YouTube slot is the red "tv" silhouette,
+visibly wider and shorter than its neighbours. The build matches the comp.
+
+Supersedes the general rule in D18 for this one mark: the tile carries the
+brand shape only when the brand's shape is a square.
+
