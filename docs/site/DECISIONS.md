@@ -304,8 +304,14 @@ YouTube is not: its mark **is** a red rounded rectangle, wider than tall, with
 the play triangle knocked out. A triangle inside a red square reads as a
 generic video-player icon, which is what the owner saw.
 
-Comp 9 draws it correctly — the YouTube slot is the red "tv" silhouette,
-visibly wider and shorter than its neighbours. The build matches the comp.
+Comp 9 draws it at **the same height as the five square tiles and roughly
+1.5–1.6× their width**, red, with the triangle knocked out so the backdrop
+shows through. It is the widest item in the row, not the shortest.
+
+**Corrected in M7.** My first instruction said "same slot, shorter", which I
+invented without measuring the comp; it shipped that way and the builder
+flagged the discrepancy from the comp rather than letting it stand. The comp
+wins — it sits above a `lead/` file in the precedence chain.
 
 Supersedes the general rule in D18 for this one mark: the tile carries the
 brand shape only when the brand's shape is a square.
