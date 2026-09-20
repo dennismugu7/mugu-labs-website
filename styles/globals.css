@@ -975,9 +975,10 @@ button {
 }
 
 .social {
+  --tile: clamp(54px, 6vw, 68px);
   display: grid;
   place-items: center;
-  width: clamp(54px, 6vw, 68px);
+  width: var(--tile);
   aspect-ratio: 1;
   border-radius: 24%;
   background: var(--social-bg, rgba(255, 255, 255, 0.1));
@@ -1003,11 +1004,15 @@ button {
   height: 74%;
 }
 
-/* YouTube is not a square tile: the mark itself, red, fills the slot's
-   width and sits centred - shorter than its neighbours, as drawn in comp 9. */
+/* YouTube is not a square tile: the mark itself, red, at the tiles' height
+   and its own width (24:16.9, about 1.4 tiles) - the widest item in the row,
+   as comp 9 draws it (D24). */
 .social--youtube,
 .social--youtube:hover,
 .social--youtube.social--placeholder:hover {
+  width: calc(var(--tile) * 24 / 16.909);
+  height: var(--tile);
+  aspect-ratio: auto;
   background: none;
   box-shadow: none;
   color: var(--social-bg);
@@ -1425,7 +1430,7 @@ button {
   }
 
   .social {
-    width: clamp(68px, 4.8vw, 92px);
+    --tile: clamp(68px, 4.8vw, 92px);
   }
 
   .contact__art {

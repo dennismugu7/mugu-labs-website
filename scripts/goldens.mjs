@@ -177,7 +177,7 @@ async function metrics(page) {
       const e = el(s);
       return e ? Math.round(e.getBoundingClientRect().height) : null;
     };
-    const socials = [...document.querySelectorAll("#connect a")].map((a) => Math.round(a.getBoundingClientRect().top));
+    const socials = [...document.querySelectorAll(".socials .social")].map((a) => Math.round(a.getBoundingClientRect().top));
     const rows = new Set(socials).size;
     const shell = el("#products .shell") || el(".shell");
     const gutter = shell ? Math.round(shell.getBoundingClientRect().left) : null;

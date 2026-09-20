@@ -37,8 +37,8 @@
         "lineHeight": "98.56px",
         "family": "Poppins"
       },
-      "socialRows": 0,
-      "socialCount": 0,
+      "socialRows": 1,
+      "socialCount": 6,
       "sectionHeights": {
         "hero": 1080,
         "products": 1212,
@@ -92,8 +92,8 @@
         "lineHeight": "35.84px",
         "family": "Poppins"
       },
-      "socialRows": 0,
-      "socialCount": 0,
+      "socialRows": 2,
+      "socialCount": 6,
       "sectionHeights": {
         "hero": 582,
         "products": 1521,
@@ -147,8 +147,8 @@
         "lineHeight": "74.5472px",
         "family": "Poppins"
       },
-      "socialRows": 0,
-      "socialCount": 0,
+      "socialRows": 1,
+      "socialCount": 6,
       "sectionHeights": {
         "hero": 800,
         "products": 991,
@@ -202,8 +202,8 @@
         "lineHeight": "79.5558px",
         "family": "Poppins"
       },
-      "socialRows": 0,
-      "socialCount": 0,
+      "socialRows": 1,
+      "socialCount": 6,
       "sectionHeights": {
         "hero": 768,
         "products": 1048,
@@ -257,8 +257,8 @@
         "lineHeight": "83.8656px",
         "family": "Poppins"
       },
-      "socialRows": 0,
-      "socialCount": 0,
+      "socialRows": 1,
+      "socialCount": 6,
       "sectionHeights": {
         "hero": 900,
         "products": 1083,
