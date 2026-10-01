@@ -160,7 +160,8 @@ The build is a plain static folder (`output: "export"`), so nothing is tied to
 Vercel:
 
 - **Cloudflare Pages / Netlify** — build `npm run build`, publish `out`.
-  `netlify.toml` is already here with cache headers.
+  Carry over the cache headers in `vercel.json` (Netlify: a `_headers` file
+  or `netlify.toml`).
 - **GitHub Pages** — publish `out/`. If it lives at `user.github.io/repo`
   rather than a root domain, add `basePath: "/repo"` to `next.config.mjs`.
 - **Any host at all** — upload `out/`.

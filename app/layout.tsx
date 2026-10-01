@@ -5,17 +5,9 @@ import Backdrop from "../components/Backdrop";
 import Motion from "../components/Motion";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import { baseOpenGraph, baseTwitter, defaultTitle } from "../lib/metadata";
 import { motionBootScript } from "../lib/motion";
 import { site } from "../lib/site";
-
-/** Rendered by scripts/og-image.mjs from the built site; re-run after a
-    change to the mark, the gradient or the hero line. */
-const shareImage = {
-  url: "/og.jpg",
-  width: 1200,
-  height: 630,
-  alt: `${site.name} — ${site.tagline}`,
-};
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -24,27 +16,15 @@ export const metadata: Metadata = {
      metadataBase. Pages with their own URL set their own (products). */
   alternates: { canonical: "/" },
   title: {
-    default: `${site.name} — ${site.tagline}`,
+    default: defaultTitle,
     template: `%s — ${site.name}`,
   },
   description: site.description,
   applicationName: site.name,
   authors: [{ name: site.author.name, url: site.author.githubUrl }],
   creator: site.author.name,
-  openGraph: {
-    type: "website",
-    url: site.url,
-    siteName: site.name,
-    title: `${site.name} — ${site.tagline}`,
-    description: site.description,
-    images: [shareImage],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.name} — ${site.tagline}`,
-    description: site.description,
-    images: [shareImage],
-  },
+  openGraph: baseOpenGraph,
+  twitter: baseTwitter,
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
