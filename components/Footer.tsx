@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import { reveal } from "./reveal";
-import { site, products } from "../lib/site";
+import { products } from "../lib/site";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -20,9 +20,7 @@ export default function Footer() {
         <Link href="/#contact">Contact</Link>
       </nav>
 
-      <p className="footer__legal">
-        @{year} {site.domain} All rights reserved
-      </p>
+      <p className="footer__legal">&copy; {year} Mugu Labs. All rights reserved.</p>
     </footer>
   );
 }

@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "../../../components/icons";
 import ContactChoice from "../../../components/ContactChoice";
 import { reveal } from "../../../components/reveal";
-import { products } from "../../../lib/site";
+import { baseOpenGraph, baseTwitter } from "../../../lib/metadata";
+import { products, site } from "../../../lib/site";
 
 type Params = { slug: string };
 
@@ -19,11 +20,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const product = products.find((p) => p.slug === slug);
   if (!product) return {};
+
+  const url = `/products/${product.slug}/`;
+  const title = `${product.name} — ${site.name}`;
   return {
     title: product.name,
     description: product.tagline,
-    alternates: { canonical: `/products/${product.slug}/` },
-    openGraph: { title: product.name, description: product.tagline, url: `/products/${product.slug}/` },
+    alternates: { canonical: url },
+    // Spread the defaults back in: these objects replace the layout's whole.
+    openGraph: { ...baseOpenGraph, title, description: product.tagline, url },
+    twitter: { ...baseTwitter, title, description: product.tagline },
   };
 }
 
