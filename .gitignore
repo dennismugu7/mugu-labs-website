@@ -31,3 +31,7 @@ next-env.d.ts
 
 # golden frames are regenerated; only their hashes and the sheets are committed (D13)
 docs/site/review/goldens/shots/
+
+# playwright test output
+test-results/
+playwright-report/
