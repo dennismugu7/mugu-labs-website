@@ -16,6 +16,8 @@ export default function Contact() {
             className="contact__art"
             src="/assets/art-envelope.png"
             alt=""
+            width={152}
+            height={138}
             loading="lazy"
           />
 

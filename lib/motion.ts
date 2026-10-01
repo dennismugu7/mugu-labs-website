@@ -6,11 +6,38 @@
  *   2. scroll vars  — a single rAF-throttled pass that writes CSS custom
  *                     properties; all the actual animation is done by CSS.
  *   3. reduced motion — if the visitor asked for less, none of it runs.
+ *
+ * Reveals only hide content while <html> carries `js-motion`. An inline
+ * script in the layout's <head> adds it before first paint and takes it away
+ * again if this file hasn't started within MOTION_FALLBACK_MS, so a page whose
+ * JS fails or crawls in still shows everything (see motionBootScript).
+ *
+ * initMotion is run again on every route change (components/Motion.tsx), so
+ * everything here is queried fresh each time and fully torn down by the
+ * returned cleanup.
  */
 
 const clamp = (v: number, min = 0, max = 1) => (v < min ? min : v > max ? max : v);
 
 type Cleanup = () => void;
+
+const MOTION_CLASS = "js-motion";
+const MOTION_FALLBACK_MS = 3000;
+
+/** "pending" until initMotion runs, "ready" after, "fallback" if it ran late. */
+type MotionState = "pending" | "ready" | "fallback";
+
+declare global {
+  interface Window {
+    __muguMotion?: MotionState;
+  }
+}
+
+/**
+ * Inlined into <head> by app/layout.tsx. Plain ES5, no imports: it runs
+ * before any bundle has loaded.
+ */
+export const motionBootScript = `(function(){var d=document.documentElement;if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;d.classList.add("${MOTION_CLASS}");window.__muguMotion="pending";setTimeout(function(){if(window.__muguMotion==="pending"){window.__muguMotion="fallback";d.classList.remove("${MOTION_CLASS}");}},${MOTION_FALLBACK_MS});})();`;
 
 function prefersReducedMotion(): boolean {
   return (
@@ -22,7 +49,9 @@ function prefersReducedMotion(): boolean {
 /* ---------------------------------------------------------------- reveals */
 
 function initReveals(): Cleanup {
-  const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+  /* Already-revealed nodes (the footer, which lives in the layout and
+     survives navigation) stay as they are. */
+  const nodes = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-in)"));
   if (!nodes.length) return () => {};
 
   if (!("IntersectionObserver" in window)) {
@@ -56,7 +85,8 @@ function initScrollVars(): Cleanup {
   const nav = document.querySelector<HTMLElement>("[data-nav]");
 
   let frame = 0;
-  let stuck = false;
+  /* The nav outlives this run; start from what it shows, not from false. */
+  let stuck = nav?.classList.contains("is-stuck") ?? false;
 
   const read = () => {
     frame = 0;
@@ -78,6 +108,10 @@ function initScrollVars(): Cleanup {
         tint *= 1 - clamp((vh - releaseTop) / (vh * 0.5));
       }
       root.style.setProperty("--tint", tint.toFixed(4));
+    } else {
+      /* A page without the anchor (a product page) must not keep the violet
+         it inherited from wherever the visitor scrolled before navigating. */
+      root.style.setProperty("--tint", "0");
     }
 
     /* Nav background once we're off the hero */
@@ -127,14 +161,19 @@ function initScrollVars(): Cleanup {
 /* ------------------------------------------------------------------ entry */
 
 export function initMotion(): Cleanup {
-  document.documentElement.classList.remove("no-js");
+  const root = document.documentElement;
+  const late = window.__muguMotion === "fallback";
+  window.__muguMotion = late ? "fallback" : "ready";
 
   if (prefersReducedMotion()) {
-    document
-      .querySelectorAll<HTMLElement>("[data-reveal]")
-      .forEach((n) => n.classList.add("is-in"));
+    root.classList.remove(MOTION_CLASS);
     return () => {};
   }
+
+  /* The fallback already showed everything; don't hide it again now. When
+     there was no boot script at all (the preview harness), switch on here. */
+  if (late) return initScrollVars();
+  root.classList.add(MOTION_CLASS);
 
   const cleanups = [initReveals(), initScrollVars()];
   return () => cleanups.forEach((fn) => fn());

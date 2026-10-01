@@ -47,6 +47,8 @@ export default function About() {
           <img
             src="/assets/art-tape.png"
             alt="A hand pulling a tape measure across a button, measuring an interface"
+            width={781}
+            height={412}
             loading="lazy"
           />
         </figure>
