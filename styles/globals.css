@@ -913,6 +913,7 @@ button {
 
 .about__art img {
   width: 100%;
+  height: auto;
   filter: drop-shadow(0 40px 60px rgba(0, 4, 28, 0.55));
   transform: translate3d(0, calc(var(--drift, 0) * -26px), 0);
   will-change: transform;
@@ -1092,6 +1093,7 @@ button {
 .contact__art {
   flex: none;
   width: clamp(88px, 9vw, 120px);
+  height: auto;
   animation: float 8s ease-in-out infinite;
   filter: drop-shadow(0 22px 30px rgba(0, 4, 28, 0.5));
 }
@@ -1350,7 +1352,10 @@ button {
    Reveal system
    ====================================================================== */
 
-.reveal {
+/* Hidden only while <html> has `js-motion`, which the boot script in the
+   layout adds and lib/motion.ts confirms. No JS, slow JS, or reduced motion:
+   the class is absent and everything is simply visible. */
+.js-motion .reveal {
   opacity: 0;
   transform: translate3d(0, var(--reveal-y, 30px), 0) scale(var(--reveal-s, 1));
   filter: blur(var(--reveal-blur, 8px));
@@ -1359,15 +1364,7 @@ button {
   transition-delay: var(--reveal-delay, 0ms);
 }
 
-.reveal.is-in {
-  opacity: 1;
-  transform: none;
-  filter: none;
-}
-
-/* Elements that only exist once JS is running shouldn't be invisible
-   if it never does. */
-.no-js .reveal {
+.js-motion .reveal.is-in {
   opacity: 1;
   transform: none;
   filter: none;
@@ -1493,6 +1490,9 @@ button {
 
   .about__art {
     order: -1;
+    /* Full width up to the cap, so the box exists before the lazy image has
+       loaded; shrink-to-fit would make it 0 wide until then. */
+    width: 100%;
     max-width: 460px;
     margin-inline: auto;
   }
@@ -1594,7 +1594,8 @@ button {
     transition-duration: 0.001ms !important;
   }
 
-  .reveal {
+  .reveal,
+  .js-motion .reveal {
     opacity: 1;
     transform: none;
     filter: none;

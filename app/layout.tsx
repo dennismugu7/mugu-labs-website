@@ -5,6 +5,7 @@ import Backdrop from "../components/Backdrop";
 import Motion from "../components/Motion";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import { motionBootScript } from "../lib/motion";
 import { site } from "../lib/site";
 
 /** Rendered by scripts/og-image.mjs from the built site; re-run after a
@@ -56,7 +57,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="no-js">
+    // The boot script adds a class to <html> before React hydrates it.
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: motionBootScript }} />
+      </head>
       <body>
         <a className="skip-link" href="#main">
           Skip to content
