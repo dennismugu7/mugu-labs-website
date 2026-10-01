@@ -1,0 +1,204 @@
+import { expect, type Page } from "@playwright/test";
+import { products } from "../../lib/site";
+
+declare global {
+  interface Window {
+    __spaMarker?: boolean;
+  }
+}
+
+/* ------------------------------------------------------------ the link map */
+
+export type Region = "brand" | "nav" | "main" | "footer";
+
+export type LinkSpec = {
+  region: Region;
+  name: string;
+  /** The URL the click should end on, path + hash. */
+  to: string;
+};
+
+const NAV: LinkSpec[] = [
+  { region: "nav", name: "Products", to: "/#products" },
+  { region: "nav", name: "Journal", to: "/#journal" },
+  { region: "nav", name: "About", to: "/#about" },
+  { region: "nav", name: "How I work", to: "/#work" },
+  { region: "nav", name: "Work with me", to: "/#contact" },
+];
+
+const FOOTER: LinkSpec[] = [
+  ...products.map((p) => ({ region: "footer" as const, name: p.name, to: `/products/${p.slug}/` })),
+  { region: "footer", name: "About", to: "/#about" },
+  { region: "footer", name: "Contact", to: "/#contact" },
+];
+
+const CHROME: LinkSpec[] = [{ region: "brand", name: "Mugu labs", to: "/" }, ...NAV];
+
+/** Every internal link on every page, as the audit's link table lists them. */
+export const PAGES: { label: string; url: string; links: LinkSpec[] }[] = [
+  {
+    label: "home",
+    url: "/",
+    links: [
+      ...CHROME,
+      { region: "main", name: "Work with me", to: "/#contact" },
+      ...products.map((p) => ({
+        region: "main" as const,
+        name: `Learn more about ${p.name}`,
+        to: `/products/${p.slug}/`,
+      })),
+      ...FOOTER,
+    ],
+  },
+  ...products.map((p) => ({
+    label: p.slug,
+    url: `/products/${p.slug}/`,
+    links: [
+      ...CHROME,
+      { region: "main" as const, name: "All products", to: "/#products" },
+      { region: "main" as const, name: "See the other apps", to: "/#products" },
+      ...FOOTER,
+    ],
+  })),
+  {
+    label: "404",
+    url: "/no-such-page/",
+    links: [...CHROME, { region: "main", name: "Back to the studio", to: "/" }, ...FOOTER],
+  },
+];
+
+/* --------------------------------------------------------------- actions */
+
+/** Load a page and wait until it has hydrated and the motion layer is up. */
+export async function gotoReady(page: Page, url: string) {
+  await page.goto(url);
+  await waitForMotion(page);
+}
+
+export async function waitForMotion(page: Page) {
+  await page.waitForFunction(() => window.__muguMotion === "ready" || window.__muguMotion === "fallback");
+}
+
+const isMobile = (page: Page) => (page.viewportSize()?.width ?? 1366) < 760;
+
+/** Click a link from the map. On a phone, header links go through the menu. */
+export async function clickLink(page: Page, link: LinkSpec) {
+  const header = page.locator("header[data-nav]");
+
+  if (link.region === "brand") return header.locator("a.brand").click();
+
+  if (link.region === "nav") {
+    if (isMobile(page)) {
+      await header.getByRole("button", { name: "Open menu" }).click();
+      const panel = page.locator("#nav-panel");
+      await expect(panel).toBeVisible();
+      await panel.getByRole("link", { name: link.name, exact: true }).click();
+      await expect(panel).toBeHidden();
+      return;
+    }
+    return header.getByRole("link", { name: link.name, exact: true }).filter({ visible: true }).click();
+  }
+
+  const scope = link.region === "main" ? page.getByRole("main") : page.getByRole("contentinfo");
+  return scope.getByRole("link", { name: link.name, exact: true }).click();
+}
+
+/** Marks the document so a later check can tell a client-side navigation
+    (the case that broke) from a full page load (which always worked). */
+export async function markDocument(page: Page) {
+  await page.evaluate(() => {
+    window.__spaMarker = true;
+  });
+}
+
+export async function expectSameDocument(page: Page) {
+  expect(await page.evaluate(() => window.__spaMarker), "navigation should be client-side").toBe(true);
+}
+
+/* -------------------------------------------------------------- assertions */
+
+type RevealState = { total: number; hidden: string[] };
+
+/**
+ * The [data-reveal] elements in the viewport, and which of them are not yet
+ * visible. "In the viewport" matches the observer in lib/motion.ts (bottom
+ * 5% excluded) with margin to spare: at least a quarter of the element.
+ */
+function revealState(page: Page): Promise<RevealState> {
+  return page.evaluate(() => {
+    const limit = window.innerHeight * 0.95;
+    const inView = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]")).filter((el) => {
+      const r = el.getBoundingClientRect();
+      if (!r.height) return false;
+      return (Math.min(r.bottom, limit) - Math.max(r.top, 0)) / r.height >= 0.25;
+    });
+    return {
+      total: inView.length,
+      hidden: inView
+        .filter((el) => parseFloat(getComputedStyle(el).opacity) <= 0.9)
+        .map((el) => `<${el.tagName.toLowerCase()} class="${el.className}">`),
+    };
+  });
+}
+
+async function expectInViewVisible(page: Page): Promise<number> {
+  let total = 0;
+  await expect
+    .poll(
+      async () => {
+        const s = await revealState(page);
+        total = s.total;
+        return s.hidden;
+      },
+      { timeout: 2_000, message: "in-viewport [data-reveal] elements should reach opacity > 0.9" }
+    )
+    .toEqual([]);
+  return total;
+}
+
+/** Wait for any smooth scroll to finish: the position unchanged for 600ms
+    (a smooth scroll may start a beat after the click that asked for it). */
+export async function waitForScrollToSettle(page: Page) {
+  let last = -1;
+  let still = 0;
+  await expect
+    .poll(
+      async () => {
+        const y = await page.evaluate(() => Math.round(window.scrollY));
+        still = y === last ? still + 1 : 0;
+        last = y;
+        return still >= 4;
+      },
+      { timeout: 8_000, intervals: [150] }
+    )
+    .toBe(true);
+}
+
+/**
+ * The page shows its content: what is in view now, and the next screen down
+ * (which catches "the hero shows but everything under it is blank").
+ */
+export async function expectContentVisible(page: Page) {
+  await waitForScrollToSettle(page);
+  let seen = await expectInViewVisible(page);
+  await page.evaluate(() => window.scrollBy({ top: window.innerHeight * 0.8, behavior: "instant" }));
+  seen += await expectInViewVisible(page);
+  expect(seen, "some [data-reveal] content should have been checked").toBeGreaterThan(0);
+}
+
+/** A /#section URL lands with that section at the top, under the fixed nav. */
+export async function expectSectionAtTop(page: Page, hash: string) {
+  await waitForScrollToSettle(page);
+  const { top, vh, atEnd } = await page.evaluate((id) => {
+    const el = document.getElementById(id);
+    return {
+      top: el ? el.getBoundingClientRect().top : NaN,
+      vh: window.innerHeight,
+      atEnd: window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2,
+    };
+  }, hash);
+  expect(top, `#${hash} should exist and not be scrolled past`).toBeGreaterThanOrEqual(-2);
+  // Anchors land under the fixed nav (scroll-margin-top: 6rem). The last
+  // section can't scroll that far up; it only has to be in view.
+  expect(top, `#${hash} should be scrolled to the top`).toBeLessThanOrEqual(atEnd ? vh - 100 : 150);
+}

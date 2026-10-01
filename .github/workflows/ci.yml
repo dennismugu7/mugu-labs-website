@@ -28,3 +28,18 @@ jobs:
             grep -q "id=\"$id\"" out/index.html || { echo "section #$id is missing from index.html"; exit 1; }
           done
           echo "index.html present, all five section anchors found"
+
+      # Every internal link from every page, Back/forward, the fail-safes, at
+      # desktop and phone size, against the export served locally.
+      - name: Install Playwright's Chromium
+        run: npx playwright install --with-deps chromium
+
+      - run: npm run test:e2e
+
+      - name: Keep the traces of failed tests
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7
