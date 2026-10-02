@@ -5,9 +5,9 @@ import { products, site } from "../../lib/site";
 import { gotoReady } from "./helpers";
 
 /*
- * Dashboard X's Privacy and Terms live on the app (app.mugu-labs.com); the
- * footer links there from every page. /privacy and /terms on this site do
- * not redirect (vercel.json).
+ * The footer links to the site's own privacy page (/privacy/) from every
+ * page; that page links to Dashboard X's policy and terms on the app
+ * (app.mugu-labs.com). /privacy and /terms do not redirect (vercel.json).
  */
 
 const PRIVACY = "https://app.mugu-labs.com/privacy";
@@ -19,11 +19,11 @@ test("the addresses", () => {
 });
 
 for (const url of ["/", ...products.map((p) => `/products/${p.slug}/`), "/no-such-page/"]) {
-  test(`footer links to Privacy and Terms on ${url}`, async ({ page }) => {
+  test(`footer links to the privacy page on ${url}`, async ({ page }) => {
     await gotoReady(page, url);
     const footer = page.getByRole("contentinfo");
-    await expect(footer.getByRole("link", { name: "Privacy", exact: true })).toHaveAttribute("href", PRIVACY);
-    await expect(footer.getByRole("link", { name: "Terms", exact: true })).toHaveAttribute("href", TERMS);
+    await expect(footer.getByRole("link", { name: "Privacy", exact: true })).toHaveAttribute("href", "/privacy/");
+    await expect(footer.getByRole("link", { name: "Terms", exact: true })).toHaveCount(0);
   });
 }
 

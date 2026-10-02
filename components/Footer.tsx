@@ -20,8 +20,7 @@ export default function Footer() {
         {blogVisible() ? <Link href="/blog/">Blog</Link> : null}
         <Link href="/#about">About</Link>
         <Link href="/#contact">Contact</Link>
-        <a href={site.privacyUrl}>Privacy</a>
-        <a href={site.termsUrl}>Terms</a>
+        <Link href="/privacy/">Privacy</Link>
       </nav>
 
       <p className="footer__legal">&copy; {year} {site.name}. All rights reserved.</p>

@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
+    { url: `${site.url}/privacy/`, lastModified: site.privacyUpdated, changeFrequency: "yearly", priority: 0.3 },
     // The blog only while it is visible: published posts, their tags.
     ...(blogVisible() ? blogEntries() : []),
   ];
