@@ -1038,64 +1038,38 @@ a.tag--link:focus-visible {
 }
 
 /* ======================================================================
-   Journal
+   Blog on the home page (#blog)
    ====================================================================== */
 
-.journal__head {
-  display: grid;
-  justify-items: center;
-  gap: 2rem;
-  margin-bottom: clamp(3rem, 6vw, 5rem);
+.home-blog__title {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
   text-align: center;
 }
 
-.post {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: clamp(1.5rem, 2.4vw, 2rem);
-}
-
-.post__art {
-  position: relative;
+.home-blog__list {
   display: grid;
-  place-items: center;
-  height: clamp(118px, 12vw, 158px);
-  margin: -3.25rem 0 1.5rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
 }
 
-.post__art img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
+.home-blog__list .post-card {
   height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 26px 34px rgba(0, 4, 28, 0.55));
-  animation: float 9s ease-in-out infinite;
-  transition: transform 0.6s var(--ease);
+  align-content: start;
 }
 
-.post:nth-child(2) .post__art img {
-  animation-delay: -3s;
+@media (max-width: 960px) {
+  .home-blog__list {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
-.post:nth-child(3) .post__art img {
-  animation-delay: -6s;
+.home-blog__more {
+  display: grid;
+  justify-items: center;
+  margin-top: clamp(2rem, 4vw, 3rem);
 }
 
-.post--link:hover .post__art img {
-  transform: scale(1.06) rotate(-2deg);
-}
-
-.post__title {
-  flex: 1;
-  margin-bottom: calc(1.5 * var(--u));
-  font-size: clamp(1.05rem, 1.35vw, calc(1.2 * var(--u)));
-  font-weight: 700;
-  line-height: 1.35;
-  text-wrap: balance;
-}
-
+/* Tags: on post cards and posts */
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -1110,17 +1084,6 @@ a.tag--link:focus-visible {
   font-size: 0.8rem;
   color: var(--text-dim);
   transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
-}
-
-.post--link:hover .tag {
-  background: rgba(0, 28, 150, 0.7);
-  color: var(--text);
-}
-
-.journal__foot {
-  display: grid;
-  justify-items: center;
-  margin-top: clamp(2.5rem, 5vw, 4rem);
 }
 
 /* ======================================================================
@@ -1905,20 +1868,6 @@ a.tag--link:focus-visible {
     width: clamp(120px, 15vw, 230px);
   }
 
-  /* The art is drawn at about nine tenths of its card's width (comp 7), so
-     size it off the card, not the viewport. It breaks 88px above the card
-     top; the heading's margin leaves 44px between them. */
-  .post__art {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1;
-    margin-top: -7.5rem;
-  }
-
-  .journal__head {
-    margin-bottom: 8.25rem;
-  }
-
   /* The one thing in the cards that does not follow --u: comp 7 draws the
      pills small, and two-per-row is the signal the card is wide enough.
      At the full --u they wrap to three rows. 12.8px at 1280, 14.4px at 1920. */
@@ -1958,10 +1907,6 @@ a.tag--link:focus-visible {
 
   .about__title {
     max-width: none;
-  }
-
-  .post__art {
-    margin-top: -2.5rem;
   }
 }
 

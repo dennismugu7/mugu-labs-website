@@ -147,11 +147,11 @@ async function targets(page) {
       ["02-03-products", anchor("#products")],
       ["04-statement-overload", hold(s1)],
       ["05-statement-breather", hold(s2)],
-      ["06-07-journal", anchor("#journal")],
+      ["06-07-journal", anchor("#blog")],
       // Since M4 the journal cards do not fit under the heading in one frame;
       // comp 7 is the cards, so give them a frame with the art fully in it:
       // the art breaks 88px above the grid, and the nav covers the top 73px.
-      ["07-journal-cards", el("#journal .grid-3") ? top(el("#journal .grid-3")) - 170 : null],
+      ["07-journal-cards", el("#blog .home-blog__list") ? top(el("#blog .home-blog__list")) - 170 : null],
       ["08-about", anchor("#about")],
       // Comp 9 is "how I work" *and* socials on one slide; built, they are
       // taller than a frame, so each gets its own, anchored like a nav click.
@@ -210,7 +210,7 @@ async function metrics(page) {
       sectionHeights: {
         hero: section(".hero"),
         products: section("#products"),
-        journal: section("#journal"),
+        blog: section("#blog"),
         about: section("#about"),
         work: section("#work"),
         connect: section("#connect"),
@@ -218,7 +218,7 @@ async function metrics(page) {
       },
       headingLines: {
         products: lines("#products-title"),
-        journal: lines("#journal-title"),
+        blog: lines("#blog-title"),
         about: lines("#about-title"),
         work: lines("#work-title"),
         connect: lines("#connect-title"),

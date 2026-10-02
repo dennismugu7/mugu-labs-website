@@ -5,18 +5,18 @@ import Link from "next/link";
 import Logo from "./Logo";
 import ContactChoice from "./ContactChoice";
 import { site } from "../lib/site";
-import { showBlog } from "../lib/sections";
 
-const links = [
-  { label: "Products", href: "/#products" },
-  // Only while the journal section is on the page (lib/site.ts → features).
-  ...(showBlog ? [{ label: "Journal", href: "/#journal" }] : []),
-  { label: "About", href: "/#about" },
-  { label: "How we work", href: "/#work" },
-];
-
-export default function Nav() {
+/** `showBlog`: whether the blog exists (lib/blog.ts blogVisible(), passed
+    in by the layout, since this client component can't read content/). */
+export default function Nav({ showBlog }: { showBlog: boolean }) {
   const [open, setOpen] = useState(false);
+
+  const links = [
+    { label: "Products", href: "/#products" },
+    ...(showBlog ? [{ label: "Blog", href: "/blog/" }] : []),
+    { label: "About", href: "/#about" },
+    { label: "How we work", href: "/#work" },
+  ];
 
   useEffect(() => {
     if (!open) return;

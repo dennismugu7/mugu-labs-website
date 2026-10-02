@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import { reveal } from "./reveal";
+import { blogVisible } from "../lib/blog";
 import { products, site } from "../lib/site";
 
 export default function Footer() {
@@ -16,6 +17,7 @@ export default function Footer() {
             {product.name}
           </Link>
         ))}
+        {blogVisible() ? <Link href="/blog/">Blog</Link> : null}
         <Link href="/#about">About</Link>
         <Link href="/#contact">Contact</Link>
       </nav>
