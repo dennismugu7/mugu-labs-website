@@ -828,6 +828,216 @@ button {
 }
 
 /* ======================================================================
+   Blog pages (/blog/, /blog/<slug>/, /blog/tag/<tag>/)
+   ====================================================================== */
+
+/* A reading measure, for the blog's own pages */
+.shell--read {
+  max-width: calc(46rem + 2 * var(--gutter));
+}
+
+.blog-page,
+.post-page {
+  padding-top: clamp(8rem, 16vh, 11rem);
+}
+
+.blog-page__title {
+  margin: 0.25rem 0 0.75rem;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.blog-page__lead {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  font-size: var(--fs-lead);
+  color: var(--text-dim);
+}
+
+.post-list {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+
+.post-card {
+  display: grid;
+  gap: 0.75rem;
+  padding: clamp(1.4rem, 2.6vw, 2rem);
+}
+
+.post-meta {
+  font-size: 0.88rem;
+  color: var(--text-faint);
+}
+
+.post-card__title {
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.post-card__title a {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.35s var(--ease);
+}
+
+.post-card__title a:hover,
+.post-card__title a:focus-visible {
+  background-size: 100% 1px;
+}
+
+.post-card__excerpt {
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+a.tag--link:hover,
+a.tag--link:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--text);
+}
+
+/* A post */
+.post-page__head {
+  display: grid;
+  gap: 0.85rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.post-page__title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.post-page__byline {
+  color: var(--text-dim);
+}
+
+.prose {
+  font-size: clamp(1.05rem, 1.3vw, 1.15rem);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.prose > * + * {
+  margin-top: 1.15em;
+}
+
+.prose h2 {
+  margin-top: 2.2em;
+  font-size: clamp(1.4rem, 2.6vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.prose h3 {
+  margin-top: 1.8em;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: 0.6em;
+}
+
+.prose strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.prose a {
+  color: var(--mint);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+.prose a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li + li {
+  margin-top: 0.5em;
+}
+
+.prose li::marker {
+  color: var(--mint);
+}
+
+.prose blockquote {
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--mint);
+  border-radius: 0 14px 14px 0;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
+.prose blockquote > * + * {
+  margin-top: 0.6em;
+}
+
+.prose em {
+  color: var(--text-dim);
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* The related product, under a post */
+.post-product {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem 1.25rem;
+  margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  padding: clamp(1.25rem, 2.4vw, 1.75rem);
+}
+
+.post-product__icon {
+  width: 64px;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  border-radius: 24%;
+}
+
+.post-product__name {
+  font-weight: 700;
+}
+
+.post-product__tagline {
+  color: var(--text-dim);
+}
+
+.post-product__link {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+/* ======================================================================
    Journal
    ====================================================================== */
 
