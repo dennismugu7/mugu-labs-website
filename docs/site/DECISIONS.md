@@ -193,6 +193,10 @@ owner-verified fact.
 They stay. If a status changes, `lib/site.ts` → `products[].status` is the one
 place to change it, and the badge and the product page's eyebrow both follow.
 
+**Update, October 2026 (owner).** Bookflow is in development, not live. One
+label for that state on every app: "In development" (ODA's "In build" is
+retired). The `status` type now allows only "Live" or "In development".
+
 ## D16 — Deployed on Vercel
 
 The owner completed the Vercel import; the site is live on its Vercel URL.

@@ -22,12 +22,12 @@ export default function Products() {
           {products.map((product, i) => (
             <li key={product.slug} {...reveal(i * 110)}>
               <article className="card card--hover product">
-                <span className="product__status">{product.status}</span>
-
                 <div className="product__icon">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={product.icon} alt="" width={168} height={168} loading="lazy" />
                 </div>
+
+                <span className="product__status">{product.status}</span>
 
                 <h3 className="product__name">{product.name}</h3>
                 <p className="product__tagline">{product.tagline}</p>
