@@ -28,27 +28,5 @@
         }
       ]
     }
-  ],
-  "redirects": [
-    {
-      "source": "/privacy",
-      "destination": "https://app.mugu-labs.com/privacy",
-      "permanent": false
-    },
-    {
-      "source": "/privacy/",
-      "destination": "https://app.mugu-labs.com/privacy",
-      "permanent": false
-    },
-    {
-      "source": "/terms",
-      "destination": "https://app.mugu-labs.com/terms",
-      "permanent": false
-    },
-    {
-      "source": "/terms/",
-      "destination": "https://app.mugu-labs.com/terms",
-      "permanent": false
-    }
   ]
 }
