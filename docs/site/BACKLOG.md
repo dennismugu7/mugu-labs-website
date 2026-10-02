@@ -8,7 +8,7 @@ into a `lead/NEXT-*.md`.
 | B1 | A real blog: `/journal` index, markdown posts, per-post pages | The comps point at an external "mugu labs blog". Until the owner says where the blog actually lives, building one here is inventing scope. |
 | B2 | Fonts as `.woff2` instead of `.ttf` | Roughly halves font bytes. Needs `pip install fonttools brotli` and a re-run of `scripts/build-fonts.py --woff2`. Worth doing before any paid traffic. |
 | B3 | Higher-resolution artwork | The 3D illustrations and app icons were cut out of 1920×1080 comps, so they are capped at that resolution. If the originals exist, they drop into `public/assets/` under the same filenames. |
-| B4 | Studio email address — **unblocked** | D8. The domain has working Zoho mail (MX, SPF, DKIM and DMARC all verified intact after the DNS change). The contact menu still offers a personal Gmail on a studio site that now has its own mail on its own domain. One line in `lib/site.ts` once the owner picks the address. |
+| B4 | ~~Studio email address~~ **Closed** | D8. The contact menu offers `support@mugu-labs.com` (Zoho mail on the domain) since October 2026. |
 | B5 | Analytics | None installed. Deliberate — decide what question you actually want answered first. |
 | B6 | Per-product OG images | One shared share image is enough until the product pages get traffic. |
 | B7 | Contact form | The email/WhatsApp choice (D7) covers it without a backend. Revisit only if the owner wants submissions logged somewhere. |

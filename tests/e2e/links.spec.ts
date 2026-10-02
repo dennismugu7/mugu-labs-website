@@ -196,3 +196,19 @@ test.describe('"Work with us" opens the contact menu', () => {
     await expect(page).toHaveURL("/");
   });
 });
+
+test("contact details", async ({ page }) => {
+  await gotoReady(page, "/");
+  const button = page.getByRole("main").getByRole("button", { name: "Contact us" });
+  await button.scrollIntoViewIfNeeded();
+  await button.click();
+  const menu = page.getByRole("main").getByRole("menu");
+  await expect(menu.getByRole("menuitem", { name: /Email/ })).toHaveAttribute(
+    "href",
+    "mailto:support@mugu-labs.com?subject=Let's%20build%20something"
+  );
+  await expect(menu.getByRole("menuitem", { name: /Email/ })).toContainText("support@mugu-labs.com");
+  const wa = new URL((await menu.getByRole("menuitem", { name: /WhatsApp/ }).getAttribute("href"))!);
+  expect(wa.pathname).toBe("/254701408727");
+  expect(wa.searchParams.get("text")).toBe("Hi Mugu Labs, I found your website and I'd like to talk about an app.");
+});

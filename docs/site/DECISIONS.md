@@ -87,6 +87,10 @@ own pitch — "same personal WhatsApp touch".
 personal address on a studio site. Replace with a `mugu-labs.com` address once
 the domain has mail. Tracked as `BACKLOG.md` B4.
 
+**Update, October 2026.** Replaced by `support@mugu-labs.com` (the owner's
+choice; Zoho mail on the domain). B4 closed. The WhatsApp greeting now
+addresses the studio, not a person.
+
 ## D9 — Deploy to Vercel, from GitHub, auto on push to `main`
 
 Repo `dennismugu7/mugu-labs-website`, public. Every push to `main` deploys;

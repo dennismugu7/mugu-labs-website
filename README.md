@@ -39,7 +39,7 @@ The things most likely to need your attention first:
 | Social profile URLs | `lib/site.ts` → `socials` | all `"#"` — a placeholder |
 | Blog link | `lib/site.ts` → `site.blogUrl` | `"#journal"` — points back at the page |
 | Blog post links | `lib/site.ts` → `posts[].href` | `"#"` |
-| Contact email | `lib/site.ts` → `site.contact.email` | your Gmail — swap for a domain address when you have one |
+| Contact email | `lib/site.ts` → `site.contact.email` | `support@mugu-labs.com` (Zoho mail on the domain) |
 | WhatsApp number | `lib/site.ts` → `site.contact.whatsapp` | `254701408727` |
 | Site URL (for OG tags + sitemap) | `lib/site.ts` → `site.url` | `https://mugu-labs.com` |
 
