@@ -899,11 +899,28 @@ button {
   line-height: 1.55;
 }
 
+.team {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(1.25 * var(--u)) calc(2.5 * var(--u));
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
 .author {
   display: flex;
   align-items: center;
   gap: var(--u);
-  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+/* No photo: initials in the brand gradient (the robot mark's), same circle */
+.author__avatar.author__monogram {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #2fb7cf 0%, #5b7fe8 36%, #8b5cf6 68%, #d946ef 100%);
+  font-size: calc(1.1 * var(--u));
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
 }
 
 .author__avatar {
