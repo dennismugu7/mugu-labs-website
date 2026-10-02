@@ -242,7 +242,7 @@ const PACK = {
   },
   oda: {
     intro:
-      "ODA gives people who sell on WhatsApp, TikTok and Instagram a free shop link. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.",
+      "ODA gives people who sell on WhatsApp, TikTok and Instagram a shop link of their own. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.",
     features: [
       "Your own shop link",
       "Paid straight to you",
@@ -357,4 +357,20 @@ test.describe("pricing stays off the site until it is confirmed", () => {
       expect(text).not.toMatch(/commission|free core|fee per order|no fees?\b/i);
     });
   }
+
+  // On ODA "free" can only be about price. (Bookflow's "free gaps" are open
+  // slots in the day, so this one is ODA's alone.)
+  test("ODA says nothing is free", async ({ page }) => {
+    await page.goto("/products/oda/");
+    const text = await page.evaluate(() =>
+      [
+        document.title,
+        document.body.innerText,
+        ...Array.from(document.querySelectorAll("meta[content], img[alt]"), (el) =>
+          el.getAttribute("content") ?? el.getAttribute("alt")
+        ),
+      ].join("\n")
+    );
+    expect(text).not.toMatch(/\bfree\b/i);
+  });
 });
