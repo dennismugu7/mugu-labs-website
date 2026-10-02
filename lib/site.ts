@@ -95,6 +95,9 @@ export type Product = {
   playStoreUrl?: string;
   /** App screenshots for the product page's gallery, in order. */
   screens: Screen[];
+  /** schema.org applicationCategory, for the page's SoftwareApplication
+   *  structured data (only emitted for an app with a Play listing). */
+  appCategory?: string;
   /** When this product's page content last changed (YYYY-MM-DD), for the
    *  sitemap. Bump it with the copy. */
   updated: string;
@@ -113,25 +116,57 @@ export const products: Product[] = [
     updated: "2026-10-02",
     status: "live",
     playStoreUrl: "https://play.google.com/store/apps/details?id=com.mugulabs.dashboardx",
-    screens: [],
+    appCategory: "FinanceApplication",
+    screens: [
+      {
+        src: "/assets/dashboard-x/dashboard-x-overview.webp",
+        alt: "Dashboard X overview: the total balance, the year's income and expenses, and spending by category in a ring chart",
+        width: 720,
+        height: 1417,
+      },
+      {
+        src: "/assets/dashboard-x/dashboard-x-transactions.webp",
+        alt: "Transactions: money in and out for the year, filters for income, expenses and transfers, and imported entries grouped by day",
+        width: 720,
+        height: 1417,
+      },
+      {
+        src: "/assets/dashboard-x/dashboard-x-analytics.webp",
+        alt: "Analytics: income against spending for each month as a bar chart, with September's in, out and net",
+        width: 720,
+        height: 1417,
+      },
+      {
+        src: "/assets/dashboard-x/dashboard-x-budget.webp",
+        alt: "Budget for September: seven planned lines shown as a ring chart, with the amount for each category",
+        width: 720,
+        height: 1417,
+      },
+      {
+        src: "/assets/dashboard-x/dashboard-x-import-csv.webp",
+        alt: "Importing a bank statement, step one of three: choose the account and the CSV file",
+        width: 720,
+        height: 1417,
+      },
+    ],
     summary:
-      "A personal finance dashboard for people who gave up on spreadsheets. Snap a receipt, and the amount, the merchant and the category are in before you've put your phone back in your pocket.",
+      "A personal finance dashboard for people who gave up on spreadsheets. Bring in your bank statement, see where the money goes, and plan the month before it begins.",
     features: [
       {
-        title: "Scan, don't type",
-        body: "Point the camera at a receipt. Dashboard X reads the total, the date and the merchant, and files it where it belongs.",
+        title: "Import, don't type",
+        body: "Bring in your bank's CSV statement in three steps: choose the file, match the columns, review. Cash spends? Add them by hand in seconds.",
       },
       {
-        title: "Categories that learn",
-        body: "Correct a category once and it sticks. No rules engine to configure, no tagging chores on a Sunday evening.",
+        title: "See where it goes",
+        body: "Your spending broken down by category, with totals and percentages at a glance.",
       },
       {
-        title: "One number that matters",
-        body: "The home screen answers a single question — can I spend this? — instead of showing you eleven charts.",
+        title: "Month by month",
+        body: "Income against spending for every month of the year, with your net for each.",
       },
       {
-        title: "Works offline",
-        body: "Everything runs on-device first and syncs when there's signal. Built for a commute, not a fibre connection.",
+        title: "Plan the month",
+        body: "Set budget lines per category and see what's planned before the month begins.",
       },
     ],
   },
