@@ -22,15 +22,14 @@ export const site = {
     emailSubject: "Let's build something",
   },
 
-  /** ---- Author -------------------------------------------------------- */
+  /** ---- Author: the page metadata's author (<meta name="author">) ---- */
   author: {
     name: "Dennis Mburu",
-    role: "Developer",
-    github: "dennismugu7",
     githubUrl: "https://github.com/dennismugu7",
-    avatar: "/assets/avatar.png",
-    bio: "Mugu Labs started out of personal necessity — I was tired of clunky, overcomplicated software, so I started coding my own solutions. What began as a personal habit quickly turned into a studio dedicated to clean design and effortless utility.",
   },
+
+  /** ---- "Made by humans" --------------------------------------------- */
+  bio: "Mugu Labs began when Dennis Mburu got tired of clunky, overcomplicated software and started coding his own. It has since grown into a small team building calm, useful apps, designed, built and tested by real people.",
 
   /** ---- Blog ----------------------------------------------------------
    *  Paste the blog's URL when it exists. Empty means "not yet": the button
@@ -42,6 +41,26 @@ export const site = {
    *  changed on every deploy. */
   updated: "2026-10-01",
 } as const;
+
+/** ---- Team -------------------------------------------------------------
+ *  One card per person in "Made by humans". With an `avatar` the card shows
+ *  the photo; without one, `monogram` in the brand gradient. `name` and
+ *  `github` are optional.
+ * ---------------------------------------------------------------------- */
+
+export type TeamMember = {
+  name?: string;
+  role: string;
+  avatar?: string;
+  monogram?: string;
+  /** GitHub username, without the @. */
+  github?: string;
+};
+
+export const team: TeamMember[] = [
+  { name: "Dennis Mburu", role: "Lead Developer", avatar: "/assets/avatar.png", github: "dennismugu7" },
+  { role: "Collaborator", monogram: "ML" },
+];
 
 /** ---- Products -------------------------------------------------------- */
 

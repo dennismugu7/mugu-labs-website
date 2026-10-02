@@ -1,45 +1,55 @@
 import { GitHubIcon } from "./icons";
 import { reveal } from "./reveal";
-import { site } from "../lib/site";
+import { site, team } from "../lib/site";
 
 export default function About() {
-  const { author } = site;
-
   return (
     <section className="section" id="about" aria-labelledby="about-title">
       <div className="shell about">
         <div>
           <h2 id="about-title" {...reveal(0, "section-title about__title")}>
-            Made by a human
+            Made by humans
           </h2>
 
           <div {...reveal(120, "about__card")}>
-            <p>{author.bio}</p>
+            <p>{site.bio}</p>
           </div>
 
-          <div {...reveal(220, "author")}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className="author__avatar"
-              src={author.avatar}
-              alt={`${author.name}, ${author.role.toLowerCase()} at ${site.name}`}
-              width={62}
-              height={62}
-              loading="lazy"
-            />
-            <div>
-              <p className="author__name">{author.name}</p>
-              <p className="author__role">{author.role}</p>
-              <a
-                className="author__handle"
-                href={author.githubUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <GitHubIcon />@{author.github}
-              </a>
-            </div>
-          </div>
+          <ul className="team" aria-label="The team">
+            {team.map((member, i) => (
+              <li key={member.name ?? member.role} {...reveal(220 + i * 80, "author")}>
+                {member.avatar ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    className="author__avatar"
+                    src={member.avatar}
+                    alt={`${member.name ?? member.role}, ${member.role} at ${site.name}`}
+                    width={62}
+                    height={62}
+                    loading="lazy"
+                  />
+                ) : (
+                  <span className="author__avatar author__monogram" aria-hidden="true">
+                    {member.monogram}
+                  </span>
+                )}
+                <div>
+                  {member.name ? <p className="author__name">{member.name}</p> : null}
+                  <p className={member.name ? "author__role" : "author__name"}>{member.role}</p>
+                  {member.github ? (
+                    <a
+                      className="author__handle"
+                      href={`https://github.com/${member.github}`}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      <GitHubIcon />@{member.github}
+                    </a>
+                  ) : null}
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <figure data-drift {...reveal(180, "about__art")}>
