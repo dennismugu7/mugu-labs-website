@@ -32,6 +32,11 @@ export const site = {
   /** ---- "Made by humans" --------------------------------------------- */
   bio: "Mugu Labs began when Dennis Mburu got tired of clunky, overcomplicated software and started coding his own. It has since grown into a small team building calm, useful apps, designed, built and tested by real people.",
 
+  /** ---- Legal: served by the app, linked from the footer; /privacy and
+   *  /terms on this site redirect there (vercel.json). */
+  privacyUrl: "https://app.mugu-labs.com/privacy",
+  termsUrl: "https://app.mugu-labs.com/terms",
+
   /** When the home page's content last changed (YYYY-MM-DD) — the sitemap's
    *  lastmod. Bump it with the copy; a build date would claim every page
    *  changed on every deploy. */
