@@ -39,7 +39,7 @@ export const site = {
   /** When the home page's content last changed (YYYY-MM-DD) — the sitemap's
    *  lastmod. Bump it with the copy; a build date would claim every page
    *  changed on every deploy. */
-  updated: "2026-10-01",
+  updated: "2026-10-02",
 } as const;
 
 /** ---- Team -------------------------------------------------------------
@@ -92,7 +92,7 @@ export const products: Product[] = [
     icon: "/assets/icon-dashboardx.png",
     accent: "lime",
     href: "/products/dashboard-x",
-    updated: "2026-09-19",
+    updated: "2026-10-02",
     status: "Live",
     summary:
       "A personal finance dashboard for people who gave up on spreadsheets. Snap a receipt, and the amount, the merchant and the category are in before you've put your phone back in your pocket.",
@@ -122,7 +122,7 @@ export const products: Product[] = [
     icon: "/assets/icon-bookflow.png",
     accent: "navy",
     href: "/products/bookflow",
-    updated: "2026-09-19",
+    updated: "2026-10-02",
     status: "In development",
     summary:
       "Booking software shaped like a salon day rather than an enterprise calendar. Clients pick a slot, Bookflow confirms it, reminds them, and quietly chases the ones who go quiet.",
@@ -152,7 +152,7 @@ export const products: Product[] = [
     icon: "/assets/icon-oda.png",
     accent: "lime",
     href: "/products/oda",
-    updated: "2026-09-19",
+    updated: "2026-10-02",
     status: "In development",
     summary:
       "A storefront and checkout for sellers whose business already lives in WhatsApp. Customers get a proper product page and a real cart; you keep the conversation you've always had.",
