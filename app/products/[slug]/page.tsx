@@ -6,7 +6,7 @@ import ContactChoice from "../../../components/ContactChoice";
 import { brandStyle } from "../../../components/brand";
 import { reveal } from "../../../components/reveal";
 import { baseOpenGraph, baseTwitter } from "../../../lib/metadata";
-import { products, site, statusLabel } from "../../../lib/site";
+import { earlyTesterRequest, products, site, statusLabel } from "../../../lib/site";
 
 type Params = { slug: string };
 
@@ -51,7 +51,9 @@ export default async function ProductPage({ params }: PageProps) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="detail__icon" src={product.icon} alt="" width={132} height={132} />
           <div>
-            <p className="eyebrow">{statusLabel[product.status]}</p>
+            {product.status === "in-development" ? (
+              <p className="status-badge">{statusLabel[product.status]}</p>
+            ) : null}
             <h1 className="detail__title">{product.name}</h1>
             <p className="detail__tagline">{product.tagline}</p>
           </div>
@@ -73,12 +75,31 @@ export default async function ProductPage({ params }: PageProps) {
         </ul>
 
         <div {...reveal(0, "detail__cta")}>
-          <ContactChoice />
+          {/* The primary action follows the status: download a live app,
+              ask to test one that is still being built. */}
+          {product.status === "live" && product.playStoreUrl ? (
+            <a className="play-badge" href={product.playStoreUrl} target="_blank" rel="noopener">
+              {/* Google's badge artwork, unmodified, with its clear space. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/assets/google-play-badge.png" alt="Get it on Google Play" width={646} height={250} />
+            </a>
+          ) : (
+            <ContactChoice
+              label="Become an early tester"
+              buttonClassName="btn btn--brand btn--block-sm"
+              icon="arrow"
+              {...earlyTesterRequest(product.name)}
+            />
+          )}
           <Link className="btn btn--ghost" href="/#products">
             See the other apps
             <ArrowRight className="btn__arrow" />
           </Link>
         </div>
+
+        {product.status === "live" && product.playStoreUrl ? (
+          <p className="play-legal">Google Play and the Google Play logo are trademarks of Google LLC.</p>
+        ) : null}
       </div>
     </article>
   );

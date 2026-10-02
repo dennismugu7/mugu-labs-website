@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { ArrowRight, ChevronRight, MailIcon, WhatsAppIcon } from "./icons";
-import { mailtoHref, site, whatsappHref } from "../lib/site";
+import { mailto, site, whatsapp } from "../lib/site";
 
 type Props = {
   defaultOpen?: boolean;
@@ -16,12 +16,18 @@ type Props = {
   className?: string;
   /** Called after Email or WhatsApp is picked, e.g. to close the phone menu. */
   onChoose?: () => void;
+  /** A first message of its own: the WhatsApp text and the email body.
+      Defaults to the general greeting in lib/site.ts. */
+  message?: string;
+  /** The email subject; defaults to lib/site.ts's. */
+  emailSubject?: string;
 };
 
 /**
  * A button that opens a small menu with the two ways to reach the studio:
- * "Contact us" in the contact card and on product pages, "Work with us" in
- * the nav, the phone menu and the hero. Closes on Escape and on an outside
+ * "Contact us" in the contact card, "Work with us" in the nav, the phone
+ * menu and the hero, "Become an early tester" on the page of an app still in
+ * development (with its own first message). Closes on Escape and on an outside
  * click, and moves focus into the menu so it works from the keyboard.
  */
 export default function ContactChoice({
@@ -31,6 +37,8 @@ export default function ContactChoice({
   icon = "chevron",
   className,
   onChoose,
+  message,
+  emailSubject,
 }: Props) {
   const [open, setOpen] = useState(defaultOpen);
   const menuId = useId();
@@ -89,7 +97,7 @@ export default function ContactChoice({
         <div className="choice__menu" id={menuId} role="menu" aria-label={label}>
           <a
             className="choice__item choice__item--mail"
-            href={mailtoHref}
+            href={mailto(emailSubject, message)}
             role="menuitem"
             ref={firstItemRef}
             onClick={choose}
@@ -105,7 +113,7 @@ export default function ContactChoice({
 
           <a
             className="choice__item choice__item--whatsapp"
-            href={whatsappHref}
+            href={whatsapp(message)}
             target="_blank"
             rel="noreferrer noopener"
             role="menuitem"

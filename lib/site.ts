@@ -112,6 +112,7 @@ export const products: Product[] = [
     href: "/products/dashboard-x",
     updated: "2026-10-02",
     status: "live",
+    playStoreUrl: "https://play.google.com/store/apps/details?id=com.mugulabs.dashboardx",
     screens: [],
     summary:
       "A personal finance dashboard for people who gave up on spreadsheets. Snap a receipt, and the amount, the merchant and the category are in before you've put your phone back in your pocket.",
@@ -291,10 +292,24 @@ export const features = {
 
 /** ---- Derived links --------------------------------------------------- */
 
-export const mailtoHref = `mailto:${site.contact.email}?subject=${encodeURIComponent(
-  site.contact.emailSubject
-)}`;
+/** A mailto: link to the studio, with a subject and, optionally, a body. */
+export function mailto(subject: string = site.contact.emailSubject, body?: string): string {
+  const query = `subject=${encodeURIComponent(subject)}` + (body ? `&body=${encodeURIComponent(body)}` : "");
+  return `mailto:${site.contact.email}?${query}`;
+}
 
-export const whatsappHref = `https://wa.me/${site.contact.whatsapp}?text=${encodeURIComponent(
-  site.contact.whatsappMessage
-)}`;
+/** A wa.me link to the studio's WhatsApp, with the first message filled in. */
+export function whatsapp(text: string = site.contact.whatsappMessage): string {
+  return `https://wa.me/${site.contact.whatsapp}?text=${encodeURIComponent(text)}`;
+}
+
+/** The early-tester request for an app that is still in development. */
+export function earlyTesterRequest(productName: string) {
+  return {
+    message: `Hi Mugu Labs, I'd like to become an early tester for ${productName}.`,
+    emailSubject: `Early tester: ${productName}`,
+  };
+}
+
+export const mailtoHref = mailto();
+export const whatsappHref = whatsapp();
