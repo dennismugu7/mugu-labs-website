@@ -1425,9 +1425,19 @@ button {
   margin-bottom: 1rem;
 }
 
+.screens__group + .screens__group {
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.screens__group-title {
+  margin-bottom: 0.85rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
 .screens__list {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--screen-cols, 5), minmax(0, 1fr));
   gap: clamp(0.75rem, 1.5vw, 1.25rem);
   border-radius: 20px;
 }
@@ -1457,6 +1467,18 @@ button {
     flex: 0 0 68%;
     scroll-snap-align: start;
   }
+}
+
+.detail__features-title {
+  margin-bottom: 1.25rem;
+  font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+  font-weight: 700;
+}
+
+.detail__smallprint {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-faint);
 }
 
 /* "In development", by the title of an app that isn't out yet */

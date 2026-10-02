@@ -72,7 +72,15 @@ export const statusLabel: Record<ProductStatus, string> = {
   "in-development": "In development",
 };
 
-export type Screen = { src: string; alt: string; width: number; height: number };
+export type Screen = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  /** A label to group screens under (ODA: "For you" / "For your buyers").
+   *  Groups show in the order they first appear. */
+  group?: string;
+};
 
 export type Product = {
   slug: string;
@@ -89,7 +97,11 @@ export type Product = {
   external?: boolean;
   /** Detail-page content. */
   summary: string;
+  /** A heading over the features, e.g. "What we're building". */
+  featuresHeading?: string;
   features: { title: string; body: string }[];
+  /** A line under the features. */
+  smallPrint?: string;
   status: ProductStatus;
   /** The Google Play listing; a live product's page links to it. */
   playStoreUrl?: string;
@@ -181,27 +193,74 @@ export const products: Product[] = [
     href: "/products/bookflow",
     updated: "2026-10-02",
     status: "in-development",
-    screens: [],
-    summary:
-      "Booking software shaped like a salon day rather than an enterprise calendar. Clients pick a slot, Bookflow confirms it, reminds them, and quietly chases the ones who go quiet.",
-    features: [
+    screens: [
       {
-        title: "A link, not an app download",
-        body: "Clients book from the link in your bio. Nothing to install, nothing to sign up for, nothing to explain twice.",
+        src: "/assets/bookflow/bookflow-today.webp",
+        alt: "Bookflow's Today screen showing 8 bookings, 23k expected and 3 gaps, with an unpaid-deposit reminder",
+        width: 720,
+        height: 1280,
       },
       {
-        title: "Reminders that cut no-shows",
-        body: "Automatic nudges the day before and the morning of, in the channel your clients actually read.",
+        src: "/assets/bookflow/bookflow-booking-detail.webp",
+        alt: "A booking with services, an M-Pesa deposit paid and the balance due on the day",
+        width: 720,
+        height: 1280,
       },
       {
-        title: "Your real hours",
-        body: "Lunch, walk-ins, a chair that's out, a stylist who only works Thursdays — the schedule bends to the shop.",
+        src: "/assets/bookflow/bookflow-reschedule.webp",
+        alt: "Rescheduling a booking to a new time slot, with an SMS sent to the client",
+        width: 720,
+        height: 1280,
       },
       {
-        title: "Money in plain sight",
-        body: "Deposits, balances and the week's take, without exporting anything into a spreadsheet.",
+        src: "/assets/bookflow/bookflow-calendar.webp",
+        alt: "Team day view with each stylist's bookings side by side",
+        width: 720,
+        height: 1280,
+      },
+      {
+        src: "/assets/bookflow/bookflow-clients.webp",
+        alt: "Client list filtered into new, regular and lapsed clients",
+        width: 720,
+        height: 1280,
+      },
+      {
+        src: "/assets/bookflow/bookflow-client-profile.webp",
+        alt: "A client profile showing visits, total spent and visit history",
+        width: 720,
+        height: 1280,
       },
     ],
+    summary:
+      "Bookflow is a booking app for salons, barbers and beauty studios. Share one link, let clients book themselves, and run the whole day from your phone, deposits, changes and all.",
+    featuresHeading: "What we're building",
+    features: [
+      {
+        title: "Your day at a glance",
+        body: "Open the app and see today's bookings, what you expect to take home, and the free gaps you could still fill. Unpaid deposits get flagged before they cost you a slot.",
+      },
+      {
+        title: "Deposits that protect your time",
+        body: "Clients pay a small M-Pesa deposit to hold their slot. If someone doesn't show, you decide: keep the deposit or refund it in a tap.",
+      },
+      {
+        title: "Changes without the chaos",
+        body: "Reschedule, move a booking to another stylist, add a service or adjust the price. The client gets an SMS with the new details, so nobody is left guessing.",
+      },
+      {
+        title: "The whole team, side by side",
+        body: "A day view with every stylist's bookings in their own column, including who's off and when.",
+      },
+      {
+        title: "A client list that builds itself",
+        body: "Everyone who books, whether online, by phone or walk-in, lands in your client list with their visit history. Regulars who've gone quiet are easy to spot.",
+      },
+      {
+        title: "One link, anywhere",
+        body: "Put your booking link on WhatsApp or Instagram and appointments land in your calendar automatically.",
+      },
+    ],
+    smallPrint: "Bookflow is still being built with real salons. Features may change before launch.",
   },
   {
     slug: "oda",
@@ -214,27 +273,91 @@ export const products: Product[] = [
     href: "/products/oda",
     updated: "2026-10-02",
     status: "in-development",
-    screens: [],
-    summary:
-      "A storefront and checkout for sellers whose business already lives in WhatsApp. Customers get a proper product page and a real cart; you keep the conversation you've always had.",
-    features: [
+    screens: [
       {
-        title: "Checkout, then chat",
-        body: "The order lands as a clean, itemised WhatsApp message — no more scrolling back to work out what someone wanted.",
+        src: "/assets/oda/oda-home.webp",
+        alt: "ODA seller home showing new orders, payments to confirm and this week's sales",
+        width: 720,
+        height: 1600,
+        group: "For you",
       },
       {
-        title: "Catalogue in minutes",
-        body: "Photos, prices, variants. Paste them in once and share a link that looks like you meant it.",
+        src: "/assets/oda/oda-orders.webp",
+        alt: "Orders list sorted into needs action, new and paid",
+        width: 720,
+        height: 1600,
+        group: "For you",
       },
       {
-        title: "Mobile money first",
-        body: "Built around how people actually pay here, not bolted on after the card form.",
+        src: "/assets/oda/oda-order-detail.webp",
+        alt: "An order where the buyer says she has paid, with the M-Pesa code to check before confirming",
+        width: 720,
+        height: 1600,
+        group: "For you",
       },
       {
-        title: "Nothing to abandon",
-        body: "No accounts, no passwords, no six-step funnel. The shortest path from interested to paid.",
+        src: "/assets/oda/oda-share-shop.webp",
+        alt: "Sharing a shop link to TikTok, Instagram or WhatsApp with a ready-made caption",
+        width: 720,
+        height: 1600,
+        group: "For you",
+      },
+      {
+        src: "/assets/oda/oda-buyer-shop.webp",
+        alt: "A buyer's view of a seller's shop link with products and a checked badge",
+        width: 720,
+        height: 1558,
+        group: "For your buyers",
+      },
+      {
+        src: "/assets/oda/oda-buyer-pay.webp",
+        alt: "Step-by-step M-Pesa payment instructions showing the exact name the buyer should see",
+        width: 720,
+        height: 1558,
+        group: "For your buyers",
+      },
+      {
+        src: "/assets/oda/oda-buyer-tracking.webp",
+        alt: "Order tracking showing the order on the way with the rider's details",
+        width: 720,
+        height: 1558,
+        group: "For your buyers",
       },
     ],
+    summary:
+      "ODA gives people who sell on WhatsApp, TikTok and Instagram a free shop link. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.",
+    featuresHeading: "What we're building",
+    features: [
+      {
+        title: "Your own shop link",
+        body: "Products, sizes and prices on one simple page. Put it in your TikTok bio or Instagram profile; buyers don't need an app.",
+      },
+      {
+        title: "Paid straight to you",
+        body: "Buyers pay your own Till, Pochi or Paybill. ODA never holds your money.",
+      },
+      {
+        title: "Orders that sort themselves",
+        body: "New, waiting for payment, ready to send: every order sits in the right pile. Check your M-Pesa messages, tap confirm, mark it sent.",
+      },
+      {
+        title: "WhatsApp updates for buyers",
+        body: "Received, paid, on the way, delivered. Buyers get each update on WhatsApp, so you're not answering \"where's my order?\" all day.",
+      },
+      {
+        title: "A badge buyers can check",
+        body: "Sellers who prove they control their payment account get a \"Payment details checked\" badge. Buyers can look up a shop before they pay.",
+      },
+      {
+        title: "Delivery, sorted",
+        body: "Offer pay-on-delivery with a deposit, and send your rider a one-time link to mark the order delivered.",
+      },
+      {
+        title: "English and Kiswahili",
+        body: "For you and for your buyers.",
+      },
+    ],
+    smallPrint: "ODA is still being built with real sellers. Features may change before launch.",
   },
 ];
 
