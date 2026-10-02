@@ -152,8 +152,12 @@ export function blogVisible(): boolean {
   // Load (and so check) the posts first, whatever the flag says: an
   // unfinished published post must stop the build even while the blog is off.
   const published = publishedPosts();
-  const flag = { ...features, ...testOverride.features }.blog;
-  return !!flag && published.length > 0;
+  return blogShows({ ...features, ...testOverride.features }.blog, published.length);
+}
+
+/** The rule itself: the flag on AND something published. */
+export function blogShows(flag: boolean | undefined, publishedCount: number): boolean {
+  return !!flag && publishedCount > 0;
 }
 
 export function findPost(slug: string): BlogPost | undefined {
