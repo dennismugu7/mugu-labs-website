@@ -187,16 +187,17 @@ export async function expectContentVisible(page: Page) {
 /** A /#section URL lands with that section at the top, under the fixed nav. */
 export async function expectSectionAtTop(page: Page, hash: string) {
   await waitForScrollToSettle(page);
-  const { top, vh, atEnd } = await page.evaluate((id) => {
+  const { top, best } = await page.evaluate((id) => {
     const el = document.getElementById(id);
-    return {
-      top: el ? el.getBoundingClientRect().top : NaN,
-      vh: window.innerHeight,
-      atEnd: window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2,
-    };
+    if (!el) return { top: NaN, best: NaN };
+    const top = el.getBoundingClientRect().top;
+    const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    // Where the section sits when the page is scrolled as far as it can go
+    // towards it: under the fixed nav (scroll-margin-top), or, for a section
+    // near the end of the page, as high as the remaining page allows.
+    return { top, best: Math.max(margin, top + window.scrollY - maxScroll) };
   }, hash);
   expect(top, `#${hash} should exist and not be scrolled past`).toBeGreaterThanOrEqual(-2);
-  // Anchors land under the fixed nav (scroll-margin-top: 6rem). The last
-  // section can't scroll that far up; it only has to be in view.
-  expect(top, `#${hash} should be scrolled to the top`).toBeLessThanOrEqual(atEnd ? vh - 100 : 150);
+  expect(top, `#${hash} should be scrolled to the top`).toBeLessThanOrEqual(best + 50);
 }
