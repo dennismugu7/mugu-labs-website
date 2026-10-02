@@ -1006,6 +1006,16 @@ a.tag--link:focus-visible {
   border-top: 1px solid var(--line-soft);
 }
 
+/* /privacy/: a post's typography; the title has room before the text */
+.privacy__title {
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.privacy__updated {
+  font-size: 0.9rem;
+  color: var(--text-faint);
+}
+
 /* The related product, under a post */
 .post-product {
   display: grid;
