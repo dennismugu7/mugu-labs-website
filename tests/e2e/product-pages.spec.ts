@@ -207,6 +207,40 @@ test.describe("no scanning or offline claims", () => {
   }
 });
 
+/* ------------------------------------------------------ gallery caption */
+
+test.describe("gallery caption", () => {
+  test.skip(({ isMobile }) => isMobile, "copy does not depend on the viewport");
+  const NOTE = "Early designs, still in progress. Shop names and links are examples.";
+
+  for (const p of products) {
+    test(`${p.slug}: ${p.slug === "dashboard-x" ? "no caption" : "the early-designs caption above the screens"}`, async ({ page }) => {
+      await gotoReady(page, `/products/${p.slug}/`);
+      const note = page.locator(".screens__note");
+      if (p.slug === "dashboard-x") {
+        await expect(note).toHaveCount(0);
+        return;
+      }
+      await expect(note).toHaveText(NOTE);
+      // Above the screens, in the small print's muted style.
+      const [noteTop, firstScreenTop] = await Promise.all([
+        note.evaluate((n) => n.getBoundingClientRect().top),
+        page.locator(".screens__list").first().evaluate((n) => n.getBoundingClientRect().top),
+      ]);
+      expect(noteTop).toBeLessThan(firstScreenTop);
+      const [noteStyle, smallPrintStyle] = await Promise.all(
+        [note, page.locator(".detail__smallprint:not(.screens__note)")].map((l) =>
+          l.evaluate((n) => {
+            const s = getComputedStyle(n);
+            return [s.color, s.fontSize];
+          })
+        )
+      );
+      expect(noteStyle).toEqual(smallPrintStyle);
+    });
+  }
+});
+
 /* ------------------------------------------- Bookflow and ODA (content pack) */
 
 /*
@@ -292,7 +326,7 @@ for (const [slug, pack] of Object.entries(PACK)) {
       expect(await main.locator(".feature__title").evaluateAll((els) => els.map((e) => e.tagName))).toEqual(
         pack.features.map(() => "H3")
       );
-      await expect(main.locator(".detail__smallprint")).toHaveText(pack.smallPrint);
+      await expect(main.locator(".detail__smallprint:not(.screens__note)")).toHaveText(pack.smallPrint);
     });
 
     test("screens in the pack's order and groups, with its alt text", async ({ page }) => {

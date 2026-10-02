@@ -1425,6 +1425,12 @@ button {
   margin-bottom: 1rem;
 }
 
+/* The muted note under "Screenshots" (shares .detail__smallprint's look) */
+.detail__smallprint.screens__note {
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
 .screens__group + .screens__group {
   margin-top: clamp(1.5rem, 3vw, 2.25rem);
 }

@@ -113,6 +113,7 @@ export default async function ProductPage({ params }: PageProps) {
             <h2 id="screens-title" className="eyebrow screens__title">
               Screenshots
             </h2>
+            {product.screensNote ? <p className="detail__smallprint screens__note">{product.screensNote}</p> : null}
             {screenGroups(product.screens).map((group, gi) => {
               const labelId = group.label ? `screens-group-${gi}` : "screens-title";
               return (
