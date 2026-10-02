@@ -31,6 +31,6 @@ test.describe("the blog while it is hidden", () => {
   test("no blog in the sitemap", async ({ request }) => {
     const xml = await (await request.get("/sitemap.xml")).text();
     expect(xml).not.toContain("/blog");
-    expect(xml.match(/<loc>/g)).toHaveLength(4);
+    expect(xml.match(/<loc>/g)).toHaveLength(5);
   });
 });

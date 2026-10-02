@@ -28,6 +28,7 @@ const FOOTER: LinkSpec[] = [
   ...products.map((p) => ({ region: "footer" as const, name: p.name, to: `/products/${p.slug}/` })),
   { region: "footer", name: "About", to: "/#about" },
   { region: "footer", name: "Contact", to: "/#contact" },
+  { region: "footer", name: "Privacy", to: "/privacy/" },
 ];
 
 const CHROME: LinkSpec[] = [{ region: "brand", name: "Mugu Labs", to: "/" }, ...NAV];
