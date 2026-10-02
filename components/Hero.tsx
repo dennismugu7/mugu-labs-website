@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { ArrowRight } from "./icons";
+import ContactChoice from "./ContactChoice";
 
 export default function Hero() {
   return (
@@ -20,10 +19,7 @@ export default function Hero() {
         </p>
 
         <div className="hero__cta hero__rise">
-          <Link className="btn btn--ghost btn--block-sm" href="#contact">
-            Work with us
-            <ArrowRight className="btn__arrow" />
-          </Link>
+          <ContactChoice label="Work with us" buttonClassName="btn btn--ghost btn--block-sm" icon="arrow" />
         </div>
       </div>
     </section>

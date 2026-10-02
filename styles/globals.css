@@ -529,15 +529,41 @@ button {
   box-shadow: 0 30px 60px -40px rgba(0, 0, 0, 1);
 }
 
-.nav__panel a {
+.nav__panel a,
+.nav__panel-item {
   display: block;
   padding: 0.85rem 1rem;
   border-radius: 14px;
   color: var(--text-dim);
 }
 
-.nav__panel a:hover {
+/* "Work with us" in the phone menu is a button that reads as a menu row */
+.nav__panel-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.nav__panel-item .btn__arrow {
+  transition: transform 0.3s var(--ease);
+}
+
+.nav__panel-item[aria-expanded="true"] .btn__arrow {
+  transform: rotate(90deg);
+}
+
+.nav__panel a:hover,
+.nav__panel-item:hover,
+.nav__panel-item[aria-expanded="true"] {
   background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+}
+
+/* The contact items inside the phone menu keep their own look */
+.nav__panel .choice__item {
+  display: flex;
   color: var(--text);
 }
 
@@ -587,6 +613,14 @@ button {
   --rise-y: 24px;
   animation-duration: 0.6s;
   animation-delay: 0.2s;
+}
+
+/* The entrance animation makes this its own stacking context; lift it over
+   the next section so the "Work with us" menu stays clickable where it
+   hangs below the hero. */
+.hero__cta {
+  position: relative;
+  z-index: 5;
 }
 
 .hero__cta.hero__rise {
@@ -1079,7 +1113,11 @@ button {
    Contact
    ====================================================================== */
 
+/* The card's backdrop-filter makes it a stacking context, which traps the
+   contact menu's z-index inside it; lift the whole card over the footer
+   that follows, so the open menu isn't painted under the footer mark. */
 .contact__card {
+  z-index: 3;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1132,6 +1170,26 @@ button {
   box-shadow: 0 34px 70px -34px rgba(0, 0, 0, 1);
   transform-origin: top left;
   animation: pop 0.34s var(--ease) both;
+}
+
+/* In the nav: open under the button, aligned to its right edge */
+.choice--end .choice__menu {
+  left: auto;
+  right: 0;
+  transform-origin: top right;
+}
+
+/* In the phone menu: open in the flow, under the row */
+.choice--inline .choice__menu {
+  position: static;
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.25rem 0 0.25rem 0.5rem;
+  border: 0;
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 @keyframes pop {
@@ -1330,6 +1388,9 @@ button {
 }
 
 .detail__cta {
+  /* Same as the contact card: the menu hangs over the footer. */
+  position: relative;
+  z-index: 3;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
@@ -1551,7 +1612,9 @@ button {
     justify-items: center;
   }
 
-  .choice__menu {
+  /* Only the contact card centres its button; elsewhere (product pages,
+     the hero) the menu stays left-aligned under the button, on screen. */
+  .contact__body .choice__menu {
     left: 50%;
     translate: -50% 0;
     transform-origin: top center;

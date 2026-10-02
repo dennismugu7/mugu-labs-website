@@ -6,6 +6,7 @@ import {
   expectSameDocument,
   expectSectionAtTop,
   gotoReady,
+  isMobile,
   markDocument,
 } from "./helpers";
 
@@ -93,8 +94,9 @@ test.describe("contact menu", () => {
       await button.scrollIntoViewIfNeeded();
       await button.click();
 
-      const menu = page.getByRole("menu");
+      const menu = page.getByRole("main").getByRole("menu");
       await expect(menu).toBeVisible();
+      await expectClickable(page, menu.getByRole("menuitem", { name: /WhatsApp/ }));
       await expect(menu.getByRole("menuitem", { name: /Email/ })).toHaveAttribute("href", /^mailto:.+@.+\?subject=/);
       await expect(menu.getByRole("menuitem", { name: /WhatsApp/ })).toHaveAttribute(
         "href",
@@ -106,4 +108,91 @@ test.describe("contact menu", () => {
       await expect(button).toBeFocused();
     });
   }
+});
+
+/** Clicks on the item land on it: nothing later in the page paints over the menu. */
+async function expectClickable(page: import("@playwright/test").Page, item: import("@playwright/test").Locator) {
+  await item.scrollIntoViewIfNeeded();
+  await expect
+    .poll(
+      async () => {
+        const box = await item.boundingBox();
+        if (!box) return "no box";
+        const vw = page.viewportSize()!.width;
+        if (box.x < 0 || box.x + box.width > vw) return `off screen: ${Math.round(box.x)}..${Math.round(box.x + box.width)}`;
+        for (const [fx, fy] of [[0.5, 0.5], [0.1, 0.9], [0.9, 0.9]]) {
+          const hit = await page.evaluate(
+            ([x, y]) => !!document.elementFromPoint(x, y)?.closest(".choice__item"),
+            [box.x + box.width * fx, box.y + box.height * fy]
+          );
+          if (!hit) return `covered at ${fx},${fy}`;
+        }
+        return "ok";
+      },
+      { message: "the menu item should be on screen and on top where it is drawn" }
+    )
+    .toBe("ok");
+}
+
+test.describe('"Work with us" opens the contact menu', () => {
+  /** Stop the mail client / WhatsApp from actually opening when picked. */
+  async function holdContactLinks(page: import("@playwright/test").Page) {
+    await page.evaluate(() =>
+      document.addEventListener("click", (e) => {
+        if ((e.target as Element).closest(".choice__item")) e.preventDefault();
+      })
+    );
+  }
+
+  async function expectContactMenu(menu: import("@playwright/test").Locator) {
+    await expect(menu).toBeVisible();
+    await expect(menu.getByRole("menuitem", { name: /Email/ })).toHaveAttribute("href", /^mailto:/);
+    await expect(menu.getByRole("menuitem", { name: /WhatsApp/ })).toHaveAttribute("href", /^https:\/\/wa\.me\//);
+  }
+
+  for (const from of PAGES) {
+    test(`from the header on ${from.label}`, async ({ page }) => {
+      await gotoReady(page, from.url);
+      await holdContactLinks(page);
+      const header = page.locator("header[data-nav]");
+
+      if (isMobile(page)) {
+        await header.getByRole("button", { name: "Open menu" }).click();
+        const panel = page.locator("#nav-panel");
+        const button = panel.getByRole("button", { name: "Work with us" });
+        await button.click();
+        await expectContactMenu(panel.getByRole("menu"));
+        // Picking one closes the phone menu too.
+        await panel.getByRole("menuitem", { name: /WhatsApp/ }).click();
+        await expect(panel).toBeHidden();
+        // ...and it opens collapsed next time.
+        await header.getByRole("button", { name: "Open menu" }).click();
+        await expect(panel.getByRole("menu")).toHaveCount(0);
+        await expect(button).toHaveAttribute("aria-expanded", "false");
+      } else {
+        const button = header.getByRole("button", { name: "Work with us" });
+        await button.click();
+        const menu = header.getByRole("menu");
+        await expectContactMenu(menu);
+        // The menu stays inside the viewport.
+        const box = (await menu.boundingBox())!;
+        expect(box.x + box.width).toBeLessThanOrEqual(page.viewportSize()!.width);
+        await page.keyboard.press("Escape");
+        await expect(menu).toBeHidden();
+        await expect(button).toBeFocused();
+      }
+      await expect(page).toHaveURL(from.url);
+    });
+  }
+
+  test("from the hero", async ({ page }) => {
+    await gotoReady(page, "/");
+    const hero = page.locator(".hero");
+    await hero.getByRole("button", { name: "Work with us" }).click();
+    const menu = hero.getByRole("menu");
+    await expectContactMenu(menu);
+    // The menu hangs below the hero; the next section must not swallow clicks.
+    await expectClickable(page, menu.getByRole("menuitem", { name: /WhatsApp/ }));
+    await expect(page).toHaveURL("/");
+  });
 });

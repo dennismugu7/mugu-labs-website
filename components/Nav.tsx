@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Logo from "./Logo";
-import { ArrowRight } from "./icons";
+import ContactChoice from "./ContactChoice";
 import { site } from "../lib/site";
 
 const links = [
@@ -42,10 +42,12 @@ export default function Nav() {
             ))}
           </nav>
 
-          <Link className="btn btn--ghost nav__cta nav__cta--desktop" href="/#contact">
-            Work with us
-            <ArrowRight className="btn__arrow" />
-          </Link>
+          <ContactChoice
+            className="choice--end nav__cta--desktop"
+            label="Work with us"
+            buttonClassName="btn btn--ghost nav__cta"
+            icon="arrow"
+          />
 
           <button
             type="button"
@@ -69,9 +71,15 @@ export default function Nav() {
               {link.label}
             </Link>
           ))}
-          <Link href="/#contact" onClick={() => setOpen(false)}>
-            Work with us
-          </Link>
+          {/* Remounted each time the menu opens, so it never reopens with
+              the contact choice still expanded. */}
+          <ContactChoice
+            key={String(open)}
+            className="choice--inline"
+            label="Work with us"
+            buttonClassName="nav__panel-item"
+            onChoose={() => setOpen(false)}
+          />
         </div>
       </div>
     </header>
