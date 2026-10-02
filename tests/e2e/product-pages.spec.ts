@@ -206,3 +206,155 @@ test.describe("no scanning or offline claims", () => {
     });
   }
 });
+
+/* ------------------------------------------- Bookflow and ODA (content pack) */
+
+/*
+ * The copy and screens from docs/content/product-content-pack.md, written out
+ * here so a change to lib/site.ts that drifts from the pack fails.
+ */
+const PACK = {
+  bookflow: {
+    intro:
+      "Bookflow is a booking app for salons, barbers and beauty studios. Share one link, let clients book themselves, and run the whole day from your phone, deposits, changes and all.",
+    features: [
+      "Your day at a glance",
+      "Deposits that protect your time",
+      "Changes without the chaos",
+      "The whole team, side by side",
+      "A client list that builds itself",
+      "One link, anywhere",
+    ],
+    smallPrint: "Bookflow is still being built with real salons. Features may change before launch.",
+    groups: [
+      {
+        label: null,
+        screens: [
+          ["bookflow-today.webp", "Bookflow's Today screen showing 8 bookings, 23k expected and 3 gaps, with an unpaid-deposit reminder"],
+          ["bookflow-booking-detail.webp", "A booking with services, an M-Pesa deposit paid and the balance due on the day"],
+          ["bookflow-reschedule.webp", "Rescheduling a booking to a new time slot, with an SMS sent to the client"],
+          ["bookflow-calendar.webp", "Team day view with each stylist's bookings side by side"],
+          ["bookflow-clients.webp", "Client list filtered into new, regular and lapsed clients"],
+          ["bookflow-client-profile.webp", "A client profile showing visits, total spent and visit history"],
+        ],
+      },
+    ],
+  },
+  oda: {
+    intro:
+      "ODA gives people who sell on WhatsApp, TikTok and Instagram a free shop link. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.",
+    features: [
+      "Your own shop link",
+      "Paid straight to you",
+      "Orders that sort themselves",
+      "WhatsApp updates for buyers",
+      "A badge buyers can check",
+      "Delivery, sorted",
+      "English and Kiswahili",
+    ],
+    smallPrint: "ODA is still being built with real sellers. Features may change before launch.",
+    groups: [
+      {
+        label: "For you",
+        screens: [
+          ["oda-home.webp", "ODA seller home showing new orders, payments to confirm and this week's sales"],
+          ["oda-orders.webp", "Orders list sorted into needs action, new and paid"],
+          ["oda-order-detail.webp", "An order where the buyer says she has paid, with the M-Pesa code to check before confirming"],
+          ["oda-share-shop.webp", "Sharing a shop link to TikTok, Instagram or WhatsApp with a ready-made caption"],
+        ],
+      },
+      {
+        label: "For your buyers",
+        screens: [
+          ["oda-buyer-shop.webp", "A buyer's view of a seller's shop link with products and a checked badge"],
+          ["oda-buyer-pay.webp", "Step-by-step M-Pesa payment instructions showing the exact name the buyer should see"],
+          ["oda-buyer-tracking.webp", "Order tracking showing the order on the way with the rider's details"],
+        ],
+      },
+    ],
+  },
+} as const;
+
+for (const [slug, pack] of Object.entries(PACK)) {
+  const product = products.find((p) => p.slug === slug)!;
+
+  test.describe(`${product.name} page`, () => {
+    test("intro, features and small print from the content pack", async ({ page, isMobile }) => {
+      test.skip(isMobile, "copy does not depend on the viewport");
+      await gotoReady(page, `/products/${slug}/`);
+      const main = page.getByRole("main");
+
+      await expect(main.locator(".detail__tagline")).toHaveText(product.tagline);
+      await expect(main.locator(".detail__summary")).toHaveText(pack.intro);
+      await expect(main.getByRole("heading", { level: 2, name: "What we're building" })).toBeVisible();
+      await expect(main.locator(".feature__title")).toHaveText([...pack.features]);
+      // Under the features heading, the feature titles are a level down.
+      expect(await main.locator(".feature__title").evaluateAll((els) => els.map((e) => e.tagName))).toEqual(
+        pack.features.map(() => "H3")
+      );
+      await expect(main.locator(".detail__smallprint")).toHaveText(pack.smallPrint);
+    });
+
+    test("screens in the pack's order and groups, with its alt text", async ({ page }) => {
+      await gotoReady(page, `/products/${slug}/`);
+      const groups = page.locator(".screens__group");
+      await expect(groups).toHaveCount(pack.groups.length);
+
+      for (let g = 0; g < pack.groups.length; g++) {
+        const expected = pack.groups[g];
+        const group = groups.nth(g);
+        const list = group.locator(".screens__list");
+
+        if (expected.label) {
+          const heading = group.getByRole("heading", { level: 3 });
+          await expect(heading).toHaveText(expected.label);
+          // The scroller is named by its group's label.
+          await expect(list).toHaveAttribute("aria-labelledby", (await heading.getAttribute("id"))!);
+        } else {
+          await expect(group.getByRole("heading", { level: 3 })).toHaveCount(0);
+        }
+
+        const imgs = list.locator("img");
+        await expect(imgs).toHaveCount(expected.screens.length);
+        for (let i = 0; i < expected.screens.length; i++) {
+          const [file, alt] = expected.screens[i];
+          const img = imgs.nth(i);
+          await expect(img).toHaveAttribute("src", `/assets/${slug}/${file}`);
+          await expect(img).toHaveAttribute("alt", alt);
+          await expect(img).toHaveAttribute("loading", "lazy");
+          await expect(img).toHaveAttribute("width", /^\d+$/);
+          await expect(img).toHaveAttribute("height", /^\d+$/);
+        }
+
+        if (isMobilePage(page)) {
+          await expect(list).toHaveCSS("scroll-snap-type", "x mandatory");
+        }
+      }
+
+      // Every screen on the page is drawn at the same width.
+      const widths = await page.locator(".screens__list img").evaluateAll((imgs) =>
+        imgs.map((i) => Math.round(i.getBoundingClientRect().width))
+      );
+      expect(new Set(widths).size, `screen widths ${widths.join(", ")}`).toBe(1);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    });
+  });
+}
+
+function isMobilePage(page: Page) {
+  return (page.viewportSize()?.width ?? 1366) < 760;
+}
+
+test.describe("pricing stays off the site until it is confirmed", () => {
+  test.skip(({ isMobile }) => isMobile, "copy does not depend on the viewport");
+
+  for (const url of ["/", ...products.map((p) => `/products/${p.slug}/`)]) {
+    test(url, async ({ page }) => {
+      await page.goto(url);
+      const text = await page.evaluate(() =>
+        [document.body.innerText, ...Array.from(document.querySelectorAll("meta[content]"), (m) => m.getAttribute("content"))].join("\n")
+      );
+      expect(text).not.toMatch(/commission|free core|fee per order|no fees?\b/i);
+    });
+  }
+});
