@@ -57,19 +57,20 @@ Bookflow is a booking app for salons, barbers and beauty studios. Share one link
 **Tagline (keep):** Sleek e-commerce checkout, same personal WhatsApp touch
 
 **Intro:**
-ODA gives people who sell on WhatsApp, TikTok and Instagram a shop link of their own. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.
+ODA gives people who sell on WhatsApp, TikTok and Instagram a shop link of their own. Buyers browse, order and pay with M-Pesa in a few taps, then follow their order all the way to their door. No more chasing screenshots in the chat.
 
 **What we're building**
 
-1. **Your own shop link**: Products, sizes and prices on one simple page. Put it in your TikTok bio or Instagram profile; buyers don't need an app.
-2. **Paid straight to you**: Buyers pay your own Till, Pochi or Paybill. ODA never holds your money.
-3. **Orders that sort themselves**: New, waiting for payment, ready to send: every order sits in the right pile. Check your M-Pesa messages, tap confirm, mark it sent.
-4. **WhatsApp updates for buyers**: Received, paid, on the way, delivered. Buyers get each update on WhatsApp, so you're not answering "where's my order?" all day.
-5. **A badge buyers can check**: Sellers who prove they control their payment account get a "Payment details checked" badge. Buyers can look up a shop before they pay.
-6. **Delivery, sorted**: Offer pay-on-delivery with a deposit, and send your rider a one-time link to mark the order delivered.
-7. **English and Kiswahili**: For you and for your buyers.
+1. **Your own shop link**: Products, colours, sizes and prices on one page, with search and filters. Put it in your TikTok bio or Instagram profile; buyers don't need an app.
+2. **Checkout in a few taps**: Name, phone number, delivery address. No account needed.
+3. **Pay with M-Pesa**: The payment prompt lands on the buyer's phone, and the order page updates by itself once it's paid.
+4. **Updates on WhatsApp**: Buyers hear from you on WhatsApp when their order is confirmed and on its way.
+5. **Live delivery tracking**: Buyers see their order on the way, and a delivery code makes sure it reaches the right person.
+6. **Ratings that mean something**: Only buyers who received their order can rate it, so your rating reflects real deliveries.
 
-**Pricing line:** none. Pricing is unconfirmed; nothing about price or fees goes on the site until Dennis confirms it, and that includes calling anything "free" (the e2e pricing guard checks the ODA page for it).
+**Pricing line:** none. Pricing is unconfirmed; nothing about price or fees goes on the site until Dennis confirms it, and that includes calling anything "free" (the e2e pricing guard checks the ODA page for it). The one exception is the cart screen's alt text, "free-delivery", which describes the seller's own delivery offer in the app, not ODA's pricing.
+
+**Not to claim:** no "Payment details checked" or other badges, nothing "checked" or "verified", no "ODA never holds your money", no Till/Pochi/Paybill (an e2e test checks the ODA page).
 
 **Small print under features:** ODA is still being built with real sellers. Features may change before launch.
 
@@ -77,14 +78,14 @@ ODA gives people who sell on WhatsApp, TikTok and Instagram a shop link of their
 
 **Screens (in order) + alt text**
 
+One row, no group labels.
+
 | File | Alt text |
 |---|---|
-| oda-home.webp | ODA seller home showing new orders, payments to confirm and this week's sales |
-| oda-orders.webp | Orders list sorted into needs action, new and paid |
-| oda-order-detail.webp | An order where the buyer says she has paid, with the M-Pesa code to check before confirming |
-| oda-share-shop.webp | Sharing a shop link to TikTok, Instagram or WhatsApp with a ready-made caption |
-| oda-buyer-shop.webp | A buyer's view of a seller's shop link with products and a checked badge |
-| oda-buyer-pay.webp | Step-by-step M-Pesa payment instructions showing the exact name the buyer should see |
-| oda-buyer-tracking.webp | Order tracking showing the order on the way with the rider's details |
-
-Consider showing seller screens and buyer screens as two labelled groups: "For you" and "For your buyers".
+| oda-buyer-shop.webp | A seller's ODA shop page with products, ratings and delivery count |
+| oda-buyer-search.webp | Searching a shop with size and price filters |
+| oda-buyer-cart.webp | A buyer's cart with a free-delivery progress bar |
+| oda-buyer-checkout.webp | Checkout asking only for name, phone number and delivery address |
+| oda-buyer-confirmation.webp | Order placed, with the next steps explained |
+| oda-buyer-tracking.webp | Live delivery tracking with the rider's details and a delivery code |
+| oda-buyer-delivered.webp | Delivered order with a prompt to rate it |

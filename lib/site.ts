@@ -323,36 +323,32 @@ export const products: Product[] = [
       },
     ],
     summary:
-      "ODA gives people who sell on WhatsApp, TikTok and Instagram a shop link of their own. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.",
+      "ODA gives people who sell on WhatsApp, TikTok and Instagram a shop link of their own. Buyers browse, order and pay with M-Pesa in a few taps, then follow their order all the way to their door. No more chasing screenshots in the chat.",
     featuresHeading: "What we're building",
     features: [
       {
         title: "Your own shop link",
-        body: "Products, sizes and prices on one simple page. Put it in your TikTok bio or Instagram profile; buyers don't need an app.",
+        body: "Products, colours, sizes and prices on one page, with search and filters. Put it in your TikTok bio or Instagram profile; buyers don't need an app.",
       },
       {
-        title: "Paid straight to you",
-        body: "Buyers pay your own Till, Pochi or Paybill. ODA never holds your money.",
+        title: "Checkout in a few taps",
+        body: "Name, phone number, delivery address. No account needed.",
       },
       {
-        title: "Orders that sort themselves",
-        body: "New, waiting for payment, ready to send: every order sits in the right pile. Check your M-Pesa messages, tap confirm, mark it sent.",
+        title: "Pay with M-Pesa",
+        body: "The payment prompt lands on the buyer's phone, and the order page updates by itself once it's paid.",
       },
       {
-        title: "WhatsApp updates for buyers",
-        body: "Received, paid, on the way, delivered. Buyers get each update on WhatsApp, so you're not answering \"where's my order?\" all day.",
+        title: "Updates on WhatsApp",
+        body: "Buyers hear from you on WhatsApp when their order is confirmed and on its way.",
       },
       {
-        title: "A badge buyers can check",
-        body: "Sellers who prove they control their payment account get a \"Payment details checked\" badge. Buyers can look up a shop before they pay.",
+        title: "Live delivery tracking",
+        body: "Buyers see their order on the way, and a delivery code makes sure it reaches the right person.",
       },
       {
-        title: "Delivery, sorted",
-        body: "Offer pay-on-delivery with a deposit, and send your rider a one-time link to mark the order delivered.",
-      },
-      {
-        title: "English and Kiswahili",
-        body: "For you and for your buyers.",
+        title: "Ratings that mean something",
+        body: "Only buyers who received their order can rate it, so your rating reflects real deliveries.",
       },
     ],
     smallPrint: "ODA is still being built with real sellers. Features may change before launch.",
