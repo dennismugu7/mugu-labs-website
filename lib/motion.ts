@@ -83,6 +83,8 @@ function initScrollVars(): Cleanup {
   const tintAnchor = document.querySelector<HTMLElement>("[data-tint-anchor]");
   const tintRelease = document.querySelector<HTMLElement>("[data-tint-release]");
   const nav = document.querySelector<HTMLElement>("[data-nav]");
+  /* Statements pin from this width up; below it they scroll normally (CSS). */
+  const pinQuery = window.matchMedia("(min-width: 768px)");
 
   let frame = 0;
   /* The nav outlives this run; start from what it shows, not from false. */
@@ -123,13 +125,23 @@ function initScrollVars(): Cleanup {
       }
     }
 
-    /* Pinned statements */
+    /* Statements. From 768px they pin for one viewport: the text fades in
+       while the section rises into view, holds while pinned, and fades out as
+       the section leaves, so the screen is never left blank around it. Below
+       768px they are not pinned and only fade in as the text arrives. */
+    const pinned = pinQuery.matches;
     for (const el of statements) {
       const rect = el.getBoundingClientRect();
-      const range = Math.max(1, el.offsetHeight - vh);
-      const p = clamp(-rect.top / range);
-      const enter = clamp(p / 0.26);
-      const exit = clamp((p - 0.74) / 0.26);
+      let enter: number;
+      let exit: number;
+      if (pinned) {
+        enter = clamp((vh - rect.top) / (vh * 0.75));
+        exit = clamp((vh - rect.bottom) / (vh * 0.75));
+      } else {
+        const text = el.querySelector<HTMLElement>(".statement__text") ?? el;
+        enter = clamp((vh - text.getBoundingClientRect().top) / (vh * 0.35));
+        exit = 0;
+      }
       el.style.setProperty("--enter", enter.toFixed(4));
       el.style.setProperty("--exit", exit.toFixed(4));
       el.style.setProperty("--vis", (enter * (1 - exit)).toFixed(4));

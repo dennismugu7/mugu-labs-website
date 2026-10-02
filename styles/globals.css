@@ -768,12 +768,15 @@ button {
 }
 
 /* ======================================================================
-   Statements (scroll-pinned)
+   Statements (scroll-pinned from 768px)
    ====================================================================== */
 
+/* The pin holds for the section's height less one viewport: one viewport.
+   lib/motion.ts fades the text in as the section rises into view and out as
+   it leaves, so the screen is never blank around it. */
 .statement {
   position: relative;
-  height: 210vh;
+  height: 200vh;
 }
 
 .statement__pin {
@@ -803,6 +806,20 @@ button {
 
 .statement--wide .statement__text {
   max-width: 24ch;
+}
+
+/* Below 768px: no pinning. A normal block well under a screen tall; the text
+   only fades in as it arrives (lib/motion.ts). */
+@media (max-width: 767.98px) {
+  .statement {
+    height: auto;
+    padding-block: 14svh;
+  }
+
+  .statement__pin {
+    position: static;
+    height: auto;
+  }
 }
 
 /* ======================================================================
@@ -1755,10 +1772,6 @@ button {
 
   .hero__title {
     max-width: none;
-  }
-
-  .statement {
-    height: 175vh;
   }
 
   .grid-2 {

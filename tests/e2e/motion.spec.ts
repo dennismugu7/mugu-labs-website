@@ -81,19 +81,21 @@ test.describe("scroll effects after in-site navigation", () => {
     await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
   }
 
-  test("pinned statements still ease in and hold", async ({ page }) => {
+  test("statements still fade in and hold", async ({ page }) => {
     await homeViaLink(page);
     const statements = page.locator("[data-statement]");
     expect(await statements.count()).toBe(2);
 
     for (let i = 0; i < 2; i++) {
       const el = statements.nth(i);
-      // Statement top at the top of the viewport: not yet entered.
-      await el.evaluate((n) => window.scrollTo({ top: (n as HTMLElement).offsetTop, behavior: "instant" }));
+      // The whole section still below the screen: not yet in.
+      await el.evaluate((n) =>
+        window.scrollTo({ top: (n as HTMLElement).offsetTop - window.innerHeight, behavior: "instant" })
+      );
       await settle(page);
       expect(Number(await el.evaluate((n) => (n as HTMLElement).style.getPropertyValue("--vis")))).toBeLessThan(0.05);
 
-      // Halfway through the pin: fully shown.
+      // In the middle (halfway through the pin from 768px): fully shown.
       await el.evaluate((n) => {
         const s = n as HTMLElement;
         window.scrollTo({ top: s.offsetTop + (s.offsetHeight - window.innerHeight) / 2, behavior: "instant" });
