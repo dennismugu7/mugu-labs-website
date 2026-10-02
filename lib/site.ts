@@ -107,6 +107,8 @@ export type Product = {
   playStoreUrl?: string;
   /** App screenshots for the product page's gallery, in order. */
   screens: Screen[];
+  /** A muted line above the gallery, e.g. that the screens are early designs. */
+  screensNote?: string;
   /** schema.org applicationCategory, for the page's SoftwareApplication
    *  structured data (only emitted for an app with a Play listing). */
   appCategory?: string;
@@ -193,6 +195,7 @@ export const products: Product[] = [
     href: "/products/bookflow",
     updated: "2026-10-02",
     status: "in-development",
+    screensNote: "Early designs, still in progress. Shop names and links are examples.",
     screens: [
       {
         src: "/assets/bookflow/bookflow-today.webp",
@@ -273,6 +276,7 @@ export const products: Product[] = [
     href: "/products/oda",
     updated: "2026-10-02",
     status: "in-development",
+    screensNote: "Early designs, still in progress. Shop names and links are examples.",
     screens: [
       {
         src: "/assets/oda/oda-home.webp",
