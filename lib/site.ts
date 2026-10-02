@@ -366,15 +366,8 @@ export type Post = {
   href: string;
 };
 
-export const posts: Post[] = [
-  {
-    title: "Less Drama, More Glam: We built the exact booking tools you asked for.",
-    art: "/assets/art-calendar.png",
-    alt: "Illustration of a calendar with a notification bell",
-    tags: ["Bookflow", "Smart Moves & Quick Hacks", "Beauty Cheat Codes"],
-    href: "",
-  },
-];
+/* The blog's posts live in content/blog/ (Markdown with frontmatter). */
+export const posts: Post[] = [];
 
 /** ---- How we work ----------------------------------------------------- */
 
