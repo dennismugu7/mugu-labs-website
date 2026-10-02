@@ -77,8 +77,9 @@ export type Screen = {
   alt: string;
   width: number;
   height: number;
-  /** A label to group screens under (ODA: "For you" / "For your buyers").
-   *  Groups show in the order they first appear. */
+  /** A label to group screens under (e.g. seller and buyer screens), shown
+   *  over each group; groups show in the order they first appear. None set:
+   *  one unlabelled row. */
   group?: string;
 };
 
@@ -279,53 +280,46 @@ export const products: Product[] = [
     screensNote: "Early designs, still in progress. Shop names and links are examples.",
     screens: [
       {
-        src: "/assets/oda/oda-home.webp",
-        alt: "ODA seller home showing new orders, payments to confirm and this week's sales",
-        width: 720,
-        height: 1600,
-        group: "For you",
-      },
-      {
-        src: "/assets/oda/oda-orders.webp",
-        alt: "Orders list sorted into needs action, new and paid",
-        width: 720,
-        height: 1600,
-        group: "For you",
-      },
-      {
-        src: "/assets/oda/oda-order-detail.webp",
-        alt: "An order where the buyer says she has paid, with the M-Pesa code to check before confirming",
-        width: 720,
-        height: 1600,
-        group: "For you",
-      },
-      {
-        src: "/assets/oda/oda-share-shop.webp",
-        alt: "Sharing a shop link to TikTok, Instagram or WhatsApp with a ready-made caption",
-        width: 720,
-        height: 1600,
-        group: "For you",
-      },
-      {
         src: "/assets/oda/oda-buyer-shop.webp",
-        alt: "A buyer's view of a seller's shop link with products and a checked badge",
+        alt: "A seller's ODA shop page with products, ratings and delivery count",
         width: 720,
         height: 1558,
-        group: "For your buyers",
       },
       {
-        src: "/assets/oda/oda-buyer-pay.webp",
-        alt: "Step-by-step M-Pesa payment instructions showing the exact name the buyer should see",
+        src: "/assets/oda/oda-buyer-search.webp",
+        alt: "Searching a shop with size and price filters",
         width: 720,
         height: 1558,
-        group: "For your buyers",
+      },
+      {
+        src: "/assets/oda/oda-buyer-cart.webp",
+        alt: "A buyer's cart with a free-delivery progress bar",
+        width: 720,
+        height: 1558,
+      },
+      {
+        src: "/assets/oda/oda-buyer-checkout.webp",
+        alt: "Checkout asking only for name, phone number and delivery address",
+        width: 720,
+        height: 1558,
+      },
+      {
+        src: "/assets/oda/oda-buyer-confirmation.webp",
+        alt: "Order placed, with the next steps explained",
+        width: 720,
+        height: 1558,
       },
       {
         src: "/assets/oda/oda-buyer-tracking.webp",
-        alt: "Order tracking showing the order on the way with the rider's details",
+        alt: "Live delivery tracking with the rider's details and a delivery code",
         width: 720,
         height: 1558,
-        group: "For your buyers",
+      },
+      {
+        src: "/assets/oda/oda-buyer-delivered.webp",
+        alt: "Delivered order with a prompt to rate it",
+        width: 720,
+        height: 1558,
       },
     ],
     summary:

@@ -289,20 +289,15 @@ const PACK = {
     smallPrint: "ODA is still being built with real sellers. Features may change before launch.",
     groups: [
       {
-        label: "For you",
+        label: null,
         screens: [
-          ["oda-home.webp", "ODA seller home showing new orders, payments to confirm and this week's sales"],
-          ["oda-orders.webp", "Orders list sorted into needs action, new and paid"],
-          ["oda-order-detail.webp", "An order where the buyer says she has paid, with the M-Pesa code to check before confirming"],
-          ["oda-share-shop.webp", "Sharing a shop link to TikTok, Instagram or WhatsApp with a ready-made caption"],
-        ],
-      },
-      {
-        label: "For your buyers",
-        screens: [
-          ["oda-buyer-shop.webp", "A buyer's view of a seller's shop link with products and a checked badge"],
-          ["oda-buyer-pay.webp", "Step-by-step M-Pesa payment instructions showing the exact name the buyer should see"],
-          ["oda-buyer-tracking.webp", "Order tracking showing the order on the way with the rider's details"],
+          ["oda-buyer-shop.webp", "A seller's ODA shop page with products, ratings and delivery count"],
+          ["oda-buyer-search.webp", "Searching a shop with size and price filters"],
+          ["oda-buyer-cart.webp", "A buyer's cart with a free-delivery progress bar"],
+          ["oda-buyer-checkout.webp", "Checkout asking only for name, phone number and delivery address"],
+          ["oda-buyer-confirmation.webp", "Order placed, with the next steps explained"],
+          ["oda-buyer-tracking.webp", "Live delivery tracking with the rider's details and a delivery code"],
+          ["oda-buyer-delivered.webp", "Delivered order with a prompt to rate it"],
         ],
       },
     ],
@@ -394,7 +389,7 @@ test.describe("pricing stays off the site until it is confirmed", () => {
 
   // On ODA "free" can only be about price. (Bookflow's "free gaps" are open
   // slots in the day, so this one is ODA's alone.)
-  test("ODA says nothing is free", async ({ page }) => {
+  test("ODA calls nothing of its own free", async ({ page }) => {
     await page.goto("/products/oda/");
     const text = await page.evaluate(() =>
       [
@@ -405,6 +400,8 @@ test.describe("pricing stays off the site until it is confirmed", () => {
         ),
       ].join("\n")
     );
-    expect(text).not.toMatch(/\bfree\b/i);
+    // The one allowed use: the cart screen's alt text describes the seller's
+    // own free-delivery offer shown in the app, not ODA's pricing.
+    expect(text.replace(/\bfree[- ]delivery\b/gi, "")).not.toMatch(/\bfree\b/i);
   });
 });
