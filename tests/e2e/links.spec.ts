@@ -87,7 +87,8 @@ test.describe("no dead links", () => {
 });
 
 test.describe("contact menu", () => {
-  for (const url of ["/", ...PAGES.filter((p) => p.url.startsWith("/products/")).map((p) => p.url)]) {
+  // Product pages have their own primary action now (products.spec.ts).
+  for (const url of ["/"]) {
     test(`"Contact us" on ${url} offers email and WhatsApp`, async ({ page }) => {
       await gotoReady(page, url);
       const button = page.getByRole("main").getByRole("button", { name: "Contact us" });
