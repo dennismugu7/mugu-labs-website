@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -6,7 +7,7 @@ import ContactChoice from "../../../components/ContactChoice";
 import { brandStyle } from "../../../components/brand";
 import { reveal } from "../../../components/reveal";
 import { baseOpenGraph, baseTwitter } from "../../../lib/metadata";
-import { earlyTesterRequest, products, site, statusLabel, type Product } from "../../../lib/site";
+import { earlyTesterRequest, products, site, statusLabel, type Product, type Screen } from "../../../lib/site";
 
 type Params = { slug: string };
 
@@ -32,6 +33,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: { ...baseOpenGraph, title, description: product.tagline, url },
     twitter: { ...baseTwitter, title, description: product.tagline },
   };
+}
+
+/** Screens in their groups, in the order each group first appears; one
+    unlabelled group when no screen names one. */
+function screenGroups(screens: Screen[]) {
+  const groups: { label?: string; screens: Screen[] }[] = [];
+  for (const screen of screens) {
+    const group = groups.find((g) => g.label === screen.group);
+    if (group) group.screens.push(screen);
+    else groups.push({ label: screen.group, screens: [screen] });
+  }
+  return groups;
 }
 
 /** schema.org SoftwareApplication, for an app with a Play listing. */
@@ -86,36 +99,74 @@ export default async function ProductPage({ params }: PageProps) {
         </p>
 
         {product.screens.length ? (
-          <section className="screens" aria-labelledby="screens-title">
+          <section
+            className="screens"
+            aria-labelledby="screens-title"
+            // One column per screen of the largest group, so every screen on
+            // the page is the same size.
+            style={
+              {
+                "--screen-cols": Math.max(...screenGroups(product.screens).map((g) => g.screens.length)),
+              } as CSSProperties
+            }
+          >
             <h2 id="screens-title" className="eyebrow screens__title">
               Screenshots
             </h2>
-            {/* On a phone this row scrolls sideways; tabIndex lets a keyboard
-                reach and scroll it too. It is revealed as one row: in the
-                sideways scroller the later screens are off to the side, where
-                the observer can't see them. */}
-            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-            <ul {...reveal(0, "screens__list")} tabIndex={0} aria-labelledby="screens-title">
-              {product.screens.map((screen) => (
-                <li key={screen.src}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={screen.src} alt={screen.alt} width={screen.width} height={screen.height} loading="lazy" />
-                </li>
-              ))}
-            </ul>
+            {screenGroups(product.screens).map((group, gi) => {
+              const labelId = group.label ? `screens-group-${gi}` : "screens-title";
+              return (
+                <div className="screens__group" key={group.label ?? "all"}>
+                  {group.label ? (
+                    <h3 id={labelId} className="screens__group-title">
+                      {group.label}
+                    </h3>
+                  ) : null}
+                  {/* On a phone this row scrolls sideways; tabIndex lets a
+                      keyboard reach and scroll it too. It is revealed as one
+                      row: in the sideways scroller the later screens are off
+                      to the side, where the observer can't see them. */}
+                  {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+                  <ul {...reveal(0, "screens__list")} tabIndex={0} aria-labelledby={labelId}>
+                    {group.screens.map((screen) => (
+                      <li key={screen.src}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={screen.src}
+                          alt={screen.alt}
+                          width={screen.width}
+                          height={screen.height}
+                          loading="lazy"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
           </section>
         ) : null}
 
+        {product.featuresHeading ? (
+          <h2 {...reveal(0, "detail__features-title")}>{product.featuresHeading}</h2>
+        ) : null}
+
         <ul className="grid-2">
-          {product.features.map((feature, i) => (
-            <li key={feature.title} {...reveal(i * 90)}>
-              <div className="card card--hover feature">
-                <h2 className="feature__title">{feature.title}</h2>
-                <p className="feature__body">{feature.body}</p>
-              </div>
-            </li>
-          ))}
+          {product.features.map((feature, i) => {
+            // Under a features heading the titles step down a level.
+            const Title = product.featuresHeading ? "h3" : "h2";
+            return (
+              <li key={feature.title} {...reveal(i * 90)}>
+                <div className="card card--hover feature">
+                  <Title className="feature__title">{feature.title}</Title>
+                  <p className="feature__body">{feature.body}</p>
+                </div>
+              </li>
+            );
+          })}
         </ul>
+
+        {product.smallPrint ? <p className="detail__smallprint">{product.smallPrint}</p> : null}
 
         <div {...reveal(0, "detail__cta")}>
           {/* The primary action follows the status: download a live app,
