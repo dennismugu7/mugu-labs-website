@@ -1487,6 +1487,11 @@ button {
   color: var(--text-faint);
 }
 
+/* The primary action again, straight under the intro */
+.detail__cta--top {
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
 /* "In development", by the title of an app that isn't out yet */
 .status-badge {
   display: inline-block;
