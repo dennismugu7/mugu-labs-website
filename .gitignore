@@ -6,6 +6,7 @@ node_modules/
 # next
 .next/
 out/
+out-flags/
 next-env.d.ts.bak
 
 # preview harness output (regenerate with preview/build.sh)

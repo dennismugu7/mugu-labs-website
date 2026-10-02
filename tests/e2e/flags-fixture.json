@@ -1,0 +1,5 @@
+{
+  "features": { "blog": true, "socials": true },
+  "postHrefs": ["https://example.com/blog/click-scan-budget"],
+  "socialHrefs": { "instagram": "https://example.com/instagram", "youtube": "https://example.com/youtube" }
+}

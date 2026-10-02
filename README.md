@@ -36,9 +36,10 @@ The things most likely to need your attention first:
 
 | What | Where | Currently |
 | --- | --- | --- |
-| Social profile URLs | `lib/site.ts` → `socials` | all `"#"` — a placeholder |
-| Blog link | `lib/site.ts` → `site.blogUrl` | `"#journal"` — points back at the page |
-| Blog post links | `lib/site.ts` → `posts[].href` | `"#"` |
+| Journal and socials sections on/off | `lib/site.ts` → `features` | both off — not rendered, no nav link (see the comment there) |
+| Social profile URLs | `lib/site.ts` → `socials` | all `""` — a profile without a URL is not shown |
+| Blog link | `lib/site.ts` → `site.blogUrl` | `""` — renders as a placeholder button |
+| Blog post links | `lib/site.ts` → `posts[].href` | all `""` — a post without one counts as unpublished |
 | Contact email | `lib/site.ts` → `site.contact.email` | `support@mugu-labs.com` (Zoho mail on the domain) |
 | WhatsApp number | `lib/site.ts` → `site.contact.whatsapp` | `254701408727` |
 | Site URL (for OG tags + sitemap) | `lib/site.ts` → `site.url` | `https://mugu-labs.com` |

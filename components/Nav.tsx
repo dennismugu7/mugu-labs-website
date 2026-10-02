@@ -5,10 +5,12 @@ import Link from "next/link";
 import Logo from "./Logo";
 import ContactChoice from "./ContactChoice";
 import { site } from "../lib/site";
+import { showBlog } from "../lib/sections";
 
 const links = [
   { label: "Products", href: "/#products" },
-  { label: "Journal", href: "/#journal" },
+  // Only while the journal section is on the page (lib/site.ts → features).
+  ...(showBlog ? [{ label: "Journal", href: "/#journal" }] : []),
   { label: "About", href: "/#about" },
   { label: "How we work", href: "/#work" },
 ];

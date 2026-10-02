@@ -1,8 +1,9 @@
 import { ArrowRight } from "./icons";
 import { reveal } from "./reveal";
-import { posts, site } from "../lib/site";
+import { posts as allPosts, site, type Post } from "../lib/site";
 
-export default function Journal() {
+/** `posts` defaults to every post; the home page passes the published ones. */
+export default function Journal({ posts = allPosts }: { posts?: Post[] }) {
   const blog = site.blogUrl;
   const external = blog.startsWith("http");
 

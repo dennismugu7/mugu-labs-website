@@ -20,7 +20,6 @@ export type LinkSpec = {
 
 const NAV: LinkSpec[] = [
   { region: "nav", name: "Products", to: "/#products" },
-  { region: "nav", name: "Journal", to: "/#journal" },
   { region: "nav", name: "About", to: "/#about" },
   { region: "nav", name: "How we work", to: "/#work" },
 ];
