@@ -105,8 +105,11 @@ export default async function ProductPage({ params }: PageProps) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="detail__icon" src={product.icon} alt="" width={132} height={132} />
           <div>
+            {/* Above the title: where the app stands, in its own colours. */}
             {product.status === "in-development" ? (
               <p className="status-badge">{statusLabel[product.status]}</p>
+            ) : product.playStoreUrl ? (
+              <p className="status-badge">Live on Google Play</p>
             ) : null}
             <h1 className="detail__title">{product.name}</h1>
             <p className="detail__tagline">{product.tagline}</p>

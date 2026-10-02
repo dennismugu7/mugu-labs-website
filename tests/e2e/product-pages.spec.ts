@@ -156,6 +156,23 @@ test.describe("brand colours", () => {
     }
   });
 
+  test('dashboard-x: "Live on Google Play" in its own green, legibly', async ({ page }) => {
+    const dx = products.find((p) => p.slug === "dashboard-x")!;
+    await gotoReady(page, "/products/dashboard-x/");
+    const badge = page.locator(".detail__head .status-badge");
+    await expect(badge).toHaveText("Live on Google Play");
+    // Above the title, like the "In development" badge.
+    const [badgeTop, titleTop] = await Promise.all([
+      badge.evaluate((n) => n.getBoundingClientRect().top),
+      page.locator(".detail__title").evaluate((n) => n.getBoundingClientRect().top),
+    ]);
+    expect(badgeTop).toBeLessThan(titleTop);
+    const { bg, fg } = await colours(badge);
+    expect(rgb(bg)).toEqual(hexRgb(dx.brandColor));
+    expect(rgb(fg)).toEqual(hexRgb(dx.onBrandColor));
+    expect(contrast(rgb(bg), rgb(fg))).toBeGreaterThanOrEqual(4.5);
+  });
+
   for (const p of inDevelopment) {
     test(`${p.slug}: the badge and the tester button are legible`, async ({ page }) => {
       await gotoReady(page, `/products/${p.slug}/`);
