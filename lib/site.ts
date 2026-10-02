@@ -13,12 +13,12 @@ export const site = {
 
   /** ---- Contact ------------------------------------------------------- */
   contact: {
-    email: "dennisxenonxavier7@gmail.com",
+    email: "support@mugu-labs.com",
     /** International format, digits only — used to build the wa.me link. */
     whatsapp: "254701408727",
     whatsappDisplay: "+254 701 408 727",
     /** Pre-filled first message. */
-    whatsappMessage: "Hi Dennis — I found Mugu Labs and I'd like to talk about an app.",
+    whatsappMessage: "Hi Mugu Labs, I found your website and I'd like to talk about an app.",
     emailSubject: "Let's build something",
   },
 
