@@ -251,20 +251,6 @@ export type Post = {
 
 export const posts: Post[] = [
   {
-    title: "Click, Scan, Budget: Turn receipts into instant financial peace of mind",
-    art: "/assets/art-budget.png",
-    alt: "Illustration of a budget chart with coins and a magnifying glass",
-    tags: ["Dashboard X", "Smart Moves & Quick Hacks", "Money tips"],
-    href: "",
-  },
-  {
-    title: "Ditch the Clunky Spreadsheet: Level up your bank sync so your accounts actually talk to each other",
-    art: "/assets/art-sync.png",
-    alt: "Illustration of two arrows circling a dollar sign",
-    tags: ["Dashboard X", "Smart Moves & Quick Hacks", "Money tips"],
-    href: "",
-  },
-  {
     title: "Less Drama, More Glam: We built the exact booking tools you asked for.",
     art: "/assets/art-calendar.png",
     alt: "Illustration of a calendar with a notification bell",

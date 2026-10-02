@@ -1,4 +1,4 @@
-import { features, posts, socials } from "./site";
+import { features, posts, socials, type Post } from "./site";
 
 /**
  * Which optional sections the home page shows, from the flags in
@@ -16,7 +16,8 @@ import { features, posts, socials } from "./site";
  */
 type TestOverride = {
   features?: Partial<typeof features>;
-  postHrefs?: string[];
+  /** Stands in for every post in lib/site.ts. */
+  posts?: Post[];
   socialHrefs?: Record<string, string>;
 };
 
@@ -27,9 +28,7 @@ const override: TestOverride = process.env.NEXT_PUBLIC_SITE_TEST_OVERRIDE
 const flags = { ...features, ...override.features };
 
 /** Posts with somewhere to go. */
-export const publishedPosts = posts
-  .map((post, i) => (override.postHrefs?.[i] ? { ...post, href: override.postHrefs[i] } : post))
-  .filter((post) => post.href);
+export const publishedPosts = (override.posts ?? posts).filter((post) => post.href);
 
 /** Profiles with a URL; the rest are not shown. */
 export const linkedSocials = socials

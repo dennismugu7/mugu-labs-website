@@ -1,5 +1,13 @@
 {
   "features": { "blog": true, "socials": true },
-  "postHrefs": ["https://example.com/blog/click-scan-budget"],
+  "posts": [
+    {
+      "title": "Fixture post: a published entry for the flags test",
+      "art": "/assets/art-calendar.png",
+      "alt": "Illustration of a calendar with a notification bell",
+      "tags": ["Test"],
+      "href": "https://example.com/blog/fixture-post"
+    }
+  ],
   "socialHrefs": { "instagram": "https://example.com/instagram", "youtube": "https://example.com/youtube" }
 }

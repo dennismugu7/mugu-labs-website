@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import fixture from "./flags-fixture.json";
-import { posts, socials } from "../../lib/site";
+import { socials } from "../../lib/site";
 import { clickLink, expectContentVisible, expectSectionAtTop, gotoReady } from "./helpers";
 
 /*
@@ -9,15 +9,16 @@ import { clickLink, expectContentVisible, expectSectionAtTop, gotoReady } from "
  * scripts/build-flags-fixture.mjs). The "flags" project serves it.
  */
 
-test("the journal comes back, with only the published posts", async ({ page }) => {
+// The post is the fixture's own dummy (flags-fixture.json), not site data.
+test("the journal comes back, with its published post", async ({ page }) => {
   await gotoReady(page, "/");
   const journal = page.locator("#journal");
   await expect(journal).toHaveCount(1);
 
   const cards = journal.locator(".post");
-  await expect(cards).toHaveCount(fixture.postHrefs.length);
-  await expect(cards.first()).toHaveAttribute("href", fixture.postHrefs[0]);
-  await expect(cards.first()).toContainText(posts[0].title);
+  await expect(cards).toHaveCount(fixture.posts.length);
+  await expect(cards.first()).toHaveAttribute("href", fixture.posts[0].href);
+  await expect(cards.first()).toContainText(fixture.posts[0].title);
 });
 
 test("the nav links to it again, and lands on it", async ({ page }) => {
