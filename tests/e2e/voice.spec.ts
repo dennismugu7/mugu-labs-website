@@ -9,7 +9,8 @@ import { products } from "../../lib/site";
  */
 test.skip(({ isMobile }) => isMobile, "copy does not depend on the viewport");
 
-const CUSTOMER_VOICE = ["can I spend this?"];
+/** Lines written in a customer's voice, allowed by exact phrase (none today). */
+const CUSTOMER_VOICE: string[] = [];
 const FIRST_PERSON = /\b(I|I'm|I've|I'd|I'll|me|my|mine|myself)\b|one-person/;
 
 const pages = ["/", ...products.map((p) => `/products/${p.slug}/`), "/no-such-page/"];

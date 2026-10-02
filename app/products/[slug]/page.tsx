@@ -6,7 +6,7 @@ import ContactChoice from "../../../components/ContactChoice";
 import { brandStyle } from "../../../components/brand";
 import { reveal } from "../../../components/reveal";
 import { baseOpenGraph, baseTwitter } from "../../../lib/metadata";
-import { earlyTesterRequest, products, site, statusLabel } from "../../../lib/site";
+import { earlyTesterRequest, products, site, statusLabel, type Product } from "../../../lib/site";
 
 type Params = { slug: string };
 
@@ -34,6 +34,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+/** schema.org SoftwareApplication, for an app with a Play listing. */
+function structuredData(product: Product) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: product.name,
+    description: product.tagline,
+    operatingSystem: "Android",
+    applicationCategory: product.appCategory,
+    url: product.playStoreUrl,
+    image: `${site.url}${product.icon}`,
+    publisher: { "@type": "Organization", name: site.name, url: site.url },
+  };
+}
+
 export default async function ProductPage({ params }: PageProps) {
   const { slug } = await params;
   const product = products.find((p) => p.slug === slug);
@@ -41,6 +56,13 @@ export default async function ProductPage({ params }: PageProps) {
 
   return (
     <article className="section detail" style={brandStyle(product)}>
+      {product.playStoreUrl && product.appCategory ? (
+        <script
+          type="application/ld+json"
+          // "<" escaped so the JSON can never close the script element.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(product)).replace(/</g, "\\u003c") }}
+        />
+      ) : null}
       <div className="shell">
         <Link className="back-link" href="/#products">
           <ArrowLeft />
@@ -62,6 +84,27 @@ export default async function ProductPage({ params }: PageProps) {
         <p {...reveal(80, "detail__summary")}>
           {product.summary}
         </p>
+
+        {product.screens.length ? (
+          <section className="screens" aria-labelledby="screens-title">
+            <h2 id="screens-title" className="eyebrow screens__title">
+              Screenshots
+            </h2>
+            {/* On a phone this row scrolls sideways; tabIndex lets a keyboard
+                reach and scroll it too. It is revealed as one row: in the
+                sideways scroller the later screens are off to the side, where
+                the observer can't see them. */}
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+            <ul {...reveal(0, "screens__list")} tabIndex={0} aria-labelledby="screens-title">
+              {product.screens.map((screen) => (
+                <li key={screen.src}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={screen.src} alt={screen.alt} width={screen.width} height={screen.height} loading="lazy" />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <ul className="grid-2">
           {product.features.map((feature, i) => (
