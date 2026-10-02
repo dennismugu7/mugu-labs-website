@@ -37,7 +37,10 @@ test.describe("content is visible without the motion layer", () => {
       await route.continue();
     });
     await page.goto("/", { waitUntil: "commit" });
-    await expect(page.locator("html")).not.toHaveClass(/js-motion/, { timeout: 5_000 });
+    // Wait for the boot script's give-up itself: right after commit the class
+    // may simply not have been added yet, which would prove nothing.
+    await page.waitForFunction(() => window.__muguMotion === "fallback", null, { timeout: 6_000 });
+    await expect(page.locator("html")).not.toHaveClass(/js-motion/);
     expect(await hiddenReveals(page)).toBe(0);
 
     // The late motion layer must not hide anything again.
