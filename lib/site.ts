@@ -325,7 +325,7 @@ export const products: Product[] = [
       },
     ],
     summary:
-      "ODA gives people who sell on WhatsApp, TikTok and Instagram a free shop link. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.",
+      "ODA gives people who sell on WhatsApp, TikTok and Instagram a shop link of their own. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.",
     featuresHeading: "What we're building",
     features: [
       {
