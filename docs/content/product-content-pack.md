@@ -30,6 +30,8 @@ Bookflow is a booking app for salons, barbers and beauty studios. Share one link
 
 **Small print under features:** Bookflow is still being built with real salons. Features may change before launch.
 
+**Caption above the screens:** Early designs, still in progress. Shop names and links are examples. (Muted, like the small print.)
+
 **Screens (in order) + alt text**
 
 | File | Alt text |
@@ -55,7 +57,7 @@ Bookflow is a booking app for salons, barbers and beauty studios. Share one link
 **Tagline (keep):** Sleek e-commerce checkout, same personal WhatsApp touch
 
 **Intro:**
-ODA gives people who sell on WhatsApp, TikTok and Instagram a free shop link. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.
+ODA gives people who sell on WhatsApp, TikTok and Instagram a shop link of their own. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.
 
 **What we're building**
 
@@ -67,9 +69,11 @@ ODA gives people who sell on WhatsApp, TikTok and Instagram a free shop link. Bu
 6. **Delivery, sorted**: Offer pay-on-delivery with a deposit, and send your rider a one-time link to mark the order delivered.
 7. **English and Kiswahili**: For you and for your buyers.
 
-**Pricing line:** none. Pricing is unconfirmed; nothing about price or fees goes on the site until Dennis confirms it.
+**Pricing line:** none. Pricing is unconfirmed; nothing about price or fees goes on the site until Dennis confirms it, and that includes calling anything "free" (the e2e pricing guard checks the ODA page for it).
 
 **Small print under features:** ODA is still being built with real sellers. Features may change before launch.
+
+**Caption above the screens:** Early designs, still in progress. Shop names and links are examples. (Muted, like the small print.)
 
 **Screens (in order) + alt text**
 
