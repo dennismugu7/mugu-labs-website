@@ -87,9 +87,9 @@ test.describe("no dead links", () => {
 
 test.describe("contact menu", () => {
   for (const url of ["/", ...PAGES.filter((p) => p.url.startsWith("/products/")).map((p) => p.url)]) {
-    test(`"Contact me" on ${url} offers email and WhatsApp`, async ({ page }) => {
+    test(`"Contact us" on ${url} offers email and WhatsApp`, async ({ page }) => {
       await gotoReady(page, url);
-      const button = page.getByRole("main").getByRole("button", { name: "Contact me" });
+      const button = page.getByRole("main").getByRole("button", { name: "Contact us" });
       await button.scrollIntoViewIfNeeded();
       await button.click();
 

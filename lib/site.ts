@@ -4,12 +4,12 @@
  */
 
 export const site = {
-  name: "Mugu labs",
+  name: "Mugu Labs",
   domain: "mugu-labs.com",
   url: "https://mugu-labs.com",
   tagline: "Neat apps with a human touch",
   description:
-    "Mugu Labs is a one-person studio. I pick one real problem at a time, ship something usable, and keep working on it long after launch.",
+    "Mugu Labs is a small, independent app studio. We pick one real problem at a time, ship something usable, and keep working on it long after launch.",
 
   /** ---- Contact ------------------------------------------------------- */
   contact: {
@@ -192,12 +192,12 @@ export const posts: Post[] = [
   },
 ];
 
-/** ---- How I work ------------------------------------------------------ */
+/** ---- How we work ----------------------------------------------------- */
 
 export const principles = [
   {
-    title: "I use the thing first",
-    body: "Every product starts with a business I know, sitting next to us while we build it.",
+    title: "We use the thing first",
+    body: "Every product starts with a real business sitting next to us while we build it.",
   },
   {
     title: "Small, then smaller",

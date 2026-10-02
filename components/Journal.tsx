@@ -11,7 +11,7 @@ export default function Journal() {
       <div className="shell">
         <div className="journal__head">
           <h2 id="journal-title" {...reveal(0, "section-title")}>
-            Learn more at mugu labs blog
+            Learn more at Mugu Labs blog
           </h2>
         </div>
 
@@ -54,13 +54,13 @@ export default function Journal() {
         <div {...reveal(0, "journal__foot")}>
           {blog ? (
             <a className="btn btn--navy" href={blog} {...(external ? { target: "_blank", rel: "noreferrer noopener" } : {})}>
-              more at mugu labs blog
+              more at Mugu Labs blog
               <ArrowRight className="btn__arrow" />
             </a>
           ) : (
             /* The blog does not exist yet: same pill, not a link (D20). */
             <span className="btn btn--navy btn--placeholder">
-              more at mugu labs blog
+              more at Mugu Labs blog
               <span className="sr-only"> — coming soon</span>
               <ArrowRight className="btn__arrow" />
             </span>

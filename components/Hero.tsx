@@ -15,13 +15,13 @@ export default function Hero() {
         </div>
 
         <p className="lead hero__lead hero__rise">
-          I pick one real problem at a time, ship something usable, and keep working on it long
+          We pick one real problem at a time, ship something usable, and keep working on it long
           after launch. No agency retainers, no discovery decks.
         </p>
 
         <div className="hero__cta hero__rise">
           <Link className="btn btn--ghost btn--block-sm" href="#contact">
-            Work with me
+            Work with us
             <ArrowRight className="btn__arrow" />
           </Link>
         </div>

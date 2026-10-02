@@ -14,7 +14,7 @@ export default function HomePage() {
       <Products />
 
       <Statement>Digital overload is real&hellip;</Statement>
-      <Statement wide>Take a breather. I build simple apps that do the heavy lifting.</Statement>
+      <Statement wide>Take a breather. We build simple apps that do the heavy lifting.</Statement>
 
       <Journal />
       <About />
