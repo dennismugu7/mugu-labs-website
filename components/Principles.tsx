@@ -6,7 +6,7 @@ export default function Principles() {
     <section className="section" id="work" data-tint-anchor aria-labelledby="work-title">
       <div className="shell">
         <h2 id="work-title" {...reveal(0, "section-title principles__title")}>
-          How I work
+          How we work
         </h2>
 
         <ul className="grid-3">

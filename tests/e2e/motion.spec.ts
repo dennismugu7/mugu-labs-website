@@ -69,7 +69,7 @@ test.describe("scroll effects after in-site navigation", () => {
   /** Arrive on the home page by a client-side link, not a page load. */
   async function homeViaLink(page: Page) {
     await gotoReady(page, `/products/${products[0].slug}/`);
-    await clickLink(page, { region: "brand", name: "Mugu labs", to: "/" });
+    await clickLink(page, { region: "brand", name: "Mugu Labs", to: "/" });
     await expect(page).toHaveURL("/");
     await expectContentVisible(page);
   }

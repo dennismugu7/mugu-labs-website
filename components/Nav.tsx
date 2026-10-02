@@ -10,7 +10,7 @@ const links = [
   { label: "Products", href: "/#products" },
   { label: "Journal", href: "/#journal" },
   { label: "About", href: "/#about" },
-  { label: "How I work", href: "/#work" },
+  { label: "How we work", href: "/#work" },
 ];
 
 export default function Nav() {
@@ -43,7 +43,7 @@ export default function Nav() {
           </nav>
 
           <Link className="btn btn--ghost nav__cta nav__cta--desktop" href="/#contact">
-            Work with me
+            Work with us
             <ArrowRight className="btn__arrow" />
           </Link>
 
@@ -70,7 +70,7 @@ export default function Nav() {
             </Link>
           ))}
           <Link href="/#contact" onClick={() => setOpen(false)}>
-            Work with me
+            Work with us
           </Link>
         </div>
       </div>

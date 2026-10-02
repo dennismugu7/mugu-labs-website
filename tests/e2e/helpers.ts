@@ -22,8 +22,8 @@ const NAV: LinkSpec[] = [
   { region: "nav", name: "Products", to: "/#products" },
   { region: "nav", name: "Journal", to: "/#journal" },
   { region: "nav", name: "About", to: "/#about" },
-  { region: "nav", name: "How I work", to: "/#work" },
-  { region: "nav", name: "Work with me", to: "/#contact" },
+  { region: "nav", name: "How we work", to: "/#work" },
+  { region: "nav", name: "Work with us", to: "/#contact" },
 ];
 
 const FOOTER: LinkSpec[] = [
@@ -32,7 +32,7 @@ const FOOTER: LinkSpec[] = [
   { region: "footer", name: "Contact", to: "/#contact" },
 ];
 
-const CHROME: LinkSpec[] = [{ region: "brand", name: "Mugu labs", to: "/" }, ...NAV];
+const CHROME: LinkSpec[] = [{ region: "brand", name: "Mugu Labs", to: "/" }, ...NAV];
 
 /** Every internal link on every page, as the audit's link table lists them. */
 export const PAGES: { label: string; url: string; links: LinkSpec[] }[] = [
@@ -41,7 +41,7 @@ export const PAGES: { label: string; url: string; links: LinkSpec[] }[] = [
     url: "/",
     links: [
       ...CHROME,
-      { region: "main", name: "Work with me", to: "/#contact" },
+      { region: "main", name: "Work with us", to: "/#contact" },
       ...products.map((p) => ({
         region: "main" as const,
         name: `Learn more about ${p.name}`,

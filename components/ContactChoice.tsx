@@ -5,7 +5,7 @@ import { ChevronRight, MailIcon, WhatsAppIcon } from "./icons";
 import { mailtoHref, site, whatsappHref } from "../lib/site";
 
 /**
- * "Contact me" opens a small menu with the two ways to reach Dennis.
+ * "Contact us" opens a small menu with the two ways to reach the studio.
  * Closes on Escape, on outside click, and moves focus into the menu so it
  * works from the keyboard.
  */
@@ -51,7 +51,7 @@ export default function ContactChoice({ defaultOpen = false }: { defaultOpen?: b
         ref={buttonRef}
         onClick={() => setOpen((v) => !v)}
       >
-        Contact me
+        Contact us
         <ChevronRight className="btn__arrow" />
       </button>
 
