@@ -1492,7 +1492,7 @@ button {
   margin-top: clamp(1.5rem, 3vw, 2rem);
 }
 
-/* "In development", by the title of an app that isn't out yet */
+/* Above the title: "In development", or "Live on Google Play" */
 .status-badge {
   display: inline-block;
   margin-bottom: 0.6rem;

@@ -21,9 +21,8 @@ test("status on the shelf", async ({ page }) => {
 for (const [slug, status] of Object.entries(STATUS)) {
   test(`status on /products/${slug}/`, async ({ page }) => {
     await page.goto(`/products/${slug}/`);
-    // Only an app that isn't out yet carries a badge by its title.
+    // The badge above the title: "In development", or where a live app is.
     const badge = page.locator(".detail__head .status-badge");
-    if (status === "In development") await expect(badge).toHaveText(status);
-    else await expect(badge).toHaveCount(0);
+    await expect(badge).toHaveText(status === "In development" ? status : "Live on Google Play");
   });
 }
