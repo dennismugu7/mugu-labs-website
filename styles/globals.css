@@ -716,9 +716,14 @@ button {
   animation-delay: -4s;
 }
 
+/* Square for the same reason as .detail__icon: height: 100% does not
+   resolve against a box sized only by aspect-ratio, so the image fell back
+   to its file's proportions (ODA's 430x437 drew taller than wide). */
 .product__icon img {
+  display: block;
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 1;
   object-fit: contain;
   border-radius: 24%;
   filter: drop-shadow(0 26px 40px rgba(0, 4, 28, 0.6));
@@ -1390,14 +1395,18 @@ button {
   margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
+/* Always square, whatever the file's proportions: the width sets the size,
+   aspect-ratio the height (the width/height attributes would otherwise fix
+   it at 132px and stretch the icon wherever the width shrinks below that),
+   and contain fits a not-quite-square file inside without distorting it. */
 .detail__icon {
   flex: none;
   width: clamp(92px, 11vw, 132px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
   border-radius: 24%;
   filter: drop-shadow(0 26px 40px rgba(0, 4, 28, 0.6));
-  /* The product's colour, as a ring a little off the icon */
-  outline: 2px solid color-mix(in srgb, var(--brand, transparent) 70%, transparent);
-  outline-offset: 6px;
 }
 
 .detail__title {

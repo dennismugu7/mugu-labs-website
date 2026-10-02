@@ -133,6 +133,43 @@ test.describe("primary action placement", () => {
   }
 });
 
+/* -------------------------------------------------------------- app icons */
+
+test.describe("app icons are square and unadorned", () => {
+  for (const url of ["/", ...products.map((p) => `/products/${p.slug}/`)]) {
+    test(url, async ({ page }) => {
+      await gotoReady(page, url);
+      const icons = page.locator(url === "/" ? ".product__icon img" : ".detail__icon");
+      await expect(icons).toHaveCount(url === "/" ? products.length : 1);
+
+      for (const icon of await icons.all()) {
+        const m = await icon.evaluate((img) => {
+          const s = getComputedStyle(img);
+          // Rendered size; the layout box, so the float animation and the
+          // fade-in slide (transforms) don't skew it.
+          const el = img as HTMLImageElement;
+          return {
+            src: el.getAttribute("src"),
+            width: el.offsetWidth,
+            height: el.offsetHeight,
+            fit: s.objectFit,
+            outline: s.outlineStyle === "none" ? 0 : parseFloat(s.outlineWidth),
+            border: ["Top", "Right", "Bottom", "Left"].reduce(
+              (sum, side) => sum + parseFloat(s.getPropertyValue(`border-${side.toLowerCase()}-width`)),
+              0
+            ),
+          };
+        });
+        expect(Math.abs(m.width - m.height), `${m.src} is ${m.width}x${m.height}`).toBeLessThanOrEqual(1);
+        expect(m.width).toBeGreaterThan(80);
+        expect(m.fit, `${m.src} is fitted, not stretched`).toBe("contain");
+        expect(m.outline, `${m.src} has no outline`).toBe(0);
+        expect(m.border, `${m.src} has no border`).toBe(0);
+      }
+    });
+  }
+});
+
 /* ---------------------------------------------------------------- colours */
 
 test.describe("brand colours", () => {
