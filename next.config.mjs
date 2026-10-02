@@ -12,6 +12,10 @@ const nextConfig = {
 
   // Nicer URLs on static hosts: /products/oda/ instead of /products/oda.html
   trailingSlash: true,
+
+  // Test-only: scripts/build-flags-fixture.mjs exports a second copy of the
+  // site to out-flags/. Unset for every real build, which writes out/.
+  ...(process.env.MUGU_EXPORT_DIR ? { distDir: process.env.MUGU_EXPORT_DIR } : {}),
 };
 
 export default nextConfig;

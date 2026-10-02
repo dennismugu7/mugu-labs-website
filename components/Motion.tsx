@@ -23,6 +23,7 @@ export default function Motion() {
        the new page has mounted, so land on it here. Back/forward is left to
        the browser's own scroll restoration. */
     const id = decodeURIComponent(window.location.hash.slice(1));
+    if (id && !restoring && !document.getElementById(id)) toTopForMissingTarget();
     const stopLanding = id && !restoring ? landOn(id) : () => {};
 
     return () => {
@@ -31,7 +32,23 @@ export default function Motion() {
     };
   }, [pathname]);
 
+  /* A /#section typed or followed on the same page, for a section that isn't
+     there (switched off in lib/site.ts → features): go to the top rather than
+     staying wherever the visitor happened to be. */
+  useEffect(() => {
+    const onHashChange = () => {
+      const id = decodeURIComponent(window.location.hash.slice(1));
+      if (id && !document.getElementById(id)) toTopForMissingTarget();
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
   return null;
+}
+
+function toTopForMissingTarget() {
+  window.scrollTo({ top: 0, behavior: "instant" });
 }
 
 const LANDING_MS = 1000;

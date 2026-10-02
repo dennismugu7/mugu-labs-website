@@ -13,7 +13,7 @@ const deadHrefMessage =
 
 const config = [
   {
-    ignores: ["next-env.d.ts", ".next/**", "out/**", "node_modules/**", "preview/**", "test-results/**", "playwright-report/**"],
+    ignores: ["next-env.d.ts", ".next/**", "out/**", "out-flags/**", "node_modules/**", "preview/**", "test-results/**", "playwright-report/**"],
   },
 
   ...compat.extends("next/core-web-vitals", "next/typescript", "plugin:jsx-a11y/recommended"),

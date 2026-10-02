@@ -128,7 +128,9 @@ async function targets(page) {
     const el = (s) => document.querySelector(s);
     // Section frames start where a nav click would land the section: its top
     // less its scroll-margin-top (D19), so the fixed nav never covers a heading.
-    const anchor = (s) => top(el(s)) - parseFloat(getComputedStyle(el(s)).scrollMarginTop || "0");
+    // A section switched off in lib/site.ts (features) is not on the page:
+    // its frames come back null and are skipped.
+    const anchor = (s) => (el(s) ? top(el(s)) - parseFloat(getComputedStyle(el(s)).scrollMarginTop || "0") : null);
     const [s1, s2] = [...document.querySelectorAll("[data-statement]")];
     const hold = (s) => top(s) + (s.offsetHeight - window.innerHeight) * 0.5;
     return [
@@ -140,7 +142,7 @@ async function targets(page) {
       // Since M4 the journal cards do not fit under the heading in one frame;
       // comp 7 is the cards, so give them a frame with the art fully in it:
       // the art breaks 88px above the grid, and the nav covers the top 73px.
-      ["07-journal-cards", top(el("#journal .grid-3")) - 170],
+      ["07-journal-cards", el("#journal .grid-3") ? top(el("#journal .grid-3")) - 170 : null],
       ["08-about", anchor("#about")],
       // Comp 9 is "how I work" *and* socials on one slide; built, they are
       // taller than a frame, so each gets its own, anchored like a nav click.
@@ -224,6 +226,10 @@ for (const name of ["desktop", "mobile"]) {
   await warm(page);
   log.metrics[name] = await metrics(page);
   for (const [label, y] of await targets(page)) {
+    if (y === null) {
+      console.log(`  (${label}: section not on the page, skipped)`);
+      continue;
+    }
     if (name === "mobile" && label === "07-journal-cards") continue; // the phone frame already shows the cards
     await scrollTo(page, y);
     await shoot(page, `${name}__${label}.png`);

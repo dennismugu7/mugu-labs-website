@@ -1,8 +1,11 @@
 import { socialIcons } from "./icons";
 import { reveal } from "./reveal";
-import { socials } from "../lib/site";
+import { socials as allSocials } from "../lib/site";
 
-export default function Connect() {
+type Social = { name: string; href: string; id: string };
+
+/** `socials` defaults to every profile; the home page passes the linked ones. */
+export default function Connect({ socials = allSocials }: { socials?: readonly Social[] }) {
   return (
     <section className="section section--tight" id="connect" aria-labelledby="connect-title">
       <div className="shell connect">

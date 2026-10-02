@@ -6,6 +6,7 @@ import About from "../components/About";
 import Principles from "../components/Principles";
 import Connect from "../components/Connect";
 import Contact from "../components/Contact";
+import { linkedSocials, publishedPosts, showBlog, showSocials } from "../lib/sections";
 
 export default function HomePage() {
   return (
@@ -16,10 +17,11 @@ export default function HomePage() {
       <Statement>Digital overload is real&hellip;</Statement>
       <Statement wide>Take a breather. We build simple apps that do the heavy lifting.</Statement>
 
-      <Journal />
+      {/* Optional sections: off, they are not rendered at all (lib/site.ts → features). */}
+      {showBlog ? <Journal posts={publishedPosts} /> : null}
       <About />
       <Principles />
-      <Connect />
+      {showSocials ? <Connect socials={linkedSocials} /> : null}
       <Contact />
     </>
   );

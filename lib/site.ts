@@ -243,6 +243,26 @@ export const socials = [
   { name: "Discord", href: "", id: "discord" },
 ] as const;
 
+/** ---- Feature flags -----------------------------------------------------
+ *  Sections that stay off the site until they have something to show. A
+ *  section switched off is not rendered at all, and its links go with it
+ *  (the nav's "Journal", in the header and the phone menu); a visit to
+ *  /#journal or /#connect lands at the top of the home page instead.
+ *
+ *  To bring one back, set its flag to true AND give it something to show:
+ *    blog    — at least one post above with an `href` (a published post);
+ *              only published posts are listed.
+ *    socials — at least one profile above with an `href`; profiles without
+ *              one stay hidden.
+ *  A flag that is on with nothing to show still hides the section. Nothing
+ *  else to change: lib/sections.ts works out the rest.
+ * ---------------------------------------------------------------------- */
+
+export const features = {
+  blog: false,
+  socials: false,
+};
+
 /** ---- Derived links --------------------------------------------------- */
 
 export const mailtoHref = `mailto:${site.contact.email}?subject=${encodeURIComponent(

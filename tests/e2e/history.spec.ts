@@ -78,12 +78,12 @@ test("product → product via footer → Back → Forward", async ({ page }) => 
   await expectContentVisible(page);
 });
 
-test("product → /#journal → Back → Forward", async ({ page }) => {
+test("product → /#work → Back → Forward", async ({ page }) => {
   await gotoReady(page, `/products/${first.slug}/`);
   await markDocument(page);
 
-  await clickLink(page, { region: "nav", name: "Journal", to: "/#journal" });
-  await expect(page).toHaveURL("/#journal");
+  await clickLink(page, { region: "nav", name: "How we work", to: "/#work" });
+  await expect(page).toHaveURL("/#work");
   await expectContentVisible(page);
 
   await page.goBack();
@@ -91,7 +91,7 @@ test("product → /#journal → Back → Forward", async ({ page }) => {
   await expectContentVisible(page);
 
   await page.goForward();
-  await expect(page).toHaveURL("/#journal");
+  await expect(page).toHaveURL("/#work");
   await expectSameDocument(page);
   await expectContentVisible(page);
 });
