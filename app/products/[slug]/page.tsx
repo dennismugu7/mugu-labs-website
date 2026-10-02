@@ -3,9 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "../../../components/icons";
 import ContactChoice from "../../../components/ContactChoice";
+import { brandStyle } from "../../../components/brand";
 import { reveal } from "../../../components/reveal";
 import { baseOpenGraph, baseTwitter } from "../../../lib/metadata";
-import { products, site } from "../../../lib/site";
+import { products, site, statusLabel } from "../../../lib/site";
 
 type Params = { slug: string };
 
@@ -39,7 +40,7 @@ export default async function ProductPage({ params }: PageProps) {
   if (!product) notFound();
 
   return (
-    <article className="section detail">
+    <article className="section detail" style={brandStyle(product)}>
       <div className="shell">
         <Link className="back-link" href="/#products">
           <ArrowLeft />
@@ -50,7 +51,7 @@ export default async function ProductPage({ params }: PageProps) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="detail__icon" src={product.icon} alt="" width={132} height={132} />
           <div>
-            <p className="eyebrow">{product.status}</p>
+            <p className="eyebrow">{statusLabel[product.status]}</p>
             <h1 className="detail__title">{product.name}</h1>
             <p className="detail__tagline">{product.tagline}</p>
           </div>

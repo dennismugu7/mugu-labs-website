@@ -64,21 +64,37 @@ export const team: TeamMember[] = [
 
 /** ---- Products -------------------------------------------------------- */
 
+export type ProductStatus = "live" | "in-development";
+
+/** The words for each status, wherever one is shown. */
+export const statusLabel: Record<ProductStatus, string> = {
+  live: "Live",
+  "in-development": "In development",
+};
+
+export type Screen = { src: string; alt: string; width: number; height: number };
+
 export type Product = {
   slug: string;
   name: string;
   tagline: string;
   icon: string;
-  /** Visual accent for the card's button: "lime" | "navy" */
-  accent: "lime" | "navy";
+  /** The product's colour: its "Learn more" button and its page's accents.
+   *  `onBrandColor` is the text on it; the pair must reach WCAG AA (4.5:1),
+   *  which tests/e2e/products.spec.ts checks. */
+  brandColor: string;
+  onBrandColor: string;
   /** Where "Learn more" goes. Leave as the internal route, or paste a real URL. */
   href: string;
   external?: boolean;
   /** Detail-page content. */
   summary: string;
   features: { title: string; body: string }[];
-  /** One label per state, shown on the card and the product page. */
-  status: "Live" | "In development";
+  status: ProductStatus;
+  /** The Google Play listing; a live product's page links to it. */
+  playStoreUrl?: string;
+  /** App screenshots for the product page's gallery, in order. */
+  screens: Screen[];
   /** When this product's page content last changed (YYYY-MM-DD), for the
    *  sitemap. Bump it with the copy. */
   updated: string;
@@ -90,10 +106,13 @@ export const products: Product[] = [
     name: "Dashboard X",
     tagline: "Taming your budget and tracking spending is now a breeze",
     icon: "/assets/icon-dashboardx.png",
-    accent: "lime",
+    // #2EE07E on #0B0B0B: 11.3:1
+    brandColor: "#2EE07E",
+    onBrandColor: "#0B0B0B",
     href: "/products/dashboard-x",
     updated: "2026-10-02",
-    status: "Live",
+    status: "live",
+    screens: [],
     summary:
       "A personal finance dashboard for people who gave up on spreadsheets. Snap a receipt, and the amount, the merchant and the category are in before you've put your phone back in your pocket.",
     features: [
@@ -120,10 +139,13 @@ export const products: Product[] = [
     name: "Bookflow",
     tagline: "Your salon's full calendar, running on autopilot",
     icon: "/assets/icon-bookflow.png",
-    accent: "navy",
+    // the icon's purple; white on it: 5.0:1
+    brandColor: "#9D38EE",
+    onBrandColor: "#FFFFFF",
     href: "/products/bookflow",
     updated: "2026-10-02",
-    status: "In development",
+    status: "in-development",
+    screens: [],
     summary:
       "Booking software shaped like a salon day rather than an enterprise calendar. Clients pick a slot, Bookflow confirms it, reminds them, and quietly chases the ones who go quiet.",
     features: [
@@ -150,10 +172,13 @@ export const products: Product[] = [
     name: "ODA",
     tagline: "Sleek e-commerce checkout, same personal WhatsApp touch",
     icon: "/assets/icon-oda.png",
-    accent: "lime",
+    // the icon's #DF532C, darkened just enough for white on it: 4.6:1
+    brandColor: "#CF461F",
+    onBrandColor: "#FFFFFF",
     href: "/products/oda",
     updated: "2026-10-02",
-    status: "In development",
+    status: "in-development",
+    screens: [],
     summary:
       "A storefront and checkout for sellers whose business already lives in WhatsApp. Customers get a proper product page and a real cart; you keep the conversation you've always had.",
     features: [

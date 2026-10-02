@@ -355,6 +355,18 @@ button {
   box-shadow: 0 18px 44px -18px rgba(92, 225, 230, 0.8);
 }
 
+/* A product's own colour (lib/site.ts brandColor / onBrandColor, set as
+   --brand / --on-brand by components/brand.ts) */
+.btn--brand {
+  --btn-bg: var(--brand);
+  --btn-fg: var(--on-brand);
+  --btn-line: transparent;
+}
+
+.btn--brand:hover {
+  box-shadow: 0 18px 44px -18px color-mix(in srgb, var(--brand) 75%, transparent);
+}
+
 .btn--ghost {
   --btn-bg: rgba(255, 255, 255, 0.04);
 }
@@ -1359,6 +1371,9 @@ button {
   width: clamp(92px, 11vw, 132px);
   border-radius: 24%;
   filter: drop-shadow(0 26px 40px rgba(0, 4, 28, 0.6));
+  /* The product's colour, as a ring a little off the icon */
+  outline: 2px solid color-mix(in srgb, var(--brand, transparent) 70%, transparent);
+  outline-offset: 6px;
 }
 
 .detail__title {
@@ -1391,6 +1406,17 @@ button {
 
 .feature {
   padding: clamp(1.4rem, 2.2vw, 1.9rem);
+}
+
+/* A short bar of the product's colour over each feature (decoration only) */
+.feature::before {
+  content: "";
+  display: block;
+  width: 2rem;
+  height: 3px;
+  margin-bottom: 1rem;
+  border-radius: 3px;
+  background: var(--brand, var(--mint));
 }
 
 .feature__title {
