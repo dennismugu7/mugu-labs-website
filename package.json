@@ -12,6 +12,7 @@
     "lint": "eslint . --max-warnings=0"
   },
   "dependencies": {
+    "marked": "^18.0.14",
     "next": "^15.1.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
