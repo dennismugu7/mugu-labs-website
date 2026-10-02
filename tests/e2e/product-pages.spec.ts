@@ -241,6 +241,25 @@ test.describe("gallery caption", () => {
   }
 });
 
+/* ------------------------------------------- claims ODA no longer makes */
+
+test("ODA makes no checked, verified or badge claims", async ({ page, isMobile }) => {
+  test.skip(isMobile, "copy does not depend on the viewport");
+  await page.goto("/products/oda/");
+  const text = await page.evaluate(() =>
+    [
+      document.title,
+      document.body.innerText,
+      ...Array.from(document.querySelectorAll("meta[content], img[alt]"), (el) =>
+        el.getAttribute("content") ?? el.getAttribute("alt")
+      ),
+    ].join("\n")
+  );
+  expect(text).not.toMatch(/checked|verified|badge/i);
+  // Nor the payment-handling lines that went with them.
+  expect(text).not.toMatch(/never holds your money|\bTill\b|Pochi|Paybill/i);
+});
+
 /* ------------------------------------------- Bookflow and ODA (content pack) */
 
 /*
@@ -276,15 +295,14 @@ const PACK = {
   },
   oda: {
     intro:
-      "ODA gives people who sell on WhatsApp, TikTok and Instagram a shop link of their own. Buyers order properly, pay you directly on M-Pesa, and get WhatsApp updates until their order arrives. No more chasing screenshots in the chat.",
+      "ODA gives people who sell on WhatsApp, TikTok and Instagram a shop link of their own. Buyers browse, order and pay with M-Pesa in a few taps, then follow their order all the way to their door. No more chasing screenshots in the chat.",
     features: [
       "Your own shop link",
-      "Paid straight to you",
-      "Orders that sort themselves",
-      "WhatsApp updates for buyers",
-      "A badge buyers can check",
-      "Delivery, sorted",
-      "English and Kiswahili",
+      "Checkout in a few taps",
+      "Pay with M-Pesa",
+      "Updates on WhatsApp",
+      "Live delivery tracking",
+      "Ratings that mean something",
     ],
     smallPrint: "ODA is still being built with real sellers. Features may change before launch.",
     groups: [
