@@ -23,7 +23,6 @@ const NAV: LinkSpec[] = [
   { region: "nav", name: "Journal", to: "/#journal" },
   { region: "nav", name: "About", to: "/#about" },
   { region: "nav", name: "How we work", to: "/#work" },
-  { region: "nav", name: "Work with us", to: "/#contact" },
 ];
 
 const FOOTER: LinkSpec[] = [
@@ -41,7 +40,6 @@ export const PAGES: { label: string; url: string; links: LinkSpec[] }[] = [
     url: "/",
     links: [
       ...CHROME,
-      { region: "main", name: "Work with us", to: "/#contact" },
       ...products.map((p) => ({
         region: "main" as const,
         name: `Learn more about ${p.name}`,
@@ -79,7 +77,7 @@ export async function waitForMotion(page: Page) {
   await page.waitForFunction(() => window.__muguMotion === "ready" || window.__muguMotion === "fallback");
 }
 
-const isMobile = (page: Page) => (page.viewportSize()?.width ?? 1366) < 760;
+export const isMobile = (page: Page) => (page.viewportSize()?.width ?? 1366) < 760;
 
 /** Click a link from the map. On a phone, header links go through the menu. */
 export async function clickLink(page: Page, link: LinkSpec) {

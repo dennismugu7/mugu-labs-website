@@ -1,16 +1,39 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ChevronRight, MailIcon, WhatsAppIcon } from "./icons";
+import { useEffect, useId, useRef, useState } from "react";
+import { ArrowRight, ChevronRight, MailIcon, WhatsAppIcon } from "./icons";
 import { mailtoHref, site, whatsappHref } from "../lib/site";
 
+type Props = {
+  defaultOpen?: boolean;
+  /** The button's text. */
+  label?: string;
+  /** The button's classes; the default is the mint "Contact us" pill. */
+  buttonClassName?: string;
+  icon?: "chevron" | "arrow";
+  /** Extra classes on the wrapper: `choice--end` opens the menu right-aligned
+      (the nav), `choice--inline` opens it in the flow (the phone menu). */
+  className?: string;
+  /** Called after Email or WhatsApp is picked, e.g. to close the phone menu. */
+  onChoose?: () => void;
+};
+
 /**
- * "Contact us" opens a small menu with the two ways to reach the studio.
- * Closes on Escape, on outside click, and moves focus into the menu so it
- * works from the keyboard.
+ * A button that opens a small menu with the two ways to reach the studio:
+ * "Contact us" in the contact card and on product pages, "Work with us" in
+ * the nav, the phone menu and the hero. Closes on Escape and on an outside
+ * click, and moves focus into the menu so it works from the keyboard.
  */
-export default function ContactChoice({ defaultOpen = false }: { defaultOpen?: boolean }) {
+export default function ContactChoice({
+  defaultOpen = false,
+  label = "Contact us",
+  buttonClassName = "btn btn--mint btn--block-sm",
+  icon = "chevron",
+  className,
+  onChoose,
+}: Props) {
   const [open, setOpen] = useState(defaultOpen);
+  const menuId = useId();
   const wrapRef = useRef<HTMLDivElement>(null);
   const firstItemRef = useRef<HTMLAnchorElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -40,29 +63,36 @@ export default function ContactChoice({ defaultOpen = false }: { defaultOpen?: b
     };
   }, [open]);
 
+  const choose = () => {
+    setOpen(false);
+    onChoose?.();
+  };
+
+  const Icon = icon === "arrow" ? ArrowRight : ChevronRight;
+
   return (
-    <div className="choice" ref={wrapRef}>
+    <div className={className ? `choice ${className}` : "choice"} ref={wrapRef}>
       <button
         type="button"
-        className="btn btn--mint btn--block-sm"
+        className={buttonClassName}
         aria-expanded={open}
         aria-haspopup="menu"
-        aria-controls="contact-choice-menu"
+        aria-controls={menuId}
         ref={buttonRef}
         onClick={() => setOpen((v) => !v)}
       >
-        Contact us
-        <ChevronRight className="btn__arrow" />
+        {label}
+        <Icon className="btn__arrow" />
       </button>
 
       {open ? (
-        <div className="choice__menu" id="contact-choice-menu" role="menu">
+        <div className="choice__menu" id={menuId} role="menu" aria-label={label}>
           <a
             className="choice__item choice__item--mail"
             href={mailtoHref}
             role="menuitem"
             ref={firstItemRef}
-            onClick={() => setOpen(false)}
+            onClick={choose}
           >
             <span className="choice__icon">
               <MailIcon />
@@ -79,7 +109,7 @@ export default function ContactChoice({ defaultOpen = false }: { defaultOpen?: b
             target="_blank"
             rel="noreferrer noopener"
             role="menuitem"
-            onClick={() => setOpen(false)}
+            onClick={choose}
           >
             <span className="choice__icon">
               <WhatsAppIcon />
