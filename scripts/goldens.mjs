@@ -112,10 +112,19 @@ async function shoot(page, file, opts = {}) {
   if (opts.fullPage) {
     // The gradient is position: fixed, which a full-page capture only paints
     // for the first viewport. Stretch it over the document for this shot.
+    // Its layers overhang it by 10% (inset: -10%), which harmlessly overflows
+    // the viewport while fixed but, absolute, makes the document taller and
+    // wider: an empty band under the footer and down the right that no
+    // visitor can scroll to. Measure the real page first and clip to it.
+    const page_ = await page.evaluate(() => ({
+      width: document.documentElement.clientWidth,
+      height: document.documentElement.scrollHeight,
+    }));
     await page.addStyleTag({
-      content: `.backdrop { position: absolute !important; inset: 0 auto auto 0 !important; width: 100% !important; height: ${await page.evaluate(() => document.documentElement.scrollHeight)}px !important; }`,
+      content: `.backdrop { position: absolute !important; inset: 0 auto auto 0 !important; width: 100% !important; height: ${page_.height}px !important; }`,
     });
     await page.waitForTimeout(200);
+    opts = { ...opts, clip: { x: 0, y: 0, ...page_ } };
   }
   await page.screenshot({ path: path.join(shotsDir, file), ...opts });
   console.log("  " + file);
