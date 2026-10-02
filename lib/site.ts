@@ -77,7 +77,8 @@ export type Product = {
   /** Detail-page content. */
   summary: string;
   features: { title: string; body: string }[];
-  status: string;
+  /** One label per state, shown on the card and the product page. */
+  status: "Live" | "In development";
   /** When this product's page content last changed (YYYY-MM-DD), for the
    *  sitemap. Bump it with the copy. */
   updated: string;
@@ -122,7 +123,7 @@ export const products: Product[] = [
     accent: "navy",
     href: "/products/bookflow",
     updated: "2026-09-19",
-    status: "Live",
+    status: "In development",
     summary:
       "Booking software shaped like a salon day rather than an enterprise calendar. Clients pick a slot, Bookflow confirms it, reminds them, and quietly chases the ones who go quiet.",
     features: [
@@ -152,7 +153,7 @@ export const products: Product[] = [
     accent: "lime",
     href: "/products/oda",
     updated: "2026-09-19",
-    status: "In build",
+    status: "In development",
     summary:
       "A storefront and checkout for sellers whose business already lives in WhatsApp. Customers get a proper product page and a real cart; you keep the conversation you've always had.",
     features: [
