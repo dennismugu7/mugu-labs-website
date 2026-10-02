@@ -4,12 +4,15 @@ import { defineConfig, devices } from "@playwright/test";
  * End-to-end tests against the built static export (`npm run build` first),
  * served the way a static host serves it. `npm run test:e2e`.
  *
- * The "flags" project runs against a second export with the sections that
- * lib/site.ts switches off switched on (out-flags/, built here by
+ * The "flags" project (flags.spec.ts, blog.spec.ts) runs against a second
+ * export with the sections that lib/site.ts switches off switched on and the
+ * blog's drafts published (out-flags/, built here by
  * scripts/build-flags-fixture.mjs).
  */
 const PORT = 4173;
 const FLAGS_PORT = 4175;
+/** The specs that run against out-flags/ (either path separator). */
+const FLAGS_SPECS = /[\\/](flags|blog)\.spec\.ts$/;
 
 export default defineConfig({
   testDir: "tests/e2e",
@@ -26,12 +29,12 @@ export default defineConfig({
   projects: [
     {
       name: "desktop",
-      testIgnore: /flags\.spec\.ts/,
+      testIgnore: FLAGS_SPECS,
       use: { ...devices["Desktop Chrome"], viewport: { width: 1366, height: 800 } },
     },
     {
       name: "flags",
-      testMatch: /flags\.spec\.ts/,
+      testMatch: FLAGS_SPECS,
       use: {
         ...devices["Desktop Chrome"],
         viewport: { width: 1366, height: 800 },
@@ -40,7 +43,7 @@ export default defineConfig({
     },
     {
       name: "mobile",
-      testIgnore: /flags\.spec\.ts/,
+      testIgnore: FLAGS_SPECS,
       use: {
         ...devices["Desktop Chrome"],
         viewport: { width: 390, height: 844 },
