@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { ArrowRight } from "./icons";
+import { brandStyle } from "./brand";
 import { reveal } from "./reveal";
-import { products } from "../lib/site";
+import { products, statusLabel } from "../lib/site";
 
 export default function Products() {
   return (
@@ -21,19 +22,19 @@ export default function Products() {
         <ul className="grid-3">
           {products.map((product, i) => (
             <li key={product.slug} {...reveal(i * 110)}>
-              <article className="card card--hover product">
+              <article className="card card--hover product" style={brandStyle(product)}>
                 <div className="product__icon">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={product.icon} alt="" width={168} height={168} loading="lazy" />
                 </div>
 
-                <span className="product__status">{product.status}</span>
+                <span className="product__status">{statusLabel[product.status]}</span>
 
                 <h3 className="product__name">{product.name}</h3>
                 <p className="product__tagline">{product.tagline}</p>
 
                 <Link
-                  className={`btn ${product.accent === "lime" ? "btn--lime" : "btn--navy"}`}
+                  className="btn btn--brand"
                   href={product.href}
                   {...(product.external
                     ? { target: "_blank", rel: "noreferrer noopener" }
