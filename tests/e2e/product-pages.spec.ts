@@ -39,17 +39,21 @@ test.describe("primary action", () => {
   for (const product of products) {
     test(`${product.slug}: the Play badge only if live`, async ({ page }) => {
       await gotoReady(page, `/products/${product.slug}/`);
-      const badge = page.getByRole("link", { name: "Get it on Google Play" });
+      const badges = page.getByRole("link", { name: "Get it on Google Play" });
 
       if (product.status === "live") {
-        await expect(badge).toHaveAttribute("href", product.playStoreUrl!);
-        await expect(badge).toHaveAttribute("target", "_blank");
-        await expect(badge).toHaveAttribute("rel", /\bnoopener\b/);
-        await expect(badge.locator("img")).toHaveAttribute("src", "/assets/google-play-badge.png");
+        // Under the intro and at the end of the page.
+        await expect(badges).toHaveCount(2);
+        for (const badge of await badges.all()) {
+          await expect(badge).toHaveAttribute("href", product.playStoreUrl!);
+          await expect(badge).toHaveAttribute("target", "_blank");
+          await expect(badge).toHaveAttribute("rel", /\bnoopener\b/);
+          await expect(badge.locator("img")).toHaveAttribute("src", "/assets/google-play-badge.png");
+        }
         await expect(page.getByText("Google Play and the Google Play logo are trademarks of Google LLC.")).toBeVisible();
         await expect(page.getByRole("button", { name: "Become an early tester" })).toHaveCount(0);
       } else {
-        await expect(badge).toHaveCount(0);
+        await expect(badges).toHaveCount(0);
         await expect(page.locator('a[href*="play.google.com"]')).toHaveCount(0);
       }
 
@@ -66,7 +70,8 @@ test.describe("primary action", () => {
       await gotoReady(page, `/products/${product.slug}/`);
       await expect(page.locator(".detail__head .status-badge")).toHaveText("In development");
 
-      const button = page.getByRole("main").getByRole("button", { name: "Become an early tester" });
+      // There are two (under the intro and at the end); check the end one.
+      const button = page.getByRole("main").getByRole("button", { name: "Become an early tester" }).last();
       await button.scrollIntoViewIfNeeded();
       await button.click();
       const menu = page.getByRole("main").getByRole("menu");
@@ -85,6 +90,45 @@ test.describe("primary action", () => {
       expect(wa.host).toBe("wa.me");
       expect(wa.pathname).toBe(`/${site.contact.whatsapp}`);
       expect(wa.searchParams.get("text")).toBe(expected.message);
+    });
+  }
+});
+
+/* ---------------------------------------- the primary action, twice */
+
+test.describe("primary action placement", () => {
+  test.skip(({ isMobile }) => isMobile, "placement is the same at every width");
+
+  for (const product of products) {
+    test(`${product.slug}: under the intro and at the end`, async ({ page }) => {
+      await gotoReady(page, `/products/${product.slug}/`);
+      const ctas = page.locator(".detail__cta");
+      await expect(ctas).toHaveCount(2);
+
+      const name = product.status === "live" ? "Get it on Google Play" : "Become an early tester";
+      const role = product.status === "live" ? "link" : "button";
+      for (const cta of await ctas.all()) await expect(cta.getByRole(role, { name })).toHaveCount(1);
+
+      // The first sits right after the intro, before the screenshots and features.
+      const order = await page.evaluate(() => {
+        const top = (s: string) => document.querySelector(s)!.getBoundingClientRect().top;
+        return {
+          summary: top(".detail__summary"),
+          firstCta: top(".detail__cta--top"),
+          features: top(".grid-2"),
+          lastCta: Array.from(document.querySelectorAll(".detail__cta")).at(-1)!.getBoundingClientRect().top,
+        };
+      });
+      expect(order.summary).toBeLessThan(order.firstCta);
+      expect(order.firstCta).toBeLessThan(order.features);
+      expect(order.features).toBeLessThan(order.lastCta);
+
+      if (product.status === "in-development") {
+        // The one under the intro works too.
+        const top = ctas.first().getByRole("button", { name });
+        await top.click();
+        await expect(ctas.first().getByRole("menu")).toBeVisible();
+      }
     });
   }
 });
@@ -117,7 +161,7 @@ test.describe("brand colours", () => {
       await gotoReady(page, `/products/${p.slug}/`);
       for (const el of [
         page.locator(".detail__head .status-badge"),
-        page.getByRole("button", { name: "Become an early tester" }),
+        page.getByRole("button", { name: "Become an early tester" }).first(),
       ]) {
         const { bg, fg } = await colours(el);
         expect(rgb(bg)).toEqual(hexRgb(p.brandColor));

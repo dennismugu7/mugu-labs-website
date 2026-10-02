@@ -67,6 +67,25 @@ export default async function ProductPage({ params }: PageProps) {
   const product = products.find((p) => p.slug === slug);
   if (!product) notFound();
 
+  /* The primary action follows the status: download a live app, ask to test
+     one that is still being built. Shown under the intro and again at the
+     end of the page. */
+  const primaryAction =
+    product.status === "live" && product.playStoreUrl ? (
+      <a className="play-badge" href={product.playStoreUrl} target="_blank" rel="noopener">
+        {/* Google's badge artwork, unmodified, with its clear space. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/assets/google-play-badge.png" alt="Get it on Google Play" width={646} height={250} />
+      </a>
+    ) : (
+      <ContactChoice
+        label="Become an early tester"
+        buttonClassName="btn btn--brand btn--block-sm"
+        icon="arrow"
+        {...earlyTesterRequest(product.name)}
+      />
+    );
+
   return (
     <article className="section detail" style={brandStyle(product)}>
       {product.playStoreUrl && product.appCategory ? (
@@ -97,6 +116,8 @@ export default async function ProductPage({ params }: PageProps) {
         <p {...reveal(80, "detail__summary")}>
           {product.summary}
         </p>
+
+        <div {...reveal(120, "detail__cta detail__cta--top")}>{primaryAction}</div>
 
         {product.screens.length ? (
           <section
@@ -170,22 +191,7 @@ export default async function ProductPage({ params }: PageProps) {
         {product.smallPrint ? <p className="detail__smallprint">{product.smallPrint}</p> : null}
 
         <div {...reveal(0, "detail__cta")}>
-          {/* The primary action follows the status: download a live app,
-              ask to test one that is still being built. */}
-          {product.status === "live" && product.playStoreUrl ? (
-            <a className="play-badge" href={product.playStoreUrl} target="_blank" rel="noopener">
-              {/* Google's badge artwork, unmodified, with its clear space. */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/google-play-badge.png" alt="Get it on Google Play" width={646} height={250} />
-            </a>
-          ) : (
-            <ContactChoice
-              label="Become an early tester"
-              buttonClassName="btn btn--brand btn--block-sm"
-              icon="arrow"
-              {...earlyTesterRequest(product.name)}
-            />
-          )}
+          {primaryAction}
           <Link className="btn btn--ghost" href="/#products">
             See the other apps
             <ArrowRight className="btn__arrow" />
