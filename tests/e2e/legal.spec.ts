@@ -5,10 +5,9 @@ import { products, site } from "../../lib/site";
 import { gotoReady } from "./helpers";
 
 /*
- * Privacy and Terms live on the app (app.mugu-labs.com). The footer links
- * there from every page, and /privacy and /terms on this site redirect
- * there. The redirects are Vercel's (vercel.json), so locally they are
- * checked as declared; the live check is in the deploy notes.
+ * Dashboard X's Privacy and Terms live on the app (app.mugu-labs.com); the
+ * footer links there from every page. /privacy and /terms on this site do
+ * not redirect (vercel.json).
  */
 
 const PRIVACY = "https://app.mugu-labs.com/privacy";
@@ -28,15 +27,11 @@ for (const url of ["/", ...products.map((p) => `/products/${p.slug}/`), "/no-suc
   });
 }
 
-test("vercel.json redirects /privacy and /terms, with and without the slash", () => {
+test("vercel.json has no redirect for /privacy or /terms", () => {
   const config = JSON.parse(fs.readFileSync(path.join(process.cwd(), "vercel.json"), "utf8"));
-  const redirects: { source: string; destination: string; permanent?: boolean }[] = config.redirects ?? [];
-  const to = (source: string) => redirects.find((r) => r.source === source)?.destination;
-  expect(to("/privacy")).toBe(PRIVACY);
-  expect(to("/privacy/")).toBe(PRIVACY);
-  expect(to("/terms")).toBe(TERMS);
-  expect(to("/terms/")).toBe(TERMS);
-  // The cache headers are still there too.
+  const sources: string[] = (config.redirects ?? []).map((r: { source: string }) => r.source);
+  expect(sources.filter((s) => /^\/(privacy|terms)\/?$/.test(s))).toEqual([]);
+  // The cache headers are still there.
   expect(config.headers.map((h: { source: string }) => h.source)).toEqual([
     "/_next/static/(.*)",
     "/fonts/(.*)",
