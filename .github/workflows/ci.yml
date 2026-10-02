@@ -22,7 +22,7 @@ jobs:
       - run: npm run build
 
       # Cheap smoke test: the page exists and every section actually rendered.
-      # (The journal and the socials are off in lib/site.ts -> features; the
+      # (The blog and the socials are off in lib/site.ts -> features; the
       # e2e "flags" project checks they come back when switched on.)
       - name: Check the export
         run: |

@@ -5,6 +5,7 @@ import Backdrop from "../components/Backdrop";
 import Motion from "../components/Motion";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import { blogVisible } from "../lib/blog";
 import { baseOpenGraph, baseTwitter, defaultTitle } from "../lib/metadata";
 import { motionBootScript } from "../lib/motion";
 import { site } from "../lib/site";
@@ -48,7 +49,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </a>
 
         <Backdrop />
-        <Nav />
+        <Nav showBlog={blogVisible()} />
 
         <main id="main">{children}</main>
 

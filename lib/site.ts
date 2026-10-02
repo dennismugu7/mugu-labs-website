@@ -1,6 +1,7 @@
 /**
  * Everything you'll want to edit lives in this one file.
- * Change copy, links, products and posts here — no component edits needed.
+ * Change copy, links and products here — no component edits needed. Blog
+ * posts are Markdown files in content/blog/ (see lib/blog.ts).
  */
 
 export const site = {
@@ -30,11 +31,6 @@ export const site = {
 
   /** ---- "Made by humans" --------------------------------------------- */
   bio: "Mugu Labs began when Dennis Mburu got tired of clunky, overcomplicated software and started coding his own. It has since grown into a small team building calm, useful apps, designed, built and tested by real people.",
-
-  /** ---- Blog ----------------------------------------------------------
-   *  Paste the blog's URL when it exists. Empty means "not yet": the button
-   *  renders as a placeholder rather than a link (DECISIONS D20). */
-  blogUrl: "",
 
   /** When the home page's content last changed (YYYY-MM-DD) — the sitemap's
    *  lastmod. Bump it with the copy; a build date would claim every page
@@ -355,20 +351,6 @@ export const products: Product[] = [
   },
 ];
 
-/** ---- Journal / blog teasers ------------------------------------------ */
-
-export type Post = {
-  title: string;
-  art: string;
-  alt: string;
-  tags: string[];
-  /** The post's URL, or "" while the blog does not exist yet (D20). */
-  href: string;
-};
-
-/* The blog's posts live in content/blog/ (Markdown with frontmatter). */
-export const posts: Post[] = [];
-
 /** ---- How we work ----------------------------------------------------- */
 
 export const principles = [
@@ -403,17 +385,20 @@ export const socials = [
 
 /** ---- Feature flags -----------------------------------------------------
  *  Sections that stay off the site until they have something to show. A
- *  section switched off is not rendered at all, and its links go with it
- *  (the nav's "Journal", in the header and the phone menu); a visit to
- *  /#journal or /#connect lands at the top of the home page instead.
+ *  section switched off is not rendered at all, and its links go with it; a
+ *  visit to /#blog, /#journal or /#connect lands at the top of the home page.
  *
  *  To bring one back, set its flag to true AND give it something to show:
- *    blog    — at least one post above with an `href` (a published post);
- *              only published posts are listed.
+ *    blog    — at least one post in content/blog/ with draft: false. Then
+ *              the blog pages are built (/blog/, each post, each tag), the
+ *              home page shows the latest three, "Blog" appears in the nav,
+ *              the phone menu and the footer, and the sitemap lists them.
+ *              Off, none of it exists: /blog/ is a 404 (lib/blog.ts,
+ *              next.config.ts). A published post that still has a
+ *              "[Dennis: …]" note stops the build.
  *    socials — at least one profile above with an `href`; profiles without
- *              one stay hidden.
- *  A flag that is on with nothing to show still hides the section. Nothing
- *  else to change: lib/sections.ts works out the rest.
+ *              one stay hidden (lib/sections.ts).
+ *  A flag that is on with nothing to show still hides the section.
  * ---------------------------------------------------------------------- */
 
 export const features = {

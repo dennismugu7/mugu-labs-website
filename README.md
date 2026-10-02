@@ -36,10 +36,9 @@ The things most likely to need your attention first:
 
 | What | Where | Currently |
 | --- | --- | --- |
-| Journal and socials sections on/off | `lib/site.ts` → `features` | both off — not rendered, no nav link (see the comment there) |
+| Blog and socials sections on/off | `lib/site.ts` → `features` | both off — not rendered, no links (see the comment there) |
+| Blog posts | `content/blog/*.md` (frontmatter + Markdown) | five drafts; a post shows once it has `draft: false` and the blog flag is on |
 | Social profile URLs | `lib/site.ts` → `socials` | all `""` — a profile without a URL is not shown |
-| Blog link | `lib/site.ts` → `site.blogUrl` | `""` — renders as a placeholder button |
-| Blog post links | `lib/site.ts` → `posts[].href` | all `""` — a post without one counts as unpublished |
 | Contact email | `lib/site.ts` → `site.contact.email` | `support@mugu-labs.com` (Zoho mail on the domain) |
 | WhatsApp number | `lib/site.ts` → `site.contact.whatsapp` | `254701408727` |
 | Site URL (for OG tags + sitemap) | `lib/site.ts` → `site.url` | `https://mugu-labs.com` |
