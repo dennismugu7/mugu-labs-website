@@ -45,7 +45,7 @@ test.describe("content is visible without the motion layer", () => {
 
     // The late motion layer must not hide anything again.
     await waitForMotion(page);
-    expect(await page.evaluate(() => window.__muguMotion)).toBe("fallback");
+    expect(await page.evaluate(() => window.__muguMotion)).toBe("late");
     await page.evaluate(() => window.scrollTo({ top: document.body.scrollHeight / 2, behavior: "instant" }));
     expect(await hiddenReveals(page)).toBe(0);
   });
@@ -125,4 +125,29 @@ test.describe("scroll effects after in-site navigation", () => {
     await expect(page).toHaveURL(`/products/${products[1].slug}/`);
     await expect.poll(tint).toBe(0);
   });
+});
+
+/* The tests' own wait (helpers.ts gotoReady). The boot script's "fallback"
+   comes from a 3s timer, not from the app: on a busy machine it fired before
+   hydration, the tests went ahead, and a link or button clicked mid-hydration
+   could miss its assertion's timeout. Here the timer gives up at once, on a
+   slowed CPU, so that window is always open. */
+test("gotoReady waits for the app itself, not the boot script's give-up", async ({ page, browserName, isMobile }) => {
+  test.skip(browserName !== "chromium" || isMobile, "CPU throttling is a Chromium devtools feature; one run is enough");
+  test.setTimeout(60_000);
+  const cdp = await page.context().newCDPSession(page);
+  await cdp.send("Emulation.setCPUThrottlingRate", { rate: 6 });
+  await page.addInitScript(() => {
+    const later = window.setTimeout;
+    window.setTimeout = ((fn: TimerHandler, ms?: number, ...rest: unknown[]) =>
+      later(fn, ms === 3000 ? 0 : ms, ...rest)) as typeof window.setTimeout;
+  });
+
+  await gotoReady(page, `/products/${products[0].slug}/`);
+  expect(await page.evaluate(() => window.__muguMotion)).toBe("late");
+  // React has hydrated the header's link: a click now navigates client-side.
+  const hydrated = await page.evaluate(() =>
+    Object.keys(document.querySelector("a.brand")!).some((key) => key.startsWith("__reactProps"))
+  );
+  expect(hydrated).toBe(true);
 });
