@@ -9,9 +9,7 @@ author: "Mugu Labs team"
 draft: true
 ---
 
-Mugu Labs began with frustration. Software that was meant to make life easier kept doing the opposite: too many screens, too many settings, too many features nobody asked for. So Dennis started building his own tools, and somewhere along the way it became a small studio.
-
-> **[Dennis: add a real moment here. The specific app or moment that made you think "I could build something better". Two or three sentences in your own words.]**
+Mugu Labs began with frustration. Software that was meant to make life easier kept doing the opposite: too many screens, too many settings, too many features nobody asked for. So Dennis and Bradil decided to build something better, and somewhere along the way it became a small studio.
 
 Here's what we've learned about how we like to build.
 
