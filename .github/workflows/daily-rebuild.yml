@@ -1,0 +1,32 @@
+name: Daily rebuild
+
+# The site is a static export, so a post dated in the future (lib/blog.ts)
+# only appears once the site is built again on or after its date. This asks
+# Vercel for a fresh production build every day just after midnight in
+# Nairobi, through a deploy hook kept in the VERCEL_DEPLOY_HOOK secret.
+#
+# 21:05 UTC is 00:05 Africa/Nairobi (EAT, UTC+3, no daylight saving).
+# GitHub may start scheduled runs some minutes late; posts still land on
+# their date. "Run workflow" on the Actions tab triggers it by hand.
+
+on:
+  schedule:
+    - cron: "5 21 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ask Vercel for a production build
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::notice title=No deploy hook::The VERCEL_DEPLOY_HOOK secret is not set, so no rebuild was requested. Create a deploy hook for main in Vercel (Project Settings > Git > Deploy Hooks) and save its URL as this repository's VERCEL_DEPLOY_HOOK secret."
+            exit 0
+          fi
+          curl --fail --silent --show-error --retry 3 --retry-delay 10 -X POST "$HOOK" -o response.json
+          echo "Rebuild requested: $(cat response.json)"
