@@ -14,18 +14,30 @@ test("Made by humans: the bio and one card per team member", async ({ page }) =>
 
   // Dennis: photo, name, role, GitHub handle.
   const lead = cards.nth(0);
-  await expect(lead.getByRole("img")).toHaveAttribute("alt", "Dennis Mburu, Lead Developer at Mugu Labs");
+  await expect(lead.getByRole("img")).toHaveAttribute("alt", "Dennis Mburu, web developer at Mugu Labs");
   await expect(lead.locator(".author__name")).toHaveText("Dennis Mburu");
-  await expect(lead.locator(".author__role")).toHaveText("Lead Developer");
+  await expect(lead.locator(".author__role")).toHaveText("Web Developer");
   await expect(lead.getByRole("link", { name: "@dennismugu7" })).toHaveAttribute("href", "https://github.com/dennismugu7");
 
-  // The collaborator: no name, no photo, an "ML" monogram, the role.
-  const collaborator = cards.nth(1);
-  await expect(collaborator.locator("img")).toHaveCount(0);
-  await expect(collaborator.locator(".author__monogram")).toHaveText("ML");
-  await expect(collaborator.locator(".author__monogram")).toHaveAttribute("aria-hidden", "true");
-  await expect(collaborator.locator(".author__name")).toHaveText("Collaborator");
-  await expect(collaborator.getByRole("link")).toHaveCount(0);
+  // Bradil: photo, name, role; no GitHub link.
+  const designer = cards.nth(1);
+  const photo = designer.getByRole("img");
+  await expect(photo).toHaveAttribute("alt", "Bradil Wangila, web designer at Mugu Labs");
+  await expect(photo).toHaveAttribute("src", "/assets/avatar-bradil.webp");
+  await expect(designer.locator(".author__name")).toHaveText("Bradil Wangila");
+  await expect(designer.locator(".author__role")).toHaveText("Web Designer");
+  await expect(designer.getByRole("link")).toHaveCount(0);
+
+  // The photo is 120px square: loaded, and never drawn larger than that.
+  await photo.scrollIntoViewIfNeeded();
+  await expect.poll(() => photo.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(120);
+  const box = await photo.boundingBox();
+  expect(box?.width).toBeLessThanOrEqual(120);
+  expect(box?.height).toBeLessThanOrEqual(120);
+
+  await expect(about.locator(".author__monogram")).toHaveCount(0);
+  await expect(about).not.toContainText("Collaborator");
+  await expect(about).not.toContainText("Lead Developer");
 });
 
 test("the page author stays Dennis Mburu", async ({ page }) => {

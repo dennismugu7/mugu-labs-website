@@ -1151,6 +1151,9 @@ a.tag--link:focus-visible {
   flex: none;
   width: calc(3.875 * var(--u));
   height: calc(3.875 * var(--u));
+  /* Some photos are only 120px square; never draw one larger */
+  max-width: 120px;
+  max-height: 120px;
   border-radius: 999px;
   border: 2px solid rgba(255, 255, 255, 0.85);
   object-fit: cover;
