@@ -7,14 +7,20 @@
  * A post is published when its frontmatter says `draft: false`. Only
  * published posts are built, listed or put in the sitemap, and a published
  * post may not still carry an editor's note ("[Dennis: …]"): the build stops.
+ *
+ * A post may have a cover: `cover`, a site path under public/ such as
+ * "/assets/blog/x.webp", with `coverAlt`; both or neither. The image's real
+ * size is read at build time, for <img> and the share tags.
  */
 import fs from "node:fs";
 import path from "node:path";
 import { marked } from "marked";
+import { imageSize } from "./image-size";
 import { features, products } from "./site";
 import { testOverride } from "./test-override";
 
 export const BLOG_DIR = path.join(process.cwd(), "content", "blog");
+const PUBLIC_DIR = path.join(process.cwd(), "public");
 
 /** An editor's note left in a draft for the owner to replace. */
 const PLACEHOLDER = "[Dennis";
@@ -30,9 +36,19 @@ export type BlogPost = {
   product: string;
   author: string;
   draft: boolean;
+  /** The cover image, if the post has one. */
+  cover?: Cover;
   /** The Markdown body, without the frontmatter. */
   body: string;
   file: string;
+};
+
+export type Cover = {
+  /** A site path, e.g. "/assets/blog/x.webp". */
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
 };
 
 /* ------------------------------------------------------------- parsing */
@@ -44,7 +60,7 @@ const FIELDS = ["title", "slug", "date", "excerpt", "tags", "product", "author",
  * JSON (quoted strings, ["arrays"], true/false). Strict on purpose: a typo
  * stops the build instead of quietly publishing something odd.
  */
-export function parsePost(source: string, file: string): BlogPost {
+export function parsePost(source: string, file: string, publicDir = PUBLIC_DIR): BlogPost {
   const match = source.replace(/^﻿/, "").match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!match) throw new Error(`${file}: no frontmatter block`);
 
@@ -87,6 +103,19 @@ export function parsePost(source: string, file: string): BlogPost {
     throw new Error(`${file}: date "${post.date}" is not YYYY-MM-DD`);
   if (post.product && !products.some((p) => p.slug === post.product))
     throw new Error(`${file}: product "${post.product}" is not in lib/site.ts`);
+
+  if ("cover" in data || "coverAlt" in data) {
+    if (!("cover" in data && "coverAlt" in data))
+      throw new Error(`${file}: "cover" and "coverAlt" go together; one is missing`);
+    const src = str("cover");
+    const alt = str("coverAlt").trim();
+    if (!/^\/[\w./-]+\.(webp|png|jpe?g)$/i.test(src) || src.includes(".."))
+      throw new Error(`${file}: cover "${src}" must be a site path to a .webp, .png or .jpg, like "/assets/blog/x.webp"`);
+    if (!alt) throw new Error(`${file}: "coverAlt" must describe the cover`);
+    const onDisk = path.join(publicDir, src);
+    if (!fs.existsSync(onDisk)) throw new Error(`${file}: cover "${src}" is not in public/`);
+    post.cover = { src, alt, ...imageSize(onDisk) };
+  }
   return post;
 }
 

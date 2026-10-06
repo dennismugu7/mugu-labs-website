@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { brandStyle } from "../../../components/brand";
 import { ArrowLeft, ArrowRight } from "../../../components/icons";
+import PostCover from "../../../components/PostCover";
 import { reveal } from "../../../components/reveal";
 import { findPost, formatDate, publishedPosts, readingMinutes, renderBody, tagSlug } from "../../../lib/blog";
 import { baseOpenGraph, baseTwitter } from "../../../lib/metadata";
@@ -23,6 +24,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!post) return {};
   const url = `/blog/${post.slug}/`;
   const title = `${post.title} — ${site.name}`;
+  // The cover is the share image when there is one; otherwise the site's.
+  const images = post.cover
+    ? [{ url: post.cover.src, width: post.cover.width, height: post.cover.height, alt: post.cover.alt }]
+    : baseOpenGraph.images;
   return {
     title: post.title,
     description: post.excerpt,
@@ -37,8 +42,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       publishedTime: post.date,
       authors: [post.author],
       tags: post.tags,
+      images,
     },
-    twitter: { ...baseTwitter, title, description: post.excerpt },
+    twitter: { ...baseTwitter, title, description: post.excerpt, images },
   };
 }
 
@@ -54,6 +60,8 @@ export default async function BlogPostPage({ params }: PageProps) {
           <ArrowLeft />
           All posts
         </Link>
+
+        {post.cover ? <PostCover cover={post.cover} className="post-page__cover" eager /> : null}
 
         <header {...reveal(0, "post-page__head")}>
           <p className="post-meta">

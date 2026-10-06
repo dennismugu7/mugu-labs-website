@@ -940,6 +940,29 @@ button {
   line-height: 1.6;
 }
 
+/* A post's cover (components/PostCover.tsx): 16:9 whatever the file's
+   exact size, rounded. The width/height attributes reserve the space. */
+.post-cover {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* On a card, the cover runs along the top, inside the card's padding */
+.post-card__cover {
+  margin-bottom: 0.25rem;
+  border-radius: calc(var(--radius) - 10px);
+}
+
+/* On a post, above the title */
+.post-page__cover {
+  margin: 1.25rem 0 clamp(1.5rem, 3vw, 2.25rem);
+}
+
 a.tag--link:hover,
 a.tag--link:focus-visible {
   background: rgba(255, 255, 255, 0.14);
