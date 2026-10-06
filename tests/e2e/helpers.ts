@@ -73,8 +73,15 @@ export async function gotoReady(page: Page, url: string) {
   await waitForMotion(page);
 }
 
+/**
+ * Wait for initMotion to have run: it runs in an effect, so the app has
+ * hydrated and links navigate client-side. Not "fallback": the boot script
+ * sets that on a 3s timer whether or not the app has started, and on a busy
+ * machine a test that went ahead then clicked links mid-hydration, and the
+ * navigation could miss toHaveURL's timeout (lib/motion.ts).
+ */
 export async function waitForMotion(page: Page) {
-  await page.waitForFunction(() => window.__muguMotion === "ready" || window.__muguMotion === "fallback");
+  await page.waitForFunction(() => window.__muguMotion === "ready" || window.__muguMotion === "late");
 }
 
 export const isMobile = (page: Page) => (page.viewportSize()?.width ?? 1366) < 760;

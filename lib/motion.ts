@@ -24,8 +24,13 @@ type Cleanup = () => void;
 const MOTION_CLASS = "js-motion";
 const MOTION_FALLBACK_MS = 3000;
 
-/** "pending" until initMotion runs, "ready" after, "fallback" if it ran late. */
-type MotionState = "pending" | "ready" | "fallback";
+/**
+ * "pending" until initMotion runs, then "ready". "fallback" when the boot
+ * script gave up waiting, which says nothing about whether the app has
+ * started; "late" once initMotion has run after that. "ready" and "late"
+ * both mean the app is up (initMotion runs in an effect, after hydration).
+ */
+type MotionState = "pending" | "ready" | "fallback" | "late";
 
 declare global {
   interface Window {
@@ -174,8 +179,8 @@ function initScrollVars(): Cleanup {
 
 export function initMotion(): Cleanup {
   const root = document.documentElement;
-  const late = window.__muguMotion === "fallback";
-  window.__muguMotion = late ? "fallback" : "ready";
+  const late = window.__muguMotion === "fallback" || window.__muguMotion === "late";
+  window.__muguMotion = late ? "late" : "ready";
 
   if (prefersReducedMotion()) {
     root.classList.remove(MOTION_CLASS);
