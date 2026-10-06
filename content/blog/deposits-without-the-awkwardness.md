@@ -13,8 +13,6 @@ Every stylist knows the feeling. The chair is ready, the products are out, the 1
 
 A small deposit fixes most of this. But many salon owners hesitate, and the reason is rarely money. It's the worry that asking will feel cold, or push loyal clients away.
 
-> **[Dennis: add a real moment here. A no-show story from a salon you've worked with while building Bookflow, without naming anyone.]**
-
 ## Why deposits work
 
 A deposit turns a booking from a casual "maybe" into a small commitment. Clients who've paid something are far more likely to turn up, or to tell you in time when they can't. Even when someone does cancel, you're not left with nothing for a slot you held.

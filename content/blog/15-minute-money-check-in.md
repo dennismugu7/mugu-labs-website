@@ -13,8 +13,6 @@ Most of us don't avoid our finances because we're careless. We avoid them becaus
 
 So here's a smaller promise: fifteen minutes, once a month. Not a budget overhaul. Not a new life. Just a check-in.
 
-> **[Dennis: add a real moment here. When did you last open a statement and get a surprise? One or two sentences is plenty.]**
-
 ## Why monthly, and why now
 
 Prices have been climbing. The Kenya National Bureau of Statistics put September 2026 inflation at 6.8%, the highest in a year, with food up 9.5% and transport up 15.6% compared with a year earlier. When everyday costs move that fast, last month's version of you was budgeting for a different reality. A monthly check-in is how you catch up before the gap gets wide.

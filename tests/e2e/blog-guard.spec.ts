@@ -57,9 +57,9 @@ test("frontmatter is strict", () => {
   expect(() => parsePost(post({ ...base, date: "6 Oct" }), "t.md")).toThrow(/date/);
 });
 
-test("the five posts in content/blog parse, and are all drafts for now", () => {
+test("the 13 posts in content/blog parse, and are all drafts for now", () => {
   const posts = loadPosts({ dir: BLOG_DIR, publishDrafts: false });
-  expect(posts).toHaveLength(5);
+  expect(posts).toHaveLength(13);
   expect(posts.every((p) => p.draft)).toBe(true);
   expect(posts.every((p) => p.author === "Mugu Labs team")).toBe(true);
 });

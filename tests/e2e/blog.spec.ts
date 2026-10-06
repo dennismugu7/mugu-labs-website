@@ -5,7 +5,7 @@ import { clickLink, expectContentVisible, gotoReady } from "./helpers";
 
 /*
  * Runs against out-flags/ ("flags" project): the site built with the test
- * override, which switches the blog on and publishes the five drafts in
+ * override, which switches the blog on and publishes the drafts in
  * content/blog (their "[Dennis: …]" notes dropped). The real build shows
  * none of this (blog-hidden.spec.ts).
  */
@@ -23,7 +23,7 @@ test.describe("/blog/", () => {
     await gotoReady(page, "/blog/");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Blog");
     const cards = page.locator(".post-card");
-    await expect(cards).toHaveCount(5);
+    await expect(cards).toHaveCount(posts.length);
     await expect(cards.locator(".post-card__title")).toHaveText(posts.map((p) => p.title));
 
     for (let i = 0; i < posts.length; i++) {

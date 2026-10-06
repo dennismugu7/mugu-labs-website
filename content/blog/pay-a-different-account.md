@@ -13,8 +13,6 @@ Buying and selling through WhatsApp, TikTok and Instagram feels personal. You ch
 
 The good news: almost every common trick falls apart against a few simple habits.
 
-> **[Dennis: add a real moment here. A scam attempt you or a seller you know has seen. One or two sentences.]**
-
 ## If you're buying
 
 **Be suspicious of a sudden new payment number.**

@@ -11,8 +11,6 @@ draft: true
 
 A bank statement looks like the least interesting document in the world. Dates, codes, amounts, a running balance. But read it the right way and it tells a story about your month, sometimes one you didn't know you were living.
 
-> **[Dennis: add a real moment here. Something a statement once showed you that you hadn't noticed. Keep it short.]**
-
 ## First, get it in a form you can work with
 
 PDFs are made for printing, not reading. If your bank's online banking lets you export transactions as **CSV** or **Excel**, choose that. A CSV is just a plain table: one row per transaction, columns for date, description, money out, money in and balance. You can open it in any spreadsheet app, or import it into a budgeting tool.

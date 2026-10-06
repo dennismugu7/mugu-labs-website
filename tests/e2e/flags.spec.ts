@@ -10,7 +10,7 @@ import { clickLink, expectContentVisible, gotoReady } from "./helpers";
  * scripts/build-flags-fixture.mjs). The "flags" project serves it.
  */
 
-// The fixture publishes the five drafts in content/blog (publishDrafts).
+// The fixture publishes the drafts in content/blog (publishDrafts).
 const newestFirst = loadPosts({ publishDrafts: true }).sort((a, b) => b.date.localeCompare(a.date));
 
 test("the home page's Blog section: the latest three posts and a way to the rest", async ({ page }) => {

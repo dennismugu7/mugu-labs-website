@@ -3,7 +3,7 @@ import { BLOG_DIR, blogShows, loadPosts } from "../../lib/blog";
 import { features } from "../../lib/site";
 
 /*
- * The real build: features.blog is off and all five posts are drafts, so
+ * The real build: features.blog is off and every post is a draft, so
  * nothing blog-related exists. (sections.spec.ts covers the home page's
  * section and links; blog.spec.ts tests the blog itself on the test build.)
  */
