@@ -33,18 +33,23 @@ export default function Products() {
                 <h3 className="product__name">{product.name}</h3>
                 <p className="product__tagline">{product.tagline}</p>
 
+                {/* The card's one link: its ::after covers the whole card
+                    (stretched link), so a click anywhere opens the product
+                    and keyboard and screen readers get a single stop. */}
                 <Link
-                  className="btn btn--brand"
+                  className="product__link"
                   href={product.href}
                   {...(product.external
                     ? { target: "_blank", rel: "noreferrer noopener" }
                     : {})}
                 >
-                  <span>
-                    Learn more
-                    <span className="sr-only"> about {product.name}</span>
+                  <span className="btn btn--brand">
+                    <span>
+                      Learn more
+                      <span className="sr-only"> about {product.name}</span>
+                    </span>
+                    <ArrowRight className="btn__arrow" />
                   </span>
-                  <ArrowRight className="btn__arrow" />
                 </Link>
               </article>
             </li>

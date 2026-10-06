@@ -734,6 +734,52 @@ button {
   transform: scale(1.05);
 }
 
+/* The whole card is the link (components/Products.tsx): the link's ::after
+   covers the card, which is position: relative. The button inside keeps its
+   look and takes its hover from the card, since the pointer is over the
+   ::after, not the button. */
+.product__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: var(--radius);
+}
+
+.product:hover .btn {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 18px 44px -18px color-mix(in srgb, var(--brand) 75%, transparent);
+}
+
+.product:hover .btn::before {
+  opacity: 1;
+}
+
+.product:hover .btn__arrow {
+  transform: translateX(5px);
+}
+
+/* Press: the card settles back down, quickly */
+.card--hover.product:active {
+  transform: translateY(-2px);
+  transition-duration: 0.12s;
+}
+
+.product:active .btn {
+  transform: translateY(0);
+}
+
+/* Keyboard focus rings the card, not the button inside it */
+.product__link:focus-visible {
+  outline: none;
+}
+
+.product__link:focus-visible::after {
+  outline: 2px solid var(--mint);
+  outline-offset: 4px;
+}
+
 @keyframes float {
   0%,
   100% {
