@@ -2,11 +2,16 @@ import { expect, test } from "@playwright/test";
 import { site, team } from "../../lib/site";
 import { gotoReady } from "./helpers";
 
-test("Made by humans: the bio and one card per team member", async ({ page }) => {
+test("About: label, heading, the bio and one card per team member", async ({ page }) => {
   await gotoReady(page, "/#about");
   const about = page.locator("#about");
 
-  await expect(about.getByRole("heading", { level: 2 })).toHaveText("Made by humans");
+  await expect(about.locator(".about__eyebrow")).toHaveText("Made by humans");
+  await expect(about.getByRole("heading", { level: 2 })).toHaveText("Meet the team");
+  await expect(page.getByRole("region", { name: "Meet the team" })).toHaveAttribute("id", "about");
+  await expect(about.locator(".about__card")).toHaveText(
+    "Dennis and Bradil got tired of clunky, overcomplicated software, so they decided to build something better. We're a small team creating genuinely useful apps—designed, built, and tested by real people who care about making tech feel effortless."
+  );
   await expect(about.locator(".about__card")).toHaveText(site.bio);
 
   const cards = about.getByRole("list", { name: "The team" }).getByRole("listitem");

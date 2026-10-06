@@ -1153,8 +1153,11 @@ a.tag--link:focus-visible {
   gap: clamp(2rem, 5vw, 4.5rem);
 }
 
+.about__eyebrow {
+  margin-bottom: 0.75rem;
+}
+
 .about__title {
-  max-width: 9ch;
   margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
 }
 
@@ -1962,10 +1965,6 @@ a.tag--link:focus-visible {
     width: 100%;
     max-width: 460px;
     margin-inline: auto;
-  }
-
-  .about__title {
-    max-width: none;
   }
 }
 

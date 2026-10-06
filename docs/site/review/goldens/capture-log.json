@@ -7,7 +7,7 @@
         "w": 1920,
         "h": 1080
       },
-      "pageHeight": 11328,
+      "pageHeight": 9364,
       "horizontalOverflow": false,
       "gutterPx": 260,
       "insetPx": 280,
@@ -37,23 +37,23 @@
         "lineHeight": "98.56px",
         "family": "Poppins"
       },
-      "socialRows": 1,
-      "socialCount": 6,
+      "socialRows": 0,
+      "socialCount": 0,
       "sectionHeights": {
         "hero": 1080,
-        "products": 1212,
-        "journal": 1400,
-        "about": 1041,
+        "products": 1263,
+        "blog": null,
+        "about": 1073,
         "work": 822,
-        "connect": 430,
+        "connect": null,
         "contact": 498
       },
       "headingLines": {
         "products": 2,
-        "journal": 2,
+        "blog": null,
         "about": 2,
         "work": 1,
-        "connect": 1,
+        "connect": null,
         "contact": 2
       }
     },
@@ -62,7 +62,7 @@
         "w": 390,
         "h": 844
       },
-      "pageHeight": 9307,
+      "pageHeight": 5309,
       "horizontalOverflow": false,
       "gutterPx": 0,
       "insetPx": 18,
@@ -92,23 +92,23 @@
         "lineHeight": "35.84px",
         "family": "Poppins"
       },
-      "socialRows": 2,
-      "socialCount": 6,
+      "socialRows": 0,
+      "socialCount": 0,
       "sectionHeights": {
         "hero": 582,
-        "products": 1521,
-        "journal": 1553,
-        "about": 806,
+        "products": 1642,
+        "blog": null,
+        "about": 920,
         "work": 874,
-        "connect": 342,
+        "connect": null,
         "contact": 432
       },
       "headingLines": {
         "products": 3,
-        "journal": 2,
+        "blog": null,
         "about": 1,
         "work": 1,
-        "connect": 2,
+        "connect": null,
         "contact": 3
       }
     },
@@ -117,7 +117,7 @@
         "w": 1280,
         "h": 800
       },
-      "pageHeight": 8858,
+      "pageHeight": 7276,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
@@ -147,23 +147,23 @@
         "lineHeight": "74.5472px",
         "family": "Poppins"
       },
-      "socialRows": 1,
-      "socialCount": 6,
+      "socialRows": 0,
+      "socialCount": 0,
       "sectionHeights": {
         "hero": 800,
-        "products": 991,
-        "journal": 1118,
-        "about": 845,
+        "products": 1029,
+        "blog": null,
+        "about": 877,
         "work": 660,
-        "connect": 374,
+        "connect": null,
         "contact": 422
       },
       "headingLines": {
         "products": 2,
-        "journal": 1,
+        "blog": null,
         "about": 2,
         "work": 1,
-        "connect": 1,
+        "connect": null,
         "contact": 2
       }
     },
@@ -172,7 +172,7 @@
         "w": 1366,
         "h": 768
       },
-      "pageHeight": 8946,
+      "pageHeight": 7291,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
@@ -202,23 +202,23 @@
         "lineHeight": "79.5558px",
         "family": "Poppins"
       },
-      "socialRows": 1,
-      "socialCount": 6,
+      "socialRows": 0,
+      "socialCount": 0,
       "sectionHeights": {
         "hero": 768,
-        "products": 1048,
-        "journal": 1183,
-        "about": 895,
+        "products": 1088,
+        "blog": null,
+        "about": 926,
         "work": 697,
-        "connect": 391,
+        "connect": null,
         "contact": 448
       },
       "headingLines": {
         "products": 2,
-        "journal": 1,
+        "blog": null,
         "about": 2,
         "work": 1,
-        "connect": 1,
+        "connect": null,
         "contact": 2
       }
     },
@@ -227,7 +227,7 @@
         "w": 1440,
         "h": 900
       },
-      "pageHeight": 9732,
+      "pageHeight": 7959,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
@@ -257,23 +257,23 @@
         "lineHeight": "83.8656px",
         "family": "Poppins"
       },
-      "socialRows": 1,
-      "socialCount": 6,
+      "socialRows": 0,
+      "socialCount": 0,
       "sectionHeights": {
         "hero": 900,
-        "products": 1083,
-        "journal": 1180,
-        "about": 922,
+        "products": 1124,
+        "blog": null,
+        "about": 866,
         "work": 716,
-        "connect": 397,
+        "connect": null,
         "contact": 460
       },
       "headingLines": {
         "products": 2,
-        "journal": 1,
-        "about": 2,
+        "blog": null,
+        "about": 1,
         "work": 1,
-        "connect": 1,
+        "connect": null,
         "contact": 2
       }
     }

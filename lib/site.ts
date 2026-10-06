@@ -29,8 +29,8 @@ export const site = {
     githubUrl: "https://github.com/dennismugu7",
   },
 
-  /** ---- "Made by humans" --------------------------------------------- */
-  bio: "Mugu Labs began when Dennis Mburu got tired of clunky, overcomplicated software and started coding his own. It has since grown into a small team building calm, useful apps, designed, built and tested by real people.",
+  /** ---- About ("Meet the team") ---------------------------------------- */
+  bio: "Dennis and Bradil got tired of clunky, overcomplicated software, so they decided to build something better. We're a small team creating genuinely useful apps—designed, built, and tested by real people who care about making tech feel effortless.",
 
   /** ---- Legal --------------------------------------------------------
    *  Dashboard X's privacy policy and terms, served by the app; the site's
@@ -43,11 +43,11 @@ export const site = {
   /** When the home page's content last changed (YYYY-MM-DD) — the sitemap's
    *  lastmod. Bump it with the copy; a build date would claim every page
    *  changed on every deploy. */
-  updated: "2026-10-02",
+  updated: "2026-10-06",
 } as const;
 
 /** ---- Team -------------------------------------------------------------
- *  One card per person in "Made by humans". With an `avatar` the card shows
+ *  One card per person in About ("Meet the team"). With an `avatar` the card shows
  *  the photo; without one, `monogram` in the brand gradient. `name` and
  *  `github` are optional.
  * ---------------------------------------------------------------------- */
