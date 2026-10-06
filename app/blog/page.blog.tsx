@@ -32,7 +32,7 @@ export default function BlogIndex() {
         <ul className="post-list">
           {posts.map((post, i) => (
             <li key={post.slug} {...reveal(Math.min(i, 3) * 80)}>
-              <PostCard post={post} />
+              <PostCard post={post} eager={i === 0} />
             </li>
           ))}
         </ul>

@@ -1,17 +1,22 @@
 import Link from "next/link";
+import PostCover from "./PostCover";
 import { formatDate, readingMinutes, tagSlug, type BlogPost } from "../lib/blog";
 
 type Props = {
   post: BlogPost;
   /** The card's heading level: h2 on the blog's own pages, h3 on home. */
   level?: "h2" | "h3";
+  /** The first card on a page, in view on arrival: its cover loads at once. */
+  eager?: boolean;
 };
 
-/** A post on the blog index, a tag page or the home page's blog section. */
-export default function PostCard({ post, level = "h2" }: Props) {
+/** A post on the blog index, a tag page or the home page's blog section.
+    With a cover, the cover sits along the card's top; without, as before. */
+export default function PostCard({ post, level = "h2", eager = false }: Props) {
   const Title = level;
   return (
-    <article className="card post-card">
+    <article className={post.cover ? "card post-card post-card--cover" : "card post-card"}>
+      {post.cover ? <PostCover cover={post.cover} className="post-card__cover" eager={eager} decorative /> : null}
       <p className="post-meta">
         <time dateTime={post.date}>{formatDate(post.date)}</time>
         <span aria-hidden="true"> · </span>

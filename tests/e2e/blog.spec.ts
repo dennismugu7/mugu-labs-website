@@ -51,6 +51,86 @@ test.describe("/blog/", () => {
   });
 });
 
+test.describe("covers", () => {
+  const covered = posts.filter((p) => p.cover);
+  const bare = posts.filter((p) => !p.cover);
+
+  test("cards: a cover along the top when the post has one, else the plain card", async ({ page }) => {
+    expect(covered.length).toBeGreaterThan(0);
+    expect(bare.length).toBeGreaterThan(0);
+    await gotoReady(page, "/blog/");
+    const cards = page.locator(".post-card");
+    for (let i = 0; i < posts.length; i++) {
+      const post = posts[i];
+      const card = cards.nth(i);
+      const img = card.locator("img.post-cover");
+      if (!post.cover) {
+        await expect(img, post.slug).toHaveCount(0);
+        await expect(card).not.toHaveClass(/post-card--cover/);
+        continue;
+      }
+      await expect(card).toHaveClass(/post-card--cover/);
+      await expect(img).toHaveAttribute("src", post.cover.src);
+      await expect(img).toHaveAttribute("width", String(post.cover.width));
+      await expect(img).toHaveAttribute("height", String(post.cover.height));
+      // The title names the post; on a card the cover is decoration.
+      await expect(img).toHaveAttribute("alt", "");
+      // Only the first card is in view on arrival.
+      await expect(img).toHaveAttribute("loading", i === 0 ? "eager" : "lazy");
+    }
+  });
+
+  test("16:9 with rounded corners, at any width", async ({ page }) => {
+    for (const width of [390, 1366]) {
+      await page.setViewportSize({ width, height: 844 });
+      await gotoReady(page, `/blog/${covered[0].slug}/`);
+      const img = page.locator("img.post-page__cover");
+      await expect(img).toBeVisible();
+      const box = (await img.boundingBox())!;
+      expect(box.width / box.height, `${width}px`).toBeCloseTo(16 / 9, 1);
+      expect(parseFloat(await img.evaluate((n) => getComputedStyle(n).borderTopLeftRadius))).toBeGreaterThan(0);
+    }
+  });
+
+  test("a post shows its cover at the top, described, loaded at once, and shares it", async ({ page }) => {
+    const post = covered[0];
+    await gotoReady(page, `/blog/${post.slug}/`);
+    const img = page.locator("article img.post-page__cover");
+    await expect(img).toHaveAttribute("src", post.cover!.src);
+    await expect(img).toHaveAttribute("alt", post.cover!.alt);
+    await expect(img).toHaveAttribute("loading", "eager");
+    await expect(img).toHaveAttribute("fetchpriority", "high");
+    await expect(img).toHaveAttribute("width", String(post.cover!.width));
+    // Above the title.
+    const [imgTop, titleTop] = await Promise.all(
+      [img, page.locator("#post-title")].map((l) => l.evaluate((n) => n.getBoundingClientRect().top))
+    );
+    expect(imgTop).toBeLessThan(titleTop);
+    await expect.poll(() => img.evaluate((n: HTMLImageElement) => n.naturalWidth)).toBe(post.cover!.width);
+
+    expect(await meta(page, "og:image")).toBe(`${site.url}${post.cover!.src}`);
+    expect(await meta(page, "og:image:width")).toBe(String(post.cover!.width));
+    expect(await meta(page, "og:image:height")).toBe(String(post.cover!.height));
+    expect(await meta(page, "og:image:alt")).toBe(post.cover!.alt);
+    expect(await meta(page, "twitter:image")).toBe(`${site.url}${post.cover!.src}`);
+  });
+
+  test("a post without a cover has none, and shares the site's image", async ({ page }) => {
+    const post = bare[0];
+    await gotoReady(page, `/blog/${post.slug}/`);
+    await expect(page.locator("article img.post-cover")).toHaveCount(0);
+    expect(await meta(page, "og:image")).toBe(`${site.url}/og.jpg`);
+    expect(await meta(page, "twitter:image")).toBe(`${site.url}/og.jpg`);
+  });
+
+  test("on the home page the covers load lazily", async ({ page }) => {
+    await gotoReady(page, "/");
+    const imgs = page.locator("#blog img.post-cover");
+    const n = await imgs.count();
+    for (let i = 0; i < n; i++) await expect(imgs.nth(i)).toHaveAttribute("loading", "lazy");
+  });
+});
+
 test.describe("a post", () => {
   test("title, byline, tags and the body's typography", async ({ page }) => {
     await gotoReady(page, `/blog/${withProduct.slug}/`);
