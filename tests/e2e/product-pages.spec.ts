@@ -185,7 +185,8 @@ test.describe("brand colours", () => {
   test('"Learn more" wears the product\'s colour, legibly', async ({ page }) => {
     await gotoReady(page, "/");
     for (const p of products) {
-      const button = page.getByRole("link", { name: `Learn more about ${p.name}` });
+      // The card is the link; the coloured button is drawn inside it.
+      const button = page.getByRole("link", { name: `Learn more about ${p.name}` }).locator(".btn");
       const { bg, fg } = await colours(button);
       expect(rgb(bg), `${p.name} button background`).toEqual(hexRgb(p.brandColor));
       expect(rgb(fg), `${p.name} button text`).toEqual(hexRgb(p.onBrandColor));
