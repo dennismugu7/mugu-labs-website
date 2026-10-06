@@ -62,8 +62,9 @@ export type TeamMember = {
 };
 
 export const team: TeamMember[] = [
-  { name: "Dennis Mburu", role: "Lead Developer", avatar: "/assets/avatar.png", github: "dennismugu7" },
-  { role: "Collaborator", monogram: "ML" },
+  { name: "Dennis Mburu", role: "Web Developer", avatar: "/assets/avatar.png", github: "dennismugu7" },
+  // A 120×120 photo: .author__avatar never draws it larger than that.
+  { name: "Bradil Wangila", role: "Web Designer", avatar: "/assets/avatar-bradil.webp" },
 ];
 
 /** ---- Products -------------------------------------------------------- */

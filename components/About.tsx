@@ -23,7 +23,7 @@ export default function About() {
                   <img
                     className="author__avatar"
                     src={member.avatar}
-                    alt={`${member.name ?? member.role}, ${member.role} at ${site.name}`}
+                    alt={`${member.name ?? member.role}, ${member.role.toLowerCase()} at ${site.name}`}
                     width={62}
                     height={62}
                     loading="lazy"
