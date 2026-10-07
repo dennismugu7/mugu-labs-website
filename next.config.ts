@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
-import { blogVisible } from "./lib/blog";
+import { blogVisible, todayInNairobi } from "./lib/blog";
+
+// The date this build publishes posts for (lib/blog.ts), fixed once here so
+// every worker process agrees, even if the build runs across midnight.
+process.env.MUGU_BUILD_TODAY ??= todayInNairobi();
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,

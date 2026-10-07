@@ -1,12 +1,12 @@
 ---
 title: "Your bank statement is trying to tell you something"
 slug: "your-bank-statement-is-talking"
-date: "2026-10-13"
+date: "2026-11-02"
 excerpt: "A statement isn't just a list of numbers. Here's how to read one in ten minutes and spot the leaks, fees and habits hiding in plain sight."
 tags: ["Money tips", "Smart Moves & Quick Hacks"]
 product: "dashboard-x"
 author: "Mugu Labs team"
-draft: true
+draft: false
 ---
 
 A bank statement looks like the least interesting document in the world. Dates, codes, amounts, a running balance. But read it the right way and it tells a story about your month, sometimes one you didn't know you were living.

@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import fixture from "./flags-fixture.json";
 import { socials } from "../../lib/site";
-import { loadPosts } from "../../lib/blog";
+import { livePosts, loadPosts } from "../../lib/blog";
 import { clickLink, expectContentVisible, gotoReady } from "./helpers";
 
 /*
@@ -10,8 +10,8 @@ import { clickLink, expectContentVisible, gotoReady } from "./helpers";
  * scripts/build-flags-fixture.mjs). The "flags" project serves it.
  */
 
-// The fixture publishes the drafts in content/blog (publishDrafts).
-const newestFirst = loadPosts({ publishDrafts: true }).sort((a, b) => b.date.localeCompare(a.date));
+// The posts out on the fixture's fixed "today", newest first.
+const newestFirst = livePosts(loadPosts({ publishDrafts: true }), fixture.today);
 
 test("the home page's Blog section: the latest three posts and a way to the rest", async ({ page }) => {
   await gotoReady(page, "/");

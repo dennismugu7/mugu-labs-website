@@ -1,12 +1,12 @@
 ---
 title: "\"Please pay to this other number\": staying safe when you buy or sell on WhatsApp"
 slug: "pay-a-different-account"
-date: "2026-10-27"
+date: "2026-10-06"
 excerpt: "Fake screenshots, 'sent by mistake' messages, sudden new payment numbers. The most common tricks in social selling, and the simple habits that beat them."
 tags: ["Smart Moves & Quick Hacks"]
 product: "oda"
 author: "Mugu Labs team"
-draft: true
+draft: false
 ---
 
 Buying and selling through WhatsApp, TikTok and Instagram feels personal. You chat with a real person, see real photos, agree a price. That warmth is exactly why it works, and exactly what scammers lean on.

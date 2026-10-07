@@ -1,14 +1,14 @@
 ---
 title: "Meet the team behind Mugu Labs"
 slug: "meet-the-team"
-date: "2026-11-30"
+date: "2026-10-06"
 excerpt: "A developer, a designer and a shared belief that software should feel calm. Here's who builds Mugu Labs apps, and how we work together."
 tags: ["Smart Moves & Quick Hacks"]
 product: ""
 author: "Mugu Labs team"
 cover: "/assets/blog/meet-team-cover.webp"
 coverAlt: "Two cards for Dennis Mburu, Web Developer, and Bradil Wangila, Web Designer, with a code symbol, a pencil and a heart between them"
-draft: true
+draft: false
 ---
 
 Behind every app on our shelf are real people, not a big company with a marketing department. We're a small studio, and we like it that way. Small means we know the people we build for, we can change course quickly, and nothing ships unless we'd be happy to use it ourselves.

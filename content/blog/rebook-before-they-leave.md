@@ -8,7 +8,7 @@ product: "bookflow"
 author: "Mugu Labs team"
 cover: "/assets/blog/rebook-cover.webp"
 coverAlt: "A purple salon chair, a pair of scissors and a calendar with a green check mark"
-draft: true
+draft: false
 ---
 
 Picture the best moment of any appointment. The cape comes off, your client turns to the mirror, and they smile. They feel good, they trust you, and they're already thinking about how long this look will last.

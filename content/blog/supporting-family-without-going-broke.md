@@ -1,14 +1,14 @@
 ---
 title: "Supporting family without going broke"
 slug: "supporting-family-without-going-broke"
-date: "2026-10-19"
+date: "2026-10-12"
 excerpt: "Helping family is part of who we are. Here's how to keep giving with an open heart, without the guilt, the overdraft or the 2 a.m. worry."
 tags: ["Money tips"]
 product: "dashboard-x"
 author: "Mugu Labs team"
 cover: "/assets/blog/supporting-family-cover.webp"
 coverAlt: "A balanced scale with a small orange house with a heart on one side and stacks of gold coins on the other"
-draft: true
+draft: false
 ---
 
 The message usually starts the same way. *"Habari yako? Kindly assist…"*

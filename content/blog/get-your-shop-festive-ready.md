@@ -1,14 +1,14 @@
 ---
 title: "Get your shop festive-ready (before the rush finds you)"
 slug: "get-your-shop-festive-ready"
-date: "2026-11-16"
+date: "2026-11-09"
 excerpt: "Black Friday, Christmas and back-to-school all land within six weeks. A simple timeline for online sellers to stock up, sort delivery and keep customers happy when orders double."
 tags: ["Smart Moves & Quick Hacks"]
 product: "oda"
 author: "Mugu Labs team"
 cover: "/assets/blog/festive-ready-cover.webp"
 coverAlt: "Two wrapped gift boxes with ribbons and bows, a phone showing an online shop with festive gift sets, and a parcel with a location pin"
-draft: true
+draft: false
 ---
 
 For online sellers, the end of the year is the best of times and the most chaotic of times. Orders jump, customers want everything yesterday, riders are stretched, and you're packing parcels at midnight.

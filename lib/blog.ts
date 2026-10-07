@@ -4,9 +4,13 @@
  * Server-only (it reads the file system): pages, the sitemap and
  * next.config.ts import it; client components get what they need as props.
  *
- * A post is published when its frontmatter says `draft: false`. Only
- * published posts are built, listed or put in the sitemap, and a published
- * post may not still carry an editor's note ("[Dennis: …]"): the build stops.
+ * A post is published when its frontmatter says `draft: false` AND its date
+ * has come in Nairobi (Africa/Nairobi, the studio's time zone, at build
+ * time). A post dated in the future is treated exactly like a draft until
+ * then: not built, listed, tagged or put in the sitemap. The site is static,
+ * so a daily rebuild (.github/workflows/daily-rebuild.yml) brings each
+ * scheduled post out on its date. No post marked `draft: false`, scheduled
+ * or not, may still carry an editor's note ("[Dennis: …]"): the build stops.
  *
  * A post may have a cover: `cover`, a site path under public/ such as
  * "/assets/blog/x.webp", with `coverAlt`; both or neither. The image's real
@@ -161,6 +165,43 @@ export function loadPosts({ dir = BLOG_DIR, publishDrafts = !!testOverride.publi
   return posts;
 }
 
+/* ---------------------------------------------------------- publishing */
+
+export const TIME_ZONE = "Africa/Nairobi";
+
+const DAY_IN_NAIROBI = new Intl.DateTimeFormat("en-CA", {
+  timeZone: TIME_ZONE,
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+});
+
+/** The date in Nairobi at `now`, as YYYY-MM-DD. */
+export function todayInNairobi(now: Date = new Date()): string {
+  return DAY_IN_NAIROBI.format(now);
+}
+
+/**
+ * The "today" a build publishes for: Nairobi's when the build started
+ * (next.config.ts pins it in MUGU_BUILD_TODAY, so the worker processes that
+ * render the pages agree even across midnight), unless a test fixes it.
+ */
+export function buildToday(): string {
+  return testOverride.today ?? process.env.MUGU_BUILD_TODAY ?? todayInNairobi();
+}
+
+/** Out: not a draft, and its date has come. */
+export function isPublished(post: BlogPost, today: string): boolean {
+  return !post.draft && post.date <= today;
+}
+
+/** The posts published on `today`, newest first. */
+export function livePosts(all: BlogPost[], today: string): BlogPost[] {
+  return all
+    .filter((p) => isPublished(p, today))
+    .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
+}
+
 let cache: BlogPost[] | null = null;
 
 /** Published posts, newest first. Stops the build on an unfinished one. */
@@ -168,7 +209,7 @@ export function publishedPosts(): BlogPost[] {
   if (!cache) {
     const all = loadPosts();
     assertPublishable(all);
-    cache = all.filter((p) => !p.draft).sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
+    cache = livePosts(all, buildToday());
   }
   return cache;
 }
@@ -203,15 +244,16 @@ export function tagSlug(tag: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
-/** Every tag on a published post, by slug, with its display name. */
-export function allTags(): { slug: string; name: string }[] {
+/** Every tag on a published post, by slug, with its display name: a tag
+    whose posts are all drafts or still scheduled has no page yet. */
+export function allTags(posts: BlogPost[] = publishedPosts()): { slug: string; name: string }[] {
   const seen = new Map<string, string>();
-  for (const post of publishedPosts()) for (const t of post.tags) if (!seen.has(tagSlug(t))) seen.set(tagSlug(t), t);
+  for (const post of posts) for (const t of post.tags) if (!seen.has(tagSlug(t))) seen.set(tagSlug(t), t);
   return [...seen].map(([slug, name]) => ({ slug, name })).sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export function postsTagged(slug: string): BlogPost[] {
-  return publishedPosts().filter((p) => p.tags.some((t) => tagSlug(t) === slug));
+export function postsTagged(slug: string, posts: BlogPost[] = publishedPosts()): BlogPost[] {
+  return posts.filter((p) => p.tags.some((t) => tagSlug(t) === slug));
 }
 
 /** About 200 words a minute, rounded up. */
