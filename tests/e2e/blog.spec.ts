@@ -271,7 +271,7 @@ test("launch day's five, in the order of their times", async ({ page }) => {
   const titles = await page.locator(".post-card__title").allInnerTexts();
   const order = [
     "december-plan-written-in-october",
-    "meet-the-team",
+    "how-two-people-build-an-app",
     "why-we-build-small-apps",
     "15-minute-money-check-in",
     "pay-a-different-account",

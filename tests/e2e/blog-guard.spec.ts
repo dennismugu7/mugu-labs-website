@@ -71,7 +71,7 @@ test("frontmatter is strict", () => {
 const SCHEDULE: Record<string, string[]> = {
   "2026-10-06": [
     "why-we-build-small-apps",
-    "meet-the-team",
+    "how-two-people-build-an-app",
     "december-plan-written-in-october",
     "15-minute-money-check-in",
     "pay-a-different-account",
@@ -161,7 +161,7 @@ test.describe("scheduled posts (a fixed today, never the real one)", () => {
   test("launch day, newest first by time", () => {
     expect(slugsOn("2026-10-06")).toEqual([
       "december-plan-written-in-october",
-      "meet-the-team",
+      "how-two-people-build-an-app",
       "why-we-build-small-apps",
       "15-minute-money-check-in",
       "pay-a-different-account",
