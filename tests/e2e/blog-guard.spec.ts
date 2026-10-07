@@ -186,6 +186,16 @@ test.describe("covers", () => {
       path.join(process.cwd(), "public", "assets", "blog", "win-back-cover.webp"),
       path.join(publicDir, "assets", "blog", "c.webp")
     );
+    // c.webp's share image, and two covers whose share images are wrong:
+    // none at all (n.webp), and one that is not 1200×630 (s.webp).
+    fs.mkdirSync(path.join(publicDir, "assets", "blog", "og"));
+    fs.copyFileSync(
+      path.join(process.cwd(), "public", "assets", "blog", "og", "win-back-cover.jpg"),
+      path.join(publicDir, "assets", "blog", "og", "c.jpg")
+    );
+    for (const name of ["n", "s"])
+      fs.copyFileSync(path.join(publicDir, "assets", "blog", "c.webp"), path.join(publicDir, "assets", "blog", `${name}.webp`));
+    fs.copyFileSync(path.join(publicDir, "assets", "blog", "c.webp"), path.join(publicDir, "assets", "blog", "og", "s.jpg"));
   });
   test.afterAll(() => fs.rmSync(publicDir, { recursive: true, force: true }));
 
@@ -195,9 +205,21 @@ test.describe("covers", () => {
     expect(parsePost(post(base), "n.md", publicDir).cover).toBeUndefined();
   });
 
-  test("with both fields, the cover carries its real size", () => {
+  test("with both fields, the cover carries its real size and its share image", () => {
     const p = parsePost(withCover({ cover: "/assets/blog/c.webp", coverAlt: "A comb and a phone" }), "c.md", publicDir);
-    expect(p.cover).toEqual({ src: "/assets/blog/c.webp", alt: "A comb and a phone", width: 969, height: 545 });
+    expect(p.cover).toEqual({
+      src: "/assets/blog/c.webp",
+      alt: "A comb and a phone",
+      width: 969,
+      height: 545,
+      share: "/assets/blog/og/c.jpg",
+    });
+  });
+
+  test("a cover's share image must exist, at 1200×630", () => {
+    const parse = (cover: string) => () => parsePost(withCover({ cover, coverAlt: "Alt" }), "o.md", publicDir);
+    expect(parse("/assets/blog/n.webp")).toThrow(/og\/n\.jpg is missing; run `node scripts\/blog-og\.mjs`/);
+    expect(parse("/assets/blog/s.webp")).toThrow(/og\/s\.jpg is 969×545, not 1200×630/);
   });
 
   test("the rules", () => {
@@ -218,6 +240,11 @@ test.describe("covers", () => {
     for (const p of covered) {
       expect(p.cover!.alt.length, p.slug).toBeGreaterThan(10);
       expect(Math.abs(p.cover!.width / p.cover!.height - 16 / 9), p.slug).toBeLessThan(0.01);
+      // Its share image is a 1200×630 JPEG (the parse would have stopped
+      // otherwise), and a real JPEG, not a renamed WebP.
+      expect(p.cover!.share, p.slug).toMatch(/^\/assets\/blog\/og\/[\w-]+\.jpg$/);
+      const bytes = fs.readFileSync(path.join(process.cwd(), "public", p.cover!.share));
+      expect([bytes[0], bytes[1]], p.slug).toEqual([0xff, 0xd8]);
     }
   });
 });

@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { BLOG_DIR, blogShows, livePosts, loadPosts, todayInNairobi } from "../../lib/blog";
 import { features, site } from "../../lib/site";
+import { expectJpegShareImage } from "./helpers";
 
 /*
  * The real build: the blog is on, with the posts whose date has come in
@@ -40,6 +41,10 @@ test.describe("the live blog", () => {
     expect(xml).toContain(`<loc>${site.url}/blog/</loc>`);
     for (const post of out) expect(xml).toContain(`<loc>${site.url}/blog/${post.slug}/</loc>`);
     for (const post of scheduled) expect(xml).not.toContain(`/blog/${post.slug}/`);
+  });
+
+  test("every published post's share image is a 1200×630 JPEG that exists", async ({ page, request }) => {
+    for (const post of out) await expectJpegShareImage(page, request, `/blog/${post.slug}/`);
   });
 
   test("the home page shows the latest three", async ({ page }) => {
