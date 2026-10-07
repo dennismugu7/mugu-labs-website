@@ -6,6 +6,8 @@ excerpt: "One problem at a time, built next to the people who have it, and made 
 tags: ["Smart Moves & Quick Hacks"]
 product: ""
 author: "Mugu Labs team"
+cover: "/assets/blog/small-apps-cover.webp"
+coverAlt: "Crossed-out feature buttons flowing into a phone showing one clean screen that says One job, done well"
 draft: false
 ---
 

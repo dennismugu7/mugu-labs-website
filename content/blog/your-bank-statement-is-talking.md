@@ -6,6 +6,8 @@ excerpt: "A statement isn't just a list of numbers. Here's how to read one in te
 tags: ["Money tips", "Smart Moves & Quick Hacks"]
 product: "dashboard-x"
 author: "Mugu Labs team"
+cover: "/assets/blog/statement-cover.webp"
+coverAlt: "A bank statement with a magnifying glass highlighting a bank charge, and a speech bubble saying Look closer"
 draft: false
 ---
 

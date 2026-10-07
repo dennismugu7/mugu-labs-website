@@ -62,7 +62,7 @@
         "w": 390,
         "h": 844
       },
-      "pageHeight": 6897,
+      "pageHeight": 7086,
       "horizontalOverflow": false,
       "gutterPx": 0,
       "insetPx": 18,
@@ -97,7 +97,7 @@
       "sectionHeights": {
         "hero": 582,
         "products": 1642,
-        "blog": 1589,
+        "blog": 1777,
         "about": 920,
         "work": 874,
         "connect": null,
