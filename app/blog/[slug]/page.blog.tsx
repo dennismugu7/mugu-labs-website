@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title,
       description: post.excerpt,
       url,
-      publishedTime: post.date,
+      publishedTime: post.published,
       authors: [post.author],
       tags: post.tags,
       images,
@@ -65,7 +65,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         <header {...reveal(0, "post-page__head")}>
           <p className="post-meta">
-            <time dateTime={post.date}>{formatDate(post.date)}</time>
+            <time dateTime={post.published}>{formatDate(post.date)}</time>
             <span aria-hidden="true"> · </span>
             {readingMinutes(post)} min read
           </p>

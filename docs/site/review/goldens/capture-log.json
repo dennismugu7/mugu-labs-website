@@ -7,7 +7,7 @@
         "w": 1920,
         "h": 1080
       },
-      "pageHeight": 10563,
+      "pageHeight": 10598,
       "horizontalOverflow": false,
       "gutterPx": 260,
       "insetPx": 280,
@@ -42,7 +42,7 @@
       "sectionHeights": {
         "hero": 1080,
         "products": 1263,
-        "blog": 1199,
+        "blog": 1234,
         "about": 1073,
         "work": 822,
         "connect": null,
@@ -62,7 +62,7 @@
         "w": 390,
         "h": 844
       },
-      "pageHeight": 6783,
+      "pageHeight": 6922,
       "horizontalOverflow": false,
       "gutterPx": 0,
       "insetPx": 18,
@@ -97,7 +97,7 @@
       "sectionHeights": {
         "hero": 582,
         "products": 1642,
-        "blog": 1475,
+        "blog": 1614,
         "about": 920,
         "work": 874,
         "connect": null,
@@ -117,7 +117,7 @@
         "w": 1280,
         "h": 800
       },
-      "pageHeight": 8314,
+      "pageHeight": 8374,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
@@ -152,7 +152,7 @@
       "sectionHeights": {
         "hero": 800,
         "products": 1029,
-        "blog": 1038,
+        "blog": 1098,
         "about": 877,
         "work": 660,
         "connect": null,
@@ -172,7 +172,7 @@
         "w": 1366,
         "h": 768
       },
-      "pageHeight": 8346,
+      "pageHeight": 8406,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
@@ -207,7 +207,7 @@
       "sectionHeights": {
         "hero": 768,
         "products": 1088,
-        "blog": 1055,
+        "blog": 1115,
         "about": 926,
         "work": 697,
         "connect": null,
@@ -227,7 +227,7 @@
         "w": 1440,
         "h": 900
       },
-      "pageHeight": 9043,
+      "pageHeight": 9069,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
@@ -262,7 +262,7 @@
       "sectionHeights": {
         "hero": 900,
         "products": 1124,
-        "blog": 1084,
+        "blog": 1110,
         "about": 866,
         "work": 716,
         "connect": null,

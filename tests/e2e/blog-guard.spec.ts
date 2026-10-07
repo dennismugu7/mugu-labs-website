@@ -146,6 +146,30 @@ test.describe("scheduled posts (a fixed today, never the real one)", () => {
     }
   });
 
+  test("a date may carry a time in Nairobi; date-only still works", () => {
+    const timed = parsePost(post({ ...base, date: "2026-10-06T09:00" }), "t.md");
+    expect([timed.date, timed.time, timed.published]).toEqual(["2026-10-06", "09:00", "2026-10-06T09:00:00+03:00"]);
+    const plain = parsePost(post(base), "p.md");
+    expect([plain.date, plain.time, plain.published]).toEqual(["2026-10-06", undefined, "2026-10-06"]);
+    for (const bad of ["2026-10-06T9:00", "2026-10-06T24:00", "2026-10-06T09:60", "2026-10-06 09:00", "2026-10-06T09:00:00"])
+      expect(() => parsePost(post({ ...base, date: bad }), "b.md"), bad).toThrow(/date/);
+    // The time orders the day; the post is out from the start of its date.
+    expect(isPublished({ ...timed, draft: false }, "2026-10-06")).toBe(true);
+    expect(isPublished({ ...timed, draft: false }, "2026-10-05")).toBe(false);
+  });
+
+  test("launch day, newest first by time", () => {
+    expect(slugsOn("2026-10-06")).toEqual([
+      "december-plan-written-in-october",
+      "meet-the-team",
+      "why-we-build-small-apps",
+      "15-minute-money-check-in",
+      "pay-a-different-account",
+    ]);
+    // A later date still comes first, time or no time.
+    expect(slugsOn("2026-10-12")[0]).toBe("supporting-family-without-going-broke");
+  });
+
   test("a scheduled post's editor's note stops the build now, not on its date", () => {
     const later = parsePost(post({ ...base, date: "2099-01-01", draft: false }, "> [Dennis: later]"), "l.md");
     expect(() => assertPublishable([later])).toThrow(/l\.md/);

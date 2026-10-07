@@ -1,7 +1,7 @@
 ---
 title: "Why we build small apps"
 slug: "why-we-build-small-apps"
-date: "2026-10-06"
+date: "2026-10-06T11:00"
 excerpt: "One problem at a time, built next to the people who have it, and made to work on the phone you already own. A short note on how Mugu Labs works."
 tags: ["Smart Moves & Quick Hacks"]
 product: ""

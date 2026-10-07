@@ -1,7 +1,7 @@
 ---
 title: "Meet the team behind Mugu Labs"
 slug: "meet-the-team"
-date: "2026-10-06"
+date: "2026-10-06T12:00"
 excerpt: "A developer, a designer and a shared belief that software should feel calm. Here's who builds Mugu Labs apps, and how we work together."
 tags: ["Smart Moves & Quick Hacks"]
 product: ""

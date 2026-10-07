@@ -1,7 +1,7 @@
 ---
 title: "The 15-minute money check-in"
 slug: "15-minute-money-check-in"
-date: "2026-10-06"
+date: "2026-10-06T10:00"
 excerpt: "No spreadsheets, no guilt. One short sitting at the end of each month that keeps your money and your head in the same place."
 tags: ["Money tips", "Smart Moves & Quick Hacks"]
 product: "dashboard-x"

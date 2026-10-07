@@ -32,8 +32,15 @@ const PLACEHOLDER = "[Dennis";
 export type BlogPost = {
   title: string;
   slug: string;
-  /** YYYY-MM-DD */
+  /** YYYY-MM-DD: the day it comes out (in Nairobi). */
   date: string;
+  /** HH:MM in Nairobi, if the frontmatter's date gave one
+      ("2026-10-06T09:00"). It orders posts out on the same day; the site
+      rebuilds once a day, so a post still comes out on its date. */
+  time?: string;
+  /** When it was published, for machines: the date, or with a time, the
+      full timestamp with Nairobi's offset ("2026-10-06T09:00:00+03:00"). */
+  published: string;
   excerpt: string;
   tags: string[];
   /** A product slug from lib/site.ts, or "" for none. */
@@ -89,10 +96,20 @@ export function parsePost(source: string, file: string, publicDir = PUBLIC_DIR):
     throw new Error(`${file}: "tags" must be a list of names`);
   if (typeof data.draft !== "boolean") throw new Error(`${file}: "draft" must be true or false`);
 
+  // "YYYY-MM-DD", or with a time in Nairobi, "YYYY-MM-DDTHH:MM".
+  const when = str("date").match(/^(\d{4}-\d{2}-\d{2})(?:T(\d{2}:\d{2}))?$/);
+  if (!when || Number.isNaN(Date.parse(`${when[1]}T${when[2] ?? "00:00"}:00${NAIROBI_OFFSET}`)))
+    throw new Error(`${file}: date "${str("date")}" is not YYYY-MM-DD or YYYY-MM-DDTHH:MM`);
+  const [, date, time] = when;
+  if (time && (Number(time.slice(0, 2)) > 23 || Number(time.slice(3)) > 59))
+    throw new Error(`${file}: date "${str("date")}" has no such time`);
+
   const post: BlogPost = {
     title: str("title"),
     slug: str("slug"),
-    date: str("date"),
+    date,
+    ...(time ? { time } : {}),
+    published: time ? `${date}T${time}:00${NAIROBI_OFFSET}` : date,
     excerpt: str("excerpt"),
     tags: data.tags as string[],
     product: str("product"),
@@ -103,8 +120,6 @@ export function parsePost(source: string, file: string, publicDir = PUBLIC_DIR):
   };
 
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(post.slug)) throw new Error(`${file}: slug "${post.slug}" is not a-z0-9-`);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(post.date) || Number.isNaN(Date.parse(post.date)))
-    throw new Error(`${file}: date "${post.date}" is not YYYY-MM-DD`);
   if (post.product && !products.some((p) => p.slug === post.product))
     throw new Error(`${file}: product "${post.product}" is not in lib/site.ts`);
 
@@ -168,6 +183,8 @@ export function loadPosts({ dir = BLOG_DIR, publishDrafts = !!testOverride.publi
 /* ---------------------------------------------------------- publishing */
 
 export const TIME_ZONE = "Africa/Nairobi";
+/** Nairobi is UTC+3 all year (no daylight saving). */
+const NAIROBI_OFFSET = "+03:00";
 
 const DAY_IN_NAIROBI = new Intl.DateTimeFormat("en-CA", {
   timeZone: TIME_ZONE,
@@ -195,11 +212,16 @@ export function isPublished(post: BlogPost, today: string): boolean {
   return !post.draft && post.date <= today;
 }
 
-/** The posts published on `today`, newest first. */
+/** Date and time as one sortable string; a post without a time counts as
+    the start of its day. */
+const sortKey = (p: BlogPost) => `${p.date}T${p.time ?? "00:00"}`;
+
+/** The posts published on `today`, newest first: by date, then time, then
+    title. */
 export function livePosts(all: BlogPost[], today: string): BlogPost[] {
   return all
     .filter((p) => isPublished(p, today))
-    .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
+    .sort((a, b) => sortKey(b).localeCompare(sortKey(a)) || a.title.localeCompare(b.title));
 }
 
 let cache: BlogPost[] | null = null;

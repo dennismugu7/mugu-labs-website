@@ -33,7 +33,7 @@ test.describe("/blog/", () => {
       const post = posts[i];
       await expect(card.getByRole("link", { name: post.title })).toHaveAttribute("href", `/blog/${post.slug}/`);
       await expect(card.locator(".post-meta")).toHaveText(`${formatDate(post.date)} · ${readingMinutes(post)} min read`);
-      await expect(card.locator("time")).toHaveAttribute("datetime", post.date);
+      await expect(card.locator("time")).toHaveAttribute("datetime", post.published);
       await expect(card.locator(".post-card__excerpt")).toHaveText(post.excerpt);
       await expect(card.locator(".tag")).toHaveText(post.tags);
       for (const tag of post.tags)
@@ -172,7 +172,7 @@ test.describe("a post", () => {
     expect(await meta(page, "og:description")).toBe(withProduct.excerpt);
     expect(await meta(page, "og:url")).toBe(`${site.url}/blog/${withProduct.slug}/`);
     expect(await meta(page, "og:image")).toBe(`${site.url}/og.jpg`);
-    expect(await meta(page, "article:published_time")).toBe(withProduct.date);
+    expect(await meta(page, "article:published_time")).toBe(withProduct.published);
     expect(await meta(page, "twitter:card")).toBe("summary_large_image");
     expect(await meta(page, "twitter:title")).toBe(title);
     expect(await meta(page, "twitter:description")).toBe(withProduct.excerpt);
@@ -214,7 +214,7 @@ test("the sitemap lists the blog, every post and every tag", async ({ request })
   expect(locs).toContain(`${site.url}/blog/`);
   for (const p of posts) {
     expect(locs).toContain(`${site.url}/blog/${p.slug}/`);
-    expect(xml).toMatch(new RegExp(`<loc>${site.url}/blog/${p.slug}/</loc>\\s*<lastmod>${p.date}`));
+    expect(xml).toContain(`<loc>${site.url}/blog/${p.slug}/</loc>\n<lastmod>${p.published}</lastmod>`);
   }
   const tags = new Set(posts.flatMap((p) => p.tags.map(tagSlug)));
   for (const t of tags) expect(locs).toContain(`${site.url}/blog/tag/${t}/`);
@@ -258,4 +258,21 @@ test.describe(`scheduled posts: after ${fixture.today}, treated as drafts`, () =
     const xml = await (await request.get("/sitemap.xml")).text();
     for (const post of scheduled) expect(xml).not.toContain(`/blog/${post.slug}/`);
   });
+});
+
+test("launch day's five, in the order of their times", async ({ page }) => {
+  await gotoReady(page, "/blog/");
+  const titles = await page.locator(".post-card__title").allInnerTexts();
+  const order = [
+    "december-plan-written-in-october",
+    "meet-the-team",
+    "why-we-build-small-apps",
+    "15-minute-money-check-in",
+    "pay-a-different-account",
+  ].map((slug) => all.find((p) => p.slug === slug)!);
+  // All on 6 October, after everything dated later, in time order.
+  expect(titles.slice(-5)).toEqual(order.map((p) => p.title));
+  const first = page.locator(".post-card", { has: page.getByRole("link", { name: order[0].title }) });
+  await expect(first.locator("time")).toHaveAttribute("datetime", "2026-10-06T13:00:00+03:00");
+  await expect(first.locator("time")).toHaveText("6 October 2026");
 });
