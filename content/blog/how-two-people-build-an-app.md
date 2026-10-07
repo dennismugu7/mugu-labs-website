@@ -1,8 +1,8 @@
 ---
-title: "Meet the team behind Mugu Labs"
-slug: "meet-the-team"
+title: "How two people build an app"
+slug: "how-two-people-build-an-app"
 date: "2026-10-06T12:00"
-excerpt: "A developer, a designer and a shared belief that software should feel calm. Here's who builds Mugu Labs apps, and how we work together."
+excerpt: "A developer, a designer and one rule: if we wouldn't use it ourselves, it doesn't ship. Here's how Mugu Labs turns a real problem into an app."
 tags: ["Smart Moves & Quick Hacks"]
 product: ""
 author: "Mugu Labs team"
@@ -13,7 +13,7 @@ draft: false
 
 Behind every app on our shelf are real people, not a big company with a marketing department. We're a small studio, and we like it that way. Small means we know the people we build for, we can change course quickly, and nothing ships unless we'd be happy to use it ourselves.
 
-Mugu Labs began when Dennis and Bradil got tired of clunky, overcomplicated software and decided to build something better. Here's who we are.
+Mugu Labs began when Dennis and Bradil got tired of clunky, overcomplicated software and decided to build something better. Here's who we are, and how we work.
 
 ## Dennis Mburu, Web Developer
 
