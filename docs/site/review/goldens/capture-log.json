@@ -7,7 +7,7 @@
         "w": 1920,
         "h": 1080
       },
-      "pageHeight": 9364,
+      "pageHeight": 10563,
       "horizontalOverflow": false,
       "gutterPx": 260,
       "insetPx": 280,
@@ -42,7 +42,7 @@
       "sectionHeights": {
         "hero": 1080,
         "products": 1263,
-        "blog": null,
+        "blog": 1199,
         "about": 1073,
         "work": 822,
         "connect": null,
@@ -50,7 +50,7 @@
       },
       "headingLines": {
         "products": 2,
-        "blog": null,
+        "blog": 1,
         "about": 2,
         "work": 1,
         "connect": null,
@@ -62,7 +62,7 @@
         "w": 390,
         "h": 844
       },
-      "pageHeight": 5309,
+      "pageHeight": 6783,
       "horizontalOverflow": false,
       "gutterPx": 0,
       "insetPx": 18,
@@ -97,7 +97,7 @@
       "sectionHeights": {
         "hero": 582,
         "products": 1642,
-        "blog": null,
+        "blog": 1475,
         "about": 920,
         "work": 874,
         "connect": null,
@@ -105,7 +105,7 @@
       },
       "headingLines": {
         "products": 3,
-        "blog": null,
+        "blog": 1,
         "about": 1,
         "work": 1,
         "connect": null,
@@ -117,7 +117,7 @@
         "w": 1280,
         "h": 800
       },
-      "pageHeight": 7276,
+      "pageHeight": 8314,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
@@ -152,7 +152,7 @@
       "sectionHeights": {
         "hero": 800,
         "products": 1029,
-        "blog": null,
+        "blog": 1038,
         "about": 877,
         "work": 660,
         "connect": null,
@@ -160,7 +160,7 @@
       },
       "headingLines": {
         "products": 2,
-        "blog": null,
+        "blog": 1,
         "about": 2,
         "work": 1,
         "connect": null,
@@ -172,7 +172,7 @@
         "w": 1366,
         "h": 768
       },
-      "pageHeight": 7291,
+      "pageHeight": 8346,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
@@ -207,7 +207,7 @@
       "sectionHeights": {
         "hero": 768,
         "products": 1088,
-        "blog": null,
+        "blog": 1055,
         "about": 926,
         "work": 697,
         "connect": null,
@@ -215,7 +215,7 @@
       },
       "headingLines": {
         "products": 2,
-        "blog": null,
+        "blog": 1,
         "about": 2,
         "work": 1,
         "connect": null,
@@ -227,7 +227,7 @@
         "w": 1440,
         "h": 900
       },
-      "pageHeight": 7959,
+      "pageHeight": 9043,
       "horizontalOverflow": false,
       "gutterPx": 50,
       "insetPx": 70,
@@ -262,7 +262,7 @@
       "sectionHeights": {
         "hero": 900,
         "products": 1124,
-        "blog": null,
+        "blog": 1084,
         "about": 866,
         "work": 716,
         "connect": null,
@@ -270,7 +270,7 @@
       },
       "headingLines": {
         "products": 2,
-        "blog": null,
+        "blog": 1,
         "about": 1,
         "work": 1,
         "connect": null,

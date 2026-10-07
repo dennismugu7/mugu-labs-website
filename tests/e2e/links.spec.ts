@@ -53,7 +53,7 @@ test.describe("link inventory", () => {
           .map((a) => new URL(a.href).pathname + new URL(a.href).hash)
           .sort()
       );
-      const expected = from.links.map((l) => l.to).sort();
+      const expected = from.links.flatMap((l) => Array<string>(l.times ?? 1).fill(l.to)).sort();
 
       expect(found).toEqual(expected);
     });
