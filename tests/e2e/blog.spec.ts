@@ -2,7 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 import { formatDate, livePosts, loadPosts, readingMinutes, tagSlug } from "../../lib/blog";
 import { products, site } from "../../lib/site";
 import fixture from "./flags-fixture.json";
-import { clickLink, expectContentVisible, gotoReady } from "./helpers";
+import { clickLink, expectContentVisible, expectJpegShareImage, gotoReady } from "./helpers";
 
 /*
  * Runs against out-flags/ ("flags" project): the site built with the test
@@ -110,11 +110,17 @@ test.describe("covers", () => {
     expect(imgTop).toBeLessThan(titleTop);
     await expect.poll(() => img.evaluate((n: HTMLImageElement) => n.naturalWidth)).toBe(post.cover!.width);
 
-    expect(await meta(page, "og:image")).toBe(`${site.url}${post.cover!.src}`);
-    expect(await meta(page, "og:image:width")).toBe(String(post.cover!.width));
-    expect(await meta(page, "og:image:height")).toBe(String(post.cover!.height));
+    // Shared as its 1200×630 JPEG, not the WebP on the page.
+    expect(post.cover!.share).toMatch(/^\/assets\/blog\/og\/.+\.jpg$/);
+    expect(await meta(page, "og:image")).toBe(`${site.url}${post.cover!.share}`);
+    expect(await meta(page, "og:image:width")).toBe("1200");
+    expect(await meta(page, "og:image:height")).toBe("630");
     expect(await meta(page, "og:image:alt")).toBe(post.cover!.alt);
-    expect(await meta(page, "twitter:image")).toBe(`${site.url}${post.cover!.src}`);
+    expect(await meta(page, "twitter:image")).toBe(`${site.url}${post.cover!.share}`);
+  });
+
+  test("every published post's share image is a 1200×630 JPEG that exists", async ({ page, request }) => {
+    for (const post of posts) await expectJpegShareImage(page, request, `/blog/${post.slug}/`);
   });
 
   test("a post without a cover has none, and shares the site's image", async ({ page }) => {

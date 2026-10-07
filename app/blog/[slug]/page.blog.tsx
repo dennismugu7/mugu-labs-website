@@ -5,7 +5,15 @@ import { brandStyle } from "../../../components/brand";
 import { ArrowLeft, ArrowRight } from "../../../components/icons";
 import PostCover from "../../../components/PostCover";
 import { reveal } from "../../../components/reveal";
-import { findPost, formatDate, publishedPosts, readingMinutes, renderBody, tagSlug } from "../../../lib/blog";
+import {
+  findPost,
+  formatDate,
+  publishedPosts,
+  readingMinutes,
+  renderBody,
+  SHARE_SIZE,
+  tagSlug,
+} from "../../../lib/blog";
 import { baseOpenGraph, baseTwitter } from "../../../lib/metadata";
 import { products, site } from "../../../lib/site";
 
@@ -24,9 +32,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!post) return {};
   const url = `/blog/${post.slug}/`;
   const title = `${post.title} — ${site.name}`;
-  // The cover is the share image when there is one; otherwise the site's.
+  // The cover's 1200×630 JPEG when there is one (WebP isn't safe in every
+  // link preview); otherwise the site's own image.
   const images = post.cover
-    ? [{ url: post.cover.src, width: post.cover.width, height: post.cover.height, alt: post.cover.alt }]
+    ? [{ url: post.cover.share, width: SHARE_SIZE.width, height: SHARE_SIZE.height, alt: post.cover.alt }]
     : baseOpenGraph.images;
   return {
     title: post.title,

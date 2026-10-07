@@ -1,6 +1,7 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, type APIRequestContext, type Page } from "@playwright/test";
 import { livePosts, loadPosts, tagSlug, todayInNairobi } from "../../lib/blog";
-import { products } from "../../lib/site";
+import { imageSizeOf } from "../../lib/image-size";
+import { products, site } from "../../lib/site";
 
 declare global {
   interface Window {
@@ -228,4 +229,22 @@ export async function expectSectionAtTop(page: Page, hash: string) {
   }, hash);
   expect(top, `#${hash} should exist and not be scrolled past`).toBeGreaterThanOrEqual(-2);
   expect(top, `#${hash} should be scrolled to the top`).toBeLessThanOrEqual(best + 50);
+}
+
+/**
+ * A page's share image (og:image, and twitter:image the same) is a JPEG
+ * that the site serves, at 1200×630: read from the bytes, not the tags.
+ */
+export async function expectJpegShareImage(page: Page, request: APIRequestContext, url: string) {
+  await page.goto(url);
+  const og = await page.locator('meta[property="og:image"]').getAttribute("content");
+  expect(await page.locator('meta[name="twitter:image"]').getAttribute("content"), url).toBe(og);
+  expect(og, url).toMatch(new RegExp(`^${site.url.replace(/\./g, "\.")}/.+\.jpg$`));
+
+  const res = await request.get(og!.slice(site.url.length));
+  expect(res.status(), `${url} → ${og}`).toBe(200);
+  expect(res.headers()["content-type"], `${url} → ${og}`).toMatch(/^image\/jpeg/);
+  const body = await res.body();
+  expect([body[0], body[1]], `${og} is a JPEG`).toEqual([0xff, 0xd8]);
+  expect(imageSizeOf(body), `${og}`).toEqual({ width: 1200, height: 630 });
 }

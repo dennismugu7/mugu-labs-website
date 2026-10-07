@@ -60,7 +60,18 @@ export type Cover = {
   alt: string;
   width: number;
   height: number;
+  /** The share image (og:image, twitter:image): a 1200×630 JPEG cut from
+      the cover by scripts/blog-og.mjs, e.g. "/assets/blog/og/x.jpg". */
+  share: string;
 };
+
+/** The size every cover's share image must be. */
+export const SHARE_SIZE = { width: 1200, height: 630 } as const;
+
+/** "/assets/blog/x.webp" → "/assets/blog/og/x.jpg" (scripts/blog-og.mjs). */
+export function shareImagePath(cover: string): string {
+  return `/assets/blog/og/${path.posix.basename(cover).replace(/\.[^.]+$/, "")}.jpg`;
+}
 
 /* ------------------------------------------------------------- parsing */
 
@@ -133,7 +144,16 @@ export function parsePost(source: string, file: string, publicDir = PUBLIC_DIR):
     if (!alt) throw new Error(`${file}: "coverAlt" must describe the cover`);
     const onDisk = path.join(publicDir, src);
     if (!fs.existsSync(onDisk)) throw new Error(`${file}: cover "${src}" is not in public/`);
-    post.cover = { src, alt, ...imageSize(onDisk) };
+
+    const share = shareImagePath(src);
+    const shareOnDisk = path.join(publicDir, share);
+    const redo = "run `node scripts/blog-og.mjs` and commit what it writes";
+    if (!fs.existsSync(shareOnDisk)) throw new Error(`${file}: the cover's share image ${share} is missing; ${redo}`);
+    const size = imageSize(shareOnDisk);
+    if (size.width !== SHARE_SIZE.width || size.height !== SHARE_SIZE.height)
+      throw new Error(`${file}: ${share} is ${size.width}×${size.height}, not 1200×630; ${redo}`);
+
+    post.cover = { src, alt, ...imageSize(onDisk), share };
   }
   return post;
 }

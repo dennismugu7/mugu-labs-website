@@ -8,8 +8,15 @@ import fs from "node:fs";
 export type ImageSize = { width: number; height: number };
 
 export function imageSize(file: string): ImageSize {
-  const b = fs.readFileSync(file);
+  try {
+    return imageSizeOf(fs.readFileSync(file));
+  } catch (error) {
+    throw new Error(`${file}: ${(error as Error).message}`);
+  }
+}
 
+/** The same, for an image already in memory (a test's download, say). */
+export function imageSizeOf(b: Buffer): ImageSize {
   // WebP: RIFF....WEBP, then a VP8 / VP8L / VP8X chunk.
   if (b.toString("ascii", 0, 4) === "RIFF" && b.toString("ascii", 8, 12) === "WEBP") {
     const chunk = b.toString("ascii", 12, 16);
@@ -36,5 +43,5 @@ export function imageSize(file: string): ImageSize {
     }
   }
 
-  throw new Error(`${file}: not a WebP, PNG or JPEG this can read the size of`);
+  throw new Error("not a WebP, PNG or JPEG this can read the size of");
 }
