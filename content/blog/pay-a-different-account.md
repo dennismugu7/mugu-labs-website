@@ -6,6 +6,8 @@ excerpt: "Fake screenshots, 'sent by mistake' messages, sudden new payment numbe
 tags: ["Smart Moves & Quick Hacks"]
 product: "oda"
 author: "Mugu Labs team"
+cover: "/assets/blog/pay-other-cover.webp"
+coverAlt: "A suspicious message asking to pay a different number, crossed out, next to a green shield and a payment screen showing the name to check"
 draft: false
 ---
 

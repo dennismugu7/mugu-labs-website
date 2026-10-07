@@ -6,6 +6,8 @@ excerpt: "No-shows cost salons real money, but asking for a deposit can feel lik
 tags: ["Beauty Cheat Codes", "Smart Moves & Quick Hacks"]
 product: "bookflow"
 author: "Mugu Labs team"
+cover: "/assets/blog/deposits-cover.webp"
+coverAlt: "A Saturday booking calendar with a locked slot, stacked coins, and a phone showing a deposit paid"
 draft: false
 ---
 

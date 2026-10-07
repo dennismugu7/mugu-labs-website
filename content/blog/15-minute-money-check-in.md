@@ -6,6 +6,8 @@ excerpt: "No spreadsheets, no guilt. One short sitting at the end of each month 
 tags: ["Money tips", "Smart Moves & Quick Hacks"]
 product: "dashboard-x"
 author: "Mugu Labs team"
+cover: "/assets/blog/check-in-cover.webp"
+coverAlt: "A stopwatch showing 15 minutes, a short checklist, and a phone with a monthly spending chart"
 draft: false
 ---
 

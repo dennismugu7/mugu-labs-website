@@ -236,7 +236,9 @@ test.describe("covers", () => {
   test("the posts' own covers are all there, 16:9, with alt text", () => {
     const posts = loadPosts({ dir: BLOG_DIR, publishDrafts: false });
     const covered = posts.filter((p) => p.cover);
-    expect(covered).toHaveLength(8);
+    // Every post has a cover now.
+    expect(covered).toHaveLength(posts.length);
+    expect(covered).toHaveLength(13);
     for (const p of covered) {
       expect(p.cover!.alt.length, p.slug).toBeGreaterThan(10);
       expect(Math.abs(p.cover!.width / p.cover!.height - 16 / 9), p.slug).toBeLessThan(0.01);

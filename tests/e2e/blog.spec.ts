@@ -59,7 +59,6 @@ test.describe("covers", () => {
 
   test("cards: a cover along the top when the post has one, else the plain card", async ({ page }) => {
     expect(covered.length).toBeGreaterThan(0);
-    expect(bare.length).toBeGreaterThan(0);
     await gotoReady(page, "/blog/");
     const cards = page.locator(".post-card");
     for (let i = 0; i < posts.length; i++) {
@@ -124,6 +123,9 @@ test.describe("covers", () => {
   });
 
   test("a post without a cover has none, and shares the site's image", async ({ page }) => {
+    // Since October 2026 every post has a cover; this comes back into play
+    // with the first post that has none (blog-guard tests the parsing).
+    test.skip(bare.length === 0, "every published post has a cover");
     const post = bare[0];
     await gotoReady(page, `/blog/${post.slug}/`);
     await expect(page.locator("article img.post-cover")).toHaveCount(0);
@@ -177,7 +179,9 @@ test.describe("a post", () => {
     expect(await meta(page, "og:title")).toBe(title);
     expect(await meta(page, "og:description")).toBe(withProduct.excerpt);
     expect(await meta(page, "og:url")).toBe(`${site.url}/blog/${withProduct.slug}/`);
-    expect(await meta(page, "og:image")).toBe(`${site.url}/og.jpg`);
+    expect(await meta(page, "og:image")).toBe(
+      withProduct.cover ? `${site.url}${withProduct.cover.share}` : `${site.url}/og.jpg`
+    );
     expect(await meta(page, "article:published_time")).toBe(withProduct.published);
     expect(await meta(page, "twitter:card")).toBe("summary_large_image");
     expect(await meta(page, "twitter:title")).toBe(title);

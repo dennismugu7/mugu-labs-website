@@ -38,7 +38,7 @@ The things most likely to need your attention first:
 | --- | --- | --- |
 | Blog and socials sections on/off | `lib/site.ts` → `features` | blog on; socials off — not rendered, no links (see the comment there) |
 | Blog posts | `content/blog/*.md` (frontmatter + Markdown) | 13 posts, 6 Oct to 30 Nov 2026. A post is out once it has `draft: false` and its `date` has come in Nairobi; a date may carry a time (`"2026-10-06T09:00"`) to order a day's posts. A daily rebuild (`.github/workflows/daily-rebuild.yml`, needs the `VERCEL_DEPLOY_HOOK` secret) brings scheduled posts out on their date |
-| Blog covers | `cover` + `coverAlt` in a post's frontmatter; images in `public/assets/blog/` | 8 covers. After adding or changing one, run `node scripts/blog-og.mjs` and commit its 1200×630 share JPEG from `public/assets/blog/og/`; the build stops without it |
+| Blog covers | `cover` + `coverAlt` in a post's frontmatter; images in `public/assets/blog/` | 13 covers, one per post. After adding or changing one, run `node scripts/blog-og.mjs` and commit its 1200×630 share JPEG from `public/assets/blog/og/`; the build stops without it |
 | Social profile URLs | `lib/site.ts` → `socials` | all `""` — a profile without a URL is not shown |
 | Contact email | `lib/site.ts` → `site.contact.email` | `support@mugu-labs.com` (Zoho mail on the domain) |
 | WhatsApp number | `lib/site.ts` → `site.contact.whatsapp` | `254701408727` |
