@@ -1,4 +1,5 @@
 import { expect, type Page } from "@playwright/test";
+import { livePosts, loadPosts, tagSlug, todayInNairobi } from "../../lib/blog";
 import { products } from "../../lib/site";
 
 declare global {
@@ -16,22 +17,40 @@ export type LinkSpec = {
   name: string;
   /** The URL the click should end on, path + hash. */
   to: string;
+  /** How many links like it the page has (a tag on several cards); the
+      click test clicks the first. Default 1. */
+  times?: number;
 };
 
 const NAV: LinkSpec[] = [
   { region: "nav", name: "Products", to: "/#products" },
+  { region: "nav", name: "Blog", to: "/blog/" },
   { region: "nav", name: "About", to: "/#about" },
   { region: "nav", name: "How we work", to: "/#work" },
 ];
 
 const FOOTER: LinkSpec[] = [
   ...products.map((p) => ({ region: "footer" as const, name: p.name, to: `/products/${p.slug}/` })),
+  { region: "footer", name: "Blog", to: "/blog/" },
   { region: "footer", name: "About", to: "/#about" },
   { region: "footer", name: "Contact", to: "/#contact" },
   { region: "footer", name: "Privacy", to: "/privacy/" },
 ];
 
 const CHROME: LinkSpec[] = [{ region: "brand", name: "Mugu Labs", to: "/" }, ...NAV];
+
+/** The home page's "From the blog": the latest three posts out today in
+    Nairobi, each card's title and tags, and the way to the rest. */
+const HOME_BLOG: LinkSpec[] = (() => {
+  const latest = livePosts(loadPosts(), todayInNairobi()).slice(0, 3);
+  const tags = new Map<string, number>();
+  for (const post of latest) for (const tag of post.tags) tags.set(tag, (tags.get(tag) ?? 0) + 1);
+  return [
+    ...latest.map((p) => ({ region: "main" as const, name: p.title, to: `/blog/${p.slug}/` })),
+    ...[...tags].map(([tag, times]) => ({ region: "main" as const, name: tag, to: `/blog/tag/${tagSlug(tag)}/`, times })),
+    { region: "main", name: "More on the blog", to: "/blog/" },
+  ];
+})();
 
 /** Every internal link on every page, as the audit's link table lists them. */
 export const PAGES: { label: string; url: string; links: LinkSpec[] }[] = [
@@ -45,6 +64,7 @@ export const PAGES: { label: string; url: string; links: LinkSpec[] }[] = [
         name: `Learn more about ${p.name}`,
         to: `/products/${p.slug}/`,
       })),
+      ...HOME_BLOG,
       ...FOOTER,
     ],
   },
@@ -105,7 +125,8 @@ export async function clickLink(page: Page, link: LinkSpec) {
   }
 
   const scope = link.region === "main" ? page.getByRole("main") : page.getByRole("contentinfo");
-  return scope.getByRole("link", { name: link.name, exact: true }).click();
+  const target = scope.getByRole("link", { name: link.name, exact: true });
+  return ((link.times ?? 1) > 1 ? target.first() : target).click();
 }
 
 /** Marks the document so a later check can tell a client-side navigation

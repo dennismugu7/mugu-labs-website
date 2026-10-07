@@ -411,7 +411,7 @@ export const socials = [
  * ---------------------------------------------------------------------- */
 
 export const features = {
-  blog: false,
+  blog: true,
   socials: false,
 };
 
