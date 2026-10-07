@@ -1,14 +1,14 @@
 ---
 title: "From DM chaos to an order list"
 slug: "from-dm-chaos-to-an-order-list"
-date: "2026-11-09"
+date: "2026-11-23"
 excerpt: "Orders in WhatsApp, more in Instagram DMs, a few in TikTok comments, and payments somewhere in between. Here's a simple system that brings it all into one place."
 tags: ["Smart Moves & Quick Hacks"]
 product: "oda"
 author: "Mugu Labs team"
 cover: "/assets/blog/dm-chaos-cover.webp"
 coverAlt: "Colourful chat bubbles with customer questions flowing into a phone showing a tidy order list with status labels"
-draft: true
+draft: false
 ---
 
 If you sell online in Kenya, you know the scene. A customer asks the price on TikTok. Another sends "size M, same as last time" on WhatsApp. Someone else pays and sends a screenshot on Instagram. By evening you're scrolling through three apps trying to remember who ordered what, who has paid, and whose parcel is still on the table.

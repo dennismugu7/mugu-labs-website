@@ -6,7 +6,7 @@ excerpt: "No spreadsheets, no guilt. One short sitting at the end of each month 
 tags: ["Money tips", "Smart Moves & Quick Hacks"]
 product: "dashboard-x"
 author: "Mugu Labs team"
-draft: true
+draft: false
 ---
 
 Most of us don't avoid our finances because we're careless. We avoid them because looking feels bad. You open your statement, see a number you didn't expect, close it, and promise yourself you'll "sort it out properly" later. Later never comes.

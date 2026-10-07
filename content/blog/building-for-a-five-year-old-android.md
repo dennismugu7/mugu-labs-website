@@ -1,14 +1,14 @@
 ---
 title: "Building for a five-year-old Android"
 slug: "building-for-a-five-year-old-android"
-date: "2026-11-23"
+date: "2026-11-30"
 excerpt: "Most apps are designed on the newest phones with the fastest internet. Most of the people we build for don't have either. Here's why we build for the phone you actually own."
 tags: ["Smart Moves & Quick Hacks"]
 product: ""
 author: "Mugu Labs team"
 cover: "/assets/blog/old-android-cover.webp"
 coverAlt: "An older Android phone with a home button showing a simple budget screen, next to signal bars and a battery, with labels reading Slow network? Fine. and Easy on battery"
-draft: true
+draft: false
 ---
 
 There's a quiet gap in how a lot of software gets made. It's designed and tested on the newest phones, over fast office Wi-Fi, by people who never think about how much data a screen costs. Then it's handed to someone with a three-year-old handset, half a bundle left and a battery that's seen better days.

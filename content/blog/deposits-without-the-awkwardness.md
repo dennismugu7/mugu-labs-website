@@ -1,12 +1,12 @@
 ---
 title: "Deposits without the awkwardness"
 slug: "deposits-without-the-awkwardness"
-date: "2026-10-20"
+date: "2026-10-19"
 excerpt: "No-shows cost salons real money, but asking for a deposit can feel like accusing your clients. Here's how to do it kindly, clearly and fairly."
 tags: ["Beauty Cheat Codes", "Smart Moves & Quick Hacks"]
 product: "bookflow"
 author: "Mugu Labs team"
-draft: true
+draft: false
 ---
 
 Every stylist knows the feeling. The chair is ready, the products are out, the 11:30 slot was turned down for someone else, and the client doesn't come. No call, no message. Two hours of your day just went quiet.

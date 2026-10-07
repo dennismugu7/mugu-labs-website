@@ -1,14 +1,14 @@
 ---
 title: "Win back quiet regulars with one WhatsApp message"
 slug: "win-back-quiet-regulars"
-date: "2026-11-02"
+date: "2026-11-16"
 excerpt: "Clients rarely leave because they're unhappy. Usually life just got busy. A short, warm message at the right time brings many of them straight back. Templates included."
 tags: ["Beauty Cheat Codes", "Smart Moves & Quick Hacks"]
 product: "bookflow"
 author: "Mugu Labs team"
 cover: "/assets/blog/win-back-cover.webp"
 coverAlt: "A phone showing a friendly chat with a heart, next to a purple comb and a calendar with a heart"
-draft: true
+draft: false
 ---
 
 Think of a client who used to come every six weeks like clockwork. Then one month she didn't. Then another. You wondered if she was unhappy, felt a bit awkward about it, and said nothing.

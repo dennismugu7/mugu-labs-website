@@ -1,14 +1,14 @@
 ---
 title: "Your December plan, written in October"
 slug: "december-plan-written-in-october"
-date: "2026-10-12"
+date: "2026-10-06"
 excerpt: "Christmas, the long school holiday and January fees all land at once. Twelve weeks of small, boring steps now means a December you actually enjoy, and a January that doesn't hurt."
 tags: ["Money tips", "Smart Moves & Quick Hacks"]
 product: "dashboard-x"
 author: "Mugu Labs team"
 cover: "/assets/blog/december-plan-cover.webp"
 coverAlt: "Illustration of a December calendar page with a gift, a savings jar filling with coins, and a January calendar page with a school bag"
-draft: true
+draft: false
 ---
 
 Every year it's the same story. December arrives with its fares, food, gatherings and gifts, and we spend like the month has no end. Then January turns up with school fees, rent and an empty wallet, and feels about ninety days long.

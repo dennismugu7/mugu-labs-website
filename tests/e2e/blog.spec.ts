@@ -1,16 +1,18 @@
 import { expect, test, type Page } from "@playwright/test";
-import { formatDate, loadPosts, readingMinutes, tagSlug } from "../../lib/blog";
+import { formatDate, livePosts, loadPosts, readingMinutes, tagSlug } from "../../lib/blog";
 import { products, site } from "../../lib/site";
+import fixture from "./flags-fixture.json";
 import { clickLink, expectContentVisible, gotoReady } from "./helpers";
 
 /*
  * Runs against out-flags/ ("flags" project): the site built with the test
- * override, which switches the blog on and publishes the drafts in
- * content/blog (their "[Dennis: …]" notes dropped). The real build shows
- * none of this (blog-hidden.spec.ts).
+ * override, which switches the blog on and fixes "today" at fixture.today
+ * (2026-10-20), so which posts are out never depends on the calendar.
  */
 
-const posts = loadPosts({ publishDrafts: true }).sort((a, b) => b.date.localeCompare(a.date));
+const all = loadPosts({ publishDrafts: true });
+const posts = livePosts(all, fixture.today);
+const scheduled = all.filter((p) => !posts.includes(p));
 const withProduct = posts.find((p) => p.slug === "15-minute-money-check-in")!;
 const withQuote = posts.find((p) => p.slug === "deposits-without-the-awkwardness")!;
 const noProduct = posts.find((p) => !p.product)!;
@@ -224,4 +226,36 @@ test("the post links from home work", async ({ page }) => {
   await clickLink(page, { region: "main", name: posts[0].title, to: `/blog/${posts[0].slug}/` });
   await expect(page).toHaveURL(`/blog/${posts[0].slug}/`);
   await expectContentVisible(page);
+});
+
+test.describe(`scheduled posts: after ${fixture.today}, treated as drafts`, () => {
+  test("the test build has some of each", () => {
+    expect(posts).toHaveLength(7);
+    expect(scheduled).toHaveLength(6);
+    expect(scheduled.every((p) => p.date > fixture.today && !p.draft)).toBe(true);
+  });
+
+  for (const post of scheduled) {
+    test(`${post.slug} (${post.date}) is not built`, async ({ request }) => {
+      expect((await request.get(`/blog/${post.slug}/`)).status()).toBe(404);
+    });
+  }
+
+  test("not listed, on the blog, its tag pages or the home page", async ({ page }) => {
+    const tagPages = [...new Set(all.flatMap((p) => p.tags.map((t) => `/blog/tag/${tagSlug(t)}/`)))];
+    for (const url of ["/blog/", ...tagPages, "/"]) {
+      await page.goto(url);
+      const titles = await page.locator(".post-card__title").allInnerTexts();
+      expect(titles.length, url).toBeGreaterThan(0);
+      for (const post of scheduled) {
+        expect(titles, url).not.toContain(post.title);
+        await expect(page.locator(`a[href="/blog/${post.slug}/"]`), url).toHaveCount(0);
+      }
+    }
+  });
+
+  test("not in the sitemap", async ({ request }) => {
+    const xml = await (await request.get("/sitemap.xml")).text();
+    for (const post of scheduled) expect(xml).not.toContain(`/blog/${post.slug}/`);
+  });
 });

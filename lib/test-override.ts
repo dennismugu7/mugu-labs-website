@@ -10,6 +10,9 @@ export type TestOverride = {
   features?: { blog?: boolean; socials?: boolean };
   /** Treat every post in content/blog as published (see lib/blog.ts). */
   publishDrafts?: boolean;
+  /** The date (YYYY-MM-DD) the build publishes for, in place of today's in
+      Nairobi, so tests of scheduled posts don't depend on the calendar. */
+  today?: string;
   /** Profile URLs by social id, for profiles that have none yet. */
   socialHrefs?: Record<string, string>;
 };

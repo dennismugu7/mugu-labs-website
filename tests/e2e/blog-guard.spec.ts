@@ -2,7 +2,17 @@ import { expect, test } from "@playwright/test";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { assertPublishable, BLOG_DIR, loadPosts, parsePost } from "../../lib/blog";
+import {
+  allTags,
+  assertPublishable,
+  BLOG_DIR,
+  isPublished,
+  livePosts,
+  loadPosts,
+  parsePost,
+  postsTagged,
+  todayInNairobi,
+} from "../../lib/blog";
 
 /*
  * The blog's build-time rules, tested against lib/blog.ts directly (no
@@ -57,11 +67,89 @@ test("frontmatter is strict", () => {
   expect(() => parsePost(post({ ...base, date: "6 Oct" }), "t.md")).toThrow(/date/);
 });
 
-test("the 13 posts in content/blog parse, and are all drafts for now", () => {
+/* The publishing schedule, against the posts as they are in content/blog. */
+const SCHEDULE: Record<string, string[]> = {
+  "2026-10-06": [
+    "why-we-build-small-apps",
+    "meet-the-team",
+    "december-plan-written-in-october",
+    "15-minute-money-check-in",
+    "pay-a-different-account",
+  ],
+  "2026-10-12": ["supporting-family-without-going-broke"],
+  "2026-10-19": ["deposits-without-the-awkwardness"],
+  "2026-10-26": ["rebook-before-they-leave"],
+  "2026-11-02": ["your-bank-statement-is-talking"],
+  "2026-11-09": ["get-your-shop-festive-ready"],
+  "2026-11-16": ["win-back-quiet-regulars"],
+  "2026-11-23": ["from-dm-chaos-to-an-order-list"],
+  "2026-11-30": ["building-for-a-five-year-old-android"],
+};
+
+test("the 13 posts in content/blog parse, none a draft, each on its date", () => {
   const posts = loadPosts({ dir: BLOG_DIR, publishDrafts: false });
   expect(posts).toHaveLength(13);
-  expect(posts.every((p) => p.draft)).toBe(true);
+  expect(posts.every((p) => !p.draft)).toBe(true);
   expect(posts.every((p) => p.author === "Mugu Labs team")).toBe(true);
+  const dates = Object.fromEntries(posts.map((p) => [p.slug, p.date]));
+  expect(dates).toEqual(
+    Object.fromEntries(Object.entries(SCHEDULE).flatMap(([date, slugs]) => slugs.map((s) => [s, date])))
+  );
+});
+
+test.describe("scheduled posts (a fixed today, never the real one)", () => {
+  const all = () => loadPosts({ dir: BLOG_DIR, publishDrafts: false });
+  const slugsOn = (today: string) => livePosts(all(), today).map((p) => p.slug);
+
+  test("today is Nairobi's: the day turns at 21:00 UTC", () => {
+    expect(todayInNairobi(new Date("2026-10-11T20:59:59Z"))).toBe("2026-10-11");
+    expect(todayInNairobi(new Date("2026-10-11T21:00:00Z"))).toBe("2026-10-12");
+    // The daily rebuild's 21:05 UTC is five minutes into the new day there.
+    expect(todayInNairobi(new Date("2026-10-11T21:05:00Z"))).toBe("2026-10-12");
+    expect(todayInNairobi(new Date("2026-12-31T21:30:00Z"))).toBe("2027-01-01");
+  });
+
+  test("a post is out on its date, not the day before; a draft never", () => {
+    const p = parsePost(post({ ...base, date: "2026-10-12", draft: false }), "s.md");
+    expect(isPublished(p, "2026-10-11")).toBe(false);
+    expect(isPublished(p, "2026-10-12")).toBe(true);
+    expect(isPublished(p, "2026-10-13")).toBe(true);
+    expect(isPublished({ ...p, draft: true }, "2027-01-01")).toBe(false);
+  });
+
+  test("which posts are out, by date, newest first", () => {
+    expect(slugsOn("2026-10-05")).toEqual([]);
+    expect(slugsOn("2026-10-06").sort()).toEqual([...SCHEDULE["2026-10-06"]].sort());
+    expect(slugsOn("2026-10-11")).toHaveLength(5);
+    expect(slugsOn("2026-10-12")[0]).toBe("supporting-family-without-going-broke");
+    expect(slugsOn("2026-10-20")).toHaveLength(7);
+    expect(slugsOn("2026-11-29")).toHaveLength(12);
+    expect(slugsOn("2026-11-30")).toHaveLength(13);
+    const dates = livePosts(all(), "2026-11-30").map((p) => p.date);
+    expect(dates).toEqual([...dates].sort().reverse());
+  });
+
+  test("a tag whose only posts are scheduled has no page, and lists none of them", () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "blog-"));
+    try {
+      fs.writeFileSync(path.join(dir, "now.md"), post({ ...base, slug: "now", draft: false, tags: ["Money tips"] }));
+      fs.writeFileSync(
+        path.join(dir, "later.md"),
+        post({ ...base, slug: "later", date: "2026-11-01", draft: false, tags: ["Money tips", "Coming soon"] })
+      );
+      const live = livePosts(loadPosts({ dir, publishDrafts: false }), "2026-10-20");
+      expect(live.map((p) => p.slug)).toEqual(["now"]);
+      expect(allTags(live).map((t) => t.name)).toEqual(["Money tips"]);
+      expect(postsTagged("money-tips", live).map((p) => p.slug)).toEqual(["now"]);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("a scheduled post's editor's note stops the build now, not on its date", () => {
+    const later = parsePost(post({ ...base, date: "2099-01-01", draft: false }, "> [Dennis: later]"), "l.md");
+    expect(() => assertPublishable([later])).toThrow(/l\.md/);
+  });
 });
 
 test.describe("covers", () => {
