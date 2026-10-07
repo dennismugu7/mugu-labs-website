@@ -1,7 +1,7 @@
 ---
 title: "\"Please pay to this other number\": staying safe when you buy or sell on WhatsApp"
 slug: "pay-a-different-account"
-date: "2026-10-06"
+date: "2026-10-06T09:00"
 excerpt: "Fake screenshots, 'sent by mistake' messages, sudden new payment numbers. The most common tricks in social selling, and the simple habits that beat them."
 tags: ["Smart Moves & Quick Hacks"]
 product: "oda"

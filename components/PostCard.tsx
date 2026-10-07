@@ -18,7 +18,7 @@ export default function PostCard({ post, level = "h2", eager = false }: Props) {
     <article className={post.cover ? "card post-card post-card--cover" : "card post-card"}>
       {post.cover ? <PostCover cover={post.cover} className="post-card__cover" eager={eager} decorative /> : null}
       <p className="post-meta">
-        <time dateTime={post.date}>{formatDate(post.date)}</time>
+        <time dateTime={post.published}>{formatDate(post.date)}</time>
         <span aria-hidden="true"> · </span>
         {readingMinutes(post)} min read
       </p>
