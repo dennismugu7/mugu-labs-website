@@ -68,7 +68,12 @@ const viewports = {
 };
 
 const log = { console: [], failed: [], metrics: {} };
-const browser = await chromium.launch();
+// Partial raster repaints only the dirty part of a tile, so the nav's logo
+// (fixed, over a backdrop-filter) came out with its antenna tips anti-aliased
+// one of two ways depending on what the scroll route had invalidated: 5 pixels
+// at x 303-324, y 26-27, moving roughly one desktop frame in eight. Full-tile
+// raster gives the same pixels every time.
+const browser = await chromium.launch({ args: ["--disable-partial-raster"] });
 
 async function open(name, url, extra = {}) {
   const ctx = await browser.newContext({ ...viewports[name], ...extra });
@@ -84,7 +89,35 @@ async function open(name, url, extra = {}) {
   await page.goto(`${BASE}${url}`, { waitUntil: "networkidle" });
   await page.addStyleTag({ content: FREEZE });
   await page.evaluate(() => document.fonts.ready);
+  await settleImages(page);
   return { ctx, page };
+}
+
+// Every <img> loaded and decoded, so a shot never catches one half there.
+// The site loads most images lazily with async decoding: a frame taken
+// without warm() (reduced-motion) used to miss the About and Contact art
+// every time and the blog covers at random, painting the empty card panel.
+// decoding="sync" also keeps the raster from skipping a decode it would
+// otherwise do in the background.
+async function settleImages(page) {
+  await page.evaluate(async () => {
+    const images = [...document.images];
+    for (const img of images) {
+      img.loading = "eager";
+      img.decoding = "sync";
+    }
+    await Promise.all(
+      images.map(async (img) => {
+        if (!img.complete) {
+          await new Promise((resolve) => {
+            img.addEventListener("load", resolve, { once: true });
+            img.addEventListener("error", resolve, { once: true });
+          });
+        }
+        await img.decode().catch(() => {}); // a broken image is the 404 check's job
+      })
+    );
+  });
 }
 
 // The page sets scroll-behavior: smooth, so every programmatic scroll here
@@ -126,6 +159,7 @@ async function shoot(page, file, opts = {}) {
     await page.waitForTimeout(200);
     opts = { ...opts, clip: { x: 0, y: 0, ...page_ } };
   }
+  await settleImages(page);
   await page.screenshot({ path: path.join(shotsDir, file), ...opts });
   console.log("  " + file);
 }
