@@ -6,8 +6,8 @@ excerpt: "A developer, a designer and one rule: if we wouldn't use it ourselves,
 tags: ["Smart Moves & Quick Hacks"]
 product: ""
 author: "Mugu Labs team"
-cover: "/assets/blog/meet-team-cover.webp"
-coverAlt: "Two cards for Dennis Mburu, Web Developer, and Bradil Wangila, Web Designer, with a code symbol, a pencil and a heart between them"
+cover: "/assets/blog/how-we-build-cover.webp"
+coverAlt: "A design board with a pencil and a code window, with dotted arrows leading into a phone showing a finished app marked Ready to ship"
 draft: false
 ---
 
